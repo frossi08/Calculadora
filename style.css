@@ -1,0 +1,77 @@
+* {
+    margin: 0;
+    padding: 0;
+    /*espaço interno de um elemento*/
+    box-sizing: border-box;
+    /*define como o width é calculado*/
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: goldenrod;
+    font-family: "Poppins", sans-serif;
+}
+
+main {
+    width: 320px;
+    padding: 20px;
+    background-color: red;
+    border-radius: 16px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.display {
+    min-height: 80px;
+    background-color: #f4f4f4;
+    color: black;
+    font-size: 32px;
+    padding: 16px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.actions {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+button {
+    border: none;
+    border-radius: 20px;
+    padding: 10px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 16px;
+}
+
+.keys {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+}
+
+.numbers {
+    display: grid;
+    /*organiza elementos em linhas e colunas*/
+    grid-template-columns: repeat(3, 1fr);
+    grid-column: span 3;
+    gap: 10px;
+}
+
+.operators {
+    display: grid;
+    /*organiza elementos em linhas e colunas*/
+    gap: 10px;
+}
+
+[data-number="0"] {
+    grid-column: span 2;
+}
