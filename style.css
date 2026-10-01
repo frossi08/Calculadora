@@ -1,9 +1,14 @@
+:root {
+    --number-gradient: linear-gradient(135deg, #555555 0%, #353535 45%, #171717 100%);
+    --operator-gradient: linear-gradient(135deg, #122a42 0%, #091b2d 50%, #030a12 100%);
+    --action-gradient: linear-gradient(135deg, #333333 0%, #1d1d1d 65%, #111111 100%);
+    --button-text: #f4f4f4;
+}
+
 * {
     margin: 0;
     padding: 0;
-    /*espaço interno de um elemento*/
     box-sizing: border-box;
-    /*define como o width é calculado*/
 }
 
 body {
@@ -11,22 +16,24 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: goldenrod;
+    background: linear-gradient(180deg, #8c8c8c 0%, #666666 45%, #353535 100%);
     font-family: "Poppins", sans-serif;
 }
 
 main {
     width: 320px;
     padding: 20px;
-    background-color: red;
+    background: linear-gradient(135deg, #1c1c1c 0%, #101010 50%, #020202 100%);
     border-radius: 16px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
 .display {
+    overflow: hidden;
+    word-break: break-all;
     min-height: 80px;
-    background-color: #f4f4f4;
-    color: black;
+    color: #f4f4f4;
+    background: linear-gradient(135deg, #555555 0%, #353535 80%, #171717 100%);
     font-size: 32px;
     padding: 16px;
     border-radius: 10px;
@@ -38,7 +45,7 @@ main {
 
 .actions {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     gap: 10px;
     margin-bottom: 10px;
 }
@@ -50,6 +57,7 @@ button {
     cursor: pointer;
     font-family: inherit;
     font-size: 16px;
+    transition: transform 0.2s ease, filter 0.2s ease, box-shadow 0.2s ease;
 }
 
 .keys {
@@ -60,7 +68,6 @@ button {
 
 .numbers {
     display: grid;
-    /*organiza elementos em linhas e colunas*/
     grid-template-columns: repeat(3, 1fr);
     grid-column: span 3;
     gap: 10px;
@@ -68,10 +75,44 @@ button {
 
 .operators {
     display: grid;
-    /*organiza elementos em linhas e colunas*/
     gap: 10px;
 }
 
+.numbers button {
+    background: var(--number-gradient);
+    color: var(--button-text);
+}
+
+.operators button {
+    background: var(--operator-gradient);
+    color: var(--button-text);
+}
+
+.actions button {
+    background: var(--action-gradient);
+    color: var(--button-text);
+}
+
+.numbers button:hover,
+.operators button:hover,
+.actions button:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.25);
+    box-shadow: 0 5px 12px rgba(0, 0, 0, 0.35);
+}
+
+.numbers button:active,
+.operators button:active,
+.actions button:active {
+    transform: translateY(1px);
+    filter: brightness(0.9);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
 [data-number="0"] {
+    grid-column: span 2;
+}
+
+[data-action="equal"] {
     grid-column: span 2;
 }
