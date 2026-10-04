@@ -1,6 +1,4 @@
-let currentNumber = ''; //number currently being entered by the user
-
-let currentOperator = ''; //operator currently selected by the user
+let currentNumber = ''; //number currently selected by the user
 
 const tokens = []; //where confirmed numbers will be stored
 
@@ -16,26 +14,26 @@ const buttonsActions = document.querySelectorAll('[data-action]'); //select the 
 // The function clearAll will remove all items currently on the display.
 const clearAll = () => {
     currentNumber = '';
-    currentOperator = '';
     tokens.length = 0;
     display.textContent = '';
 }
 
 
+
+
+// The display will show the stored numbers, the current operator,
+// and the number currently being typed.
+const updateDisplay = () => {
+    display.textContent = tokens.filter(Boolean).join(' ') + (currentNumber ? ' ' + currentNumber : '');
+}
+
 // The function deleteLast will remove the last character entered by the user.
-// If a number is being typed, it removes the last digit.
-// If no number is being typed, it removes the current operator.
 const deleteLast = () => {
 
     if (currentNumber) {
 
         // remove last digit from the current number
         currentNumber = currentNumber.slice(0, -1);
-
-    } else if (currentOperator) {
-
-        // remove the current operator
-        currentOperator = '';
 
     } else if (tokens.length > 0) {
 
@@ -49,17 +47,6 @@ const deleteLast = () => {
 
     updateDisplay();
 }
-
-
-// The display will show the stored numbers, the current operator,
-// and the number currently being typed.
-const updateDisplay = () => {
-    display.textContent =
-        tokens.join(' ') +
-        (currentOperator ? ' ' + currentOperator : '') +
-        (currentNumber ? ' ' + currentNumber : '');
-}
-
 
 // Add click events to all number buttons.
 buttonsNumbers.forEach(button => {
@@ -77,11 +64,12 @@ buttonsOperators.forEach(button => {
         // Save the current number before selecting an operator.
         if (currentNumber) {
             tokens.push(currentNumber);
+
+            // Store the selected operator.
+            tokens.push(button.textContent);
+
             currentNumber = '';
         }
-
-        // Store the selected operator.
-        currentOperator = button.textContent;
 
         updateDisplay();
     });
