@@ -44,6 +44,11 @@
   --r-lg: 28px;
   --r-md: 20px;
   --r-sm: 14px;
+  --sat: env(safe-area-inset-top, 0px);
+  --sab: env(safe-area-inset-bottom, 0px);
+  --app-h: 100vh;
+  --edge: max(0px, calc((100vw - 480px) / 2));
+  --stage: #C9DCE6;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
@@ -92,14 +97,14 @@ svg { display: block; }
   background: linear-gradient(180deg, var(--bg-top) 0%, var(--bg) 40%, var(--bg) 100%);
   position: relative; overflow-x: hidden;
 }
-.screen { min-height: 100vh; display: flex; flex-direction: column; }
+.screen { min-height: var(--app-h); display: flex; flex-direction: column; }
 .pad { padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
-.with-nav { padding-bottom: calc(96px + env(safe-area-inset-bottom, 0px)); }
+.with-nav { padding-bottom: calc(96px + var(--sab)); }
 
 /* Floating settings gear (present on every screen, like the original) */
 .gear {
   position: fixed; z-index: 40;
-  top: calc(14px + env(safe-area-inset-top, 0px));
+  top: calc(14px + var(--sat));
   right: max(16px, calc((100vw - 480px) / 2 + 16px), env(safe-area-inset-right, 0px));
   width: 58px; height: 58px; border-radius: 50%;
   background: radial-gradient(circle at 35% 30%, #4FA3F5, var(--gear) 60%);
@@ -114,7 +119,7 @@ svg { display: block; }
   display: grid; place-items: center; color: var(--teal-2); box-shadow: var(--shadow);
 }
 .logo-tile svg { width: 36px; height: 36px; }
-.welcome-top { padding-top: 92px; }
+.welcome-top { padding-top: calc(28px + var(--sat)); }
 .hero { display: grid; grid-template-columns: minmax(0, 1fr) 40%; align-items: center; gap: 8px; margin-top: 40px; }
 .hero h1 { font-size: 2.35rem; line-height: 1.12; font-weight: 800; letter-spacing: -.01em; }
 .hero p { margin-top: 18px; font-size: 1.08rem; color: var(--text); max-width: 30ch; }
@@ -157,7 +162,7 @@ svg { display: block; }
   content: ""; position: absolute; inset: -20% -10%;
   background: linear-gradient(160deg, transparent 35%, rgba(200,255,250,.35) 48%, rgba(255,255,255,.15) 52%, transparent 62%);
 }
-.auth-tabs { position: absolute; z-index: 2; left: 0; right: 0; top: 110px; display: flex; justify-content: space-around; padding-right: 60px; }
+.auth-tabs { position: absolute; z-index: 2; left: 0; right: 0; top: 110px; display: flex; justify-content: space-around; }
 .auth-tabs button { font-family: var(--font-display); font-weight: 800; letter-spacing: .06em; font-size: 1.45rem; color: rgba(255,255,255,.62); }
 .auth-tabs button[aria-selected="true"] { color: #fff; }
 .auth-sheet { background: var(--surface); border-radius: 44px 44px 0 0; margin-top: -60px; position: relative; z-index: 3; padding-top: 34px; padding-bottom: 40px; flex: 1; }
@@ -185,7 +190,7 @@ svg { display: block; }
 .err { color: var(--sos); margin-top: 14px; font-weight: 600; min-height: 1.4em; }
 
 /* Home */
-.brand { display: flex; align-items: center; gap: 16px; padding-top: 100px; }
+.brand { display: flex; align-items: center; gap: 16px; padding-top: calc(24px + var(--sat)); }
 .brand .logo-tile { width: 70px; height: 70px; }
 .brand h2 { font-size: 1.6rem; font-weight: 800; }
 .brand small { color: var(--muted); font-size: 1rem; }
@@ -250,7 +255,7 @@ svg { display: block; }
   position: fixed; z-index: 30; bottom: 0; left: 50%; transform: translateX(-50%);
   width: 100%; max-width: 480px; background: var(--surface); border-top: 1px solid var(--line);
   display: grid; grid-template-columns: repeat(4, 1fr);
-  padding: 10px max(8px, env(safe-area-inset-right, 0px)) calc(10px + env(safe-area-inset-bottom, 0px)) max(8px, env(safe-area-inset-left, 0px));
+  padding: 10px max(8px, env(safe-area-inset-right, 0px)) calc(10px + var(--sab)) max(8px, env(safe-area-inset-left, 0px));
 }
 .nav button { display: flex; flex-direction: column; align-items: center; gap: 4px; color: var(--muted); font-size: 1.02rem; font-weight: 500; padding: 4px 0; }
 .nav button svg { width: 34px; height: 34px; }
@@ -259,21 +264,21 @@ svg { display: block; }
 /* Inner screen header */
 .head-band {
   background: var(--teal-strong); color: #fff; border-radius: 0 0 30px 30px;
-  padding-top: calc(28px + env(safe-area-inset-top, 0px)); padding-bottom: 22px;
+  padding-top: calc(28px + var(--sat)); padding-bottom: 22px;
   display: flex; align-items: center; gap: 16px;
-  padding-right: max(92px, env(safe-area-inset-right, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
 }
 .head-band .back { width: 58px; height: 58px; border-radius: 50%; background: rgba(255,255,255,.18); color: #fff; display: grid; place-items: center; flex: none; }
 .head-band h1 { color: #fff; font-size: 1.8rem; font-weight: 800; }
 .head-band p { color: rgba(255,255,255,.85); font-size: 1.02rem; }
 .list { display: flex; flex-direction: column; gap: 16px; margin-top: 22px; padding-bottom: 120px; }
 .fab {
-  position: fixed; z-index: 25; right: max(18px, calc((100vw - 480px) / 2 + 18px)); bottom: calc(24px + env(safe-area-inset-bottom, 0px));
+  position: fixed; z-index: 25; right: calc(var(--edge) + 18px); bottom: calc(24px + var(--sab));
   height: 62px; padding: 0 24px 0 18px; border-radius: 999px; background: var(--teal-strong); color: #fff;
   display: inline-flex; align-items: center; gap: 8px; font-family: var(--font-display); font-weight: 800; font-size: 1.1rem;
   box-shadow: 0 10px 24px rgba(14,124,114,.38);
 }
-.fab.raise { bottom: calc(108px + env(safe-area-inset-bottom, 0px)); }
+.fab.raise { bottom: calc(108px + var(--sab)); }
 
 /* Medicamentos */
 .med { display: grid; grid-template-columns: 92px minmax(0, 1fr) auto; gap: 10px; align-items: center; padding: 20px 16px; }
@@ -351,11 +356,11 @@ svg { display: block; }
 .qrow { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 20px 22px; margin-top: 14px; font-family: var(--font-display); font-weight: 700; font-size: 1.2rem; color: var(--text); }
 
 /* Chat */
-.chat-head { display: flex; align-items: center; gap: 16px; padding-top: calc(26px + env(safe-area-inset-top, 0px)); padding-bottom: 16px; border-bottom: 1px solid var(--line); background: var(--surface); padding-right: max(92px, env(safe-area-inset-right, 0px)); }
+.chat-head { display: flex; align-items: center; gap: 16px; padding-top: calc(26px + var(--sat)); padding-bottom: 16px; border-bottom: 1px solid var(--line); background: var(--surface); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
 .chat-head .av { width: 62px; height: 62px; border-radius: 50%; background: var(--teal-strong); color: #fff; display: grid; place-items: center; flex: none; }
 .chat-head h1 { font-size: 1.45rem; font-weight: 800; }
 .chat-head p { color: var(--muted); font-size: .98rem; }
-.chat-wrap { display: flex; flex-direction: column; height: 100vh; height: 100dvh; padding-bottom: calc(96px + env(safe-area-inset-bottom, 0px)); }
+.chat-wrap { display: flex; flex-direction: column; height: var(--app-h); padding-bottom: calc(96px + var(--sab)); }
 .msgs { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 14px; padding-top: 18px; padding-bottom: 18px; background: var(--surface-2); }
 .msg { max-width: 86%; padding: 14px 18px; border-radius: 24px; font-size: 1.15rem; line-height: 1.5; overflow-wrap: anywhere; }
 .msg.me { align-self: flex-end; background: var(--teal-strong); color: #fff; border-bottom-right-radius: 8px; }
@@ -381,7 +386,7 @@ svg { display: block; }
 .ai-mode.on i { background: var(--ok); }
 
 /* Perfil */
-.profile-band { background: var(--teal-strong); color: #fff; border-radius: 0 0 40px 40px; text-align: center; padding-top: calc(26px + env(safe-area-inset-top, 0px)); padding-bottom: 30px; }
+.profile-band { background: var(--teal-strong); color: #fff; border-radius: 0 0 40px 40px; text-align: center; padding-top: calc(26px + var(--sat)); padding-bottom: 30px; }
 .avatar { width: 150px; height: 150px; margin: 0 auto; border-radius: 50%; background: var(--teal-2); border: 5px solid #fff; display: grid; place-items: center; color: #fff; }
 .avatar svg { width: 80px; height: 80px; }
 .profile-band h1 { color: #fff; font-size: 2rem; margin-top: 14px; }
@@ -410,13 +415,13 @@ svg { display: block; }
 .tag { font-size: .8rem; font-weight: 700; padding: 4px 10px; border-radius: 999px; background: var(--teal-tint); color: var(--teal); white-space: nowrap; }
 .tag.lilac { background: var(--lilac-soft); color: var(--lilac); }
 .tag.blue { background: color-mix(in srgb, var(--gear) 15%, transparent); color: var(--gear); }
-.page-title { padding-top: calc(30px + env(safe-area-inset-top, 0px)); padding-right: max(92px, env(safe-area-inset-right, 0px)); }
+.page-title { padding-top: calc(30px + var(--sat)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
 .page-title h1 { font-size: 2rem; font-weight: 800; }
 .page-title p { color: var(--muted); }
 
 /* Sheets, toasts, banners */
 .overlay { position: fixed; inset: 0; z-index: 60; background: rgba(8, 20, 30, .5); display: flex; align-items: flex-end; justify-content: center; }
-.sheet { width: 100%; max-width: 480px; max-height: 92vh; overflow-y: auto; background: var(--surface); border-radius: 30px 30px 0 0; padding-top: 22px; padding-bottom: calc(26px + env(safe-area-inset-bottom, 0px)); }
+.sheet { width: 100%; max-width: 480px; max-height: calc(var(--app-h) * .92); overflow-y: auto; background: var(--surface); border-radius: 30px 30px 0 0; padding-top: 22px; padding-bottom: calc(26px + var(--sab)); }
 .sheet .grab { width: 54px; height: 6px; border-radius: 999px; background: var(--line); margin: 0 auto 16px; }
 .sheet h2 { font-size: 1.5rem; font-weight: 800; }
 .sheet .sub { color: var(--muted); margin-top: 4px; }
@@ -429,8 +434,8 @@ svg { display: block; }
 .opts button { flex: 1; min-width: 84px; padding: 14px 10px; border-radius: 16px; border: 2px solid var(--line); font-weight: 700; color: var(--ink); background: var(--surface); }
 .opts button[aria-pressed="true"] { border-color: var(--teal); background: var(--teal-tint); color: var(--teal); }
 .set-note { color: var(--muted); font-size: .95rem; margin-top: 8px; }
-.toast { position: fixed; z-index: 80; left: 50%; transform: translateX(-50%); top: calc(90px + env(safe-area-inset-top, 0px)); background: var(--ink); color: var(--surface); padding: 14px 22px; border-radius: 999px; font-weight: 600; box-shadow: var(--shadow); max-width: calc(100% - 32px); text-align: center; }
-.alert-banner { position: fixed; z-index: 70; top: calc(12px + env(safe-area-inset-top, 0px)); left: 50%; transform: translateX(-50%); width: calc(100% - 32px); max-width: 448px; background: var(--surface); border: 3px solid var(--teal-2); border-radius: 24px; padding: 16px; display: flex; gap: 14px; align-items: center; box-shadow: 0 16px 40px rgba(0,0,0,.25); }
+.toast { position: fixed; z-index: 80; left: 50%; transform: translateX(-50%); top: calc(90px + var(--sat)); background: var(--ink); color: var(--surface); padding: 14px 22px; border-radius: 999px; font-weight: 600; box-shadow: var(--shadow); max-width: calc(100% - 32px); text-align: center; }
+.alert-banner { position: fixed; z-index: 70; top: calc(12px + var(--sat)); left: 50%; transform: translateX(-50%); width: calc(100% - 32px); max-width: 448px; background: var(--surface); border: 3px solid var(--teal-2); border-radius: 24px; padding: 16px; display: flex; gap: 14px; align-items: center; box-shadow: 0 16px 40px rgba(0,0,0,.25); }
 .alert-banner .grow { flex: 1; min-width: 0; }
 .alert-banner h4 { margin: 0; font-family: var(--font-display); color: var(--ink); font-size: 1.15rem; }
 .sos-sheet { text-align: center; }
@@ -446,6 +451,69 @@ svg { display: block; }
 .google-acc { display: flex; align-items: center; gap: 14px; padding: 14px; border-radius: 18px; border: 2px solid var(--line); width: 100%; text-align: left; margin-top: 12px; }
 .google-acc .av { width: 46px; height: 46px; border-radius: 50%; background: var(--lilac); color: #fff; display: grid; place-items: center; font-weight: 800; font-size: 1.2rem; }
 
+/* Moldura de celular (computador / apresentação) */
+#statusbar, #homebar { display: none; }
+html.phone-mode { --sat: 52px; --sab: 20px; --app-h: 844px; --edge: 0px; }
+html.phone-mode, html.phone-mode body { height: 100%; overflow: hidden; }
+html.phone-mode body { background: radial-gradient(circle at 25% 15%, var(--bg-top), var(--stage) 70%); }
+html.phone-mode #stage { position: fixed; inset: 0; display: grid; place-items: center; }
+html.phone-mode #phone {
+  position: relative; flex: none; box-sizing: content-box; width: 390px; height: 844px;
+  border: 13px solid #101317; border-radius: 60px; overflow: hidden; background: var(--bg);
+  box-shadow: 0 0 0 2px #454b52, 0 0 0 5px #1b1f24, 0 40px 90px rgba(10, 30, 50, .4);
+  transform: scale(var(--ps, 1));
+}
+html.phone-mode #scroller { position: absolute; inset: 0; overflow-y: auto; overflow-x: hidden; scrollbar-width: none; }
+html.phone-mode #scroller::-webkit-scrollbar { display: none; }
+html.phone-mode #shell { min-height: 100%; }
+html.phone-mode #statusbar {
+  display: flex; position: absolute; z-index: 95; top: 0; left: 0; right: 0; height: 52px;
+  padding: 16px 32px 0 40px; justify-content: space-between; align-items: center;
+  font: 600 16px/1 var(--font-body); color: var(--text); pointer-events: none; font-variant-numeric: tabular-nums;
+}
+html.phone-mode #statusbar.light { color: #fff; }
+html.phone-mode #statusbar.solid { background: var(--bg); box-shadow: 0 1px 0 var(--line); }
+html.phone-mode #statusbar.light.solid { background: var(--teal-strong); box-shadow: none; }
+html.phone-mode #statusbar.chat.solid, html.phone-mode #statusbar.chat { background: var(--surface); }
+#statusbar .island { position: absolute; left: 50%; top: 11px; transform: translateX(-50%); width: 120px; height: 34px; border-radius: 20px; background: #000; }
+#statusbar .sb-right { display: flex; align-items: center; gap: 6px; }
+#statusbar svg { width: auto; height: 13px; }
+html.phone-mode #homebar { display: block; position: absolute; z-index: 95; bottom: 8px; left: 50%; transform: translateX(-50%); width: 136px; height: 5px; border-radius: 3px; background: var(--text); opacity: .75; pointer-events: none; }
+
+/* Anotações */
+.quick { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 20px; }
+.quick button { background: var(--surface); box-shadow: var(--shadow); border-radius: 20px; padding: 14px 4px; display: flex; flex-direction: column; align-items: center; gap: 8px; font-weight: 700; font-size: .95rem; color: var(--ink); }
+.quick .qi { width: 46px; height: 46px; border-radius: 14px; display: grid; place-items: center; }
+.last3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 16px; }
+.last3 .card { padding: 14px 12px; }
+.last3 small { color: var(--muted); display: block; }
+.last3 b { display: block; font-family: var(--font-display); font-weight: 800; font-size: 1.3rem; color: var(--ink); font-variant-numeric: tabular-nums; margin: 4px 0 6px; }
+.lvl { display: inline-block; font-size: .78rem; font-weight: 700; padding: 3px 9px; border-radius: 999px; }
+.lvl.ok { background: var(--ok-soft); color: var(--ok); }
+.lvl.att { background: var(--sun-soft); color: #9A6A00; }
+.lvl.high { background: var(--sos-soft); color: var(--sos); }
+.lvl.low { background: color-mix(in srgb, var(--gear) 15%, transparent); color: var(--gear); }
+.note-item { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 14px; align-items: center; padding: 14px 16px; }
+.note-item .ni { width: 50px; height: 50px; border-radius: 16px; display: grid; place-items: center; }
+.note-item h4 { margin: 0; font-family: var(--font-display); color: var(--ink); font-size: 1.12rem; }
+.note-item p { color: var(--muted); font-size: .95rem; overflow-wrap: anywhere; }
+.note-item .txt { color: var(--text); font-size: 1.05rem; white-space: pre-wrap; }
+.day-label { font-family: var(--font-display); color: var(--muted); font-weight: 700; font-size: .92rem; letter-spacing: .06em; text-transform: uppercase; margin-top: 8px; }
+.wide-card { margin-top: 16px; display: flex; align-items: center; gap: 16px; padding: 18px; width: 100%; text-align: left; }
+.wide-card .big { width: 70px; height: 70px; border-radius: 20px; background: var(--sun-soft); color: #C98A00; display: grid; place-items: center; flex: none; }
+.wide-card .big svg { width: 36px; height: 36px; }
+.wide-card h3 { font-size: 1.22rem; font-weight: 800; }
+.wide-card p { color: var(--muted); }
+.wide-card .grow { flex: 1; min-width: 0; }
+.editable { cursor: pointer; border-radius: 12px; }
+.list-hint { color: var(--muted); font-size: .95rem; text-align: center; }
+.data-counts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 14px 0 4px; }
+.data-counts div { background: var(--surface-2); border-radius: 14px; padding: 10px 6px; text-align: center; }
+.data-counts b { display: block; font-family: var(--font-display); font-size: 1.3rem; color: var(--ink); }
+.data-counts span { font-size: .85rem; color: var(--muted); }
+.info-card .set-group:first-of-type { margin-top: 16px; }
+.info-card p.body { margin-top: 14px; font-size: 1.05rem; }
+
 @media (max-width: 380px) {
   .hero h1, .greet h1 { font-size: 2rem; }
   .sos { width: 124px; height: 124px; font-size: 2.1rem; }
@@ -459,8 +527,12 @@ svg { display: block; }
 @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
 </style>
 
-<div id="shell"><div id="app"></div></div>
-<button class="gear" id="gearBtn" aria-label="Configurações"></button>
+<div id="stage"><div id="phone">
+  <div id="statusbar" aria-hidden="true"><span id="sbTime">10:46</span><span class="island"></span>
+    <span class="sb-right"><svg viewBox="0 0 18 12"><rect x="0" y="8" width="3" height="4" rx="1" fill="currentColor"/><rect x="5" y="5.5" width="3" height="6.5" rx="1" fill="currentColor"/><rect x="10" y="3" width="3" height="9" rx="1" fill="currentColor"/><rect x="15" y="0" width="3" height="12" rx="1" fill="currentColor" opacity=".35"/></svg>5G<svg viewBox="0 0 27 13"><rect x=".5" y=".5" width="23" height="12" rx="3.5" fill="none" stroke="currentColor" opacity=".45"/><rect x="2.5" y="2.5" width="15" height="8" rx="2" fill="currentColor"/><rect x="25" y="4.5" width="1.6" height="4" rx=".8" fill="currentColor" opacity=".45"/></svg></span></div>
+  <div id="scroller"><div id="shell"><div id="app"></div></div></div>
+  <div id="homebar"></div>
+</div></div>
 
 <script>
 (() => {
@@ -503,6 +575,7 @@ const I = {
   send: `<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M3 3.5 21.5 12 3 20.5l2.2-7.3L13 12l-7.8-1.2z"/></svg>`,
   eye: sv('<path d="M2 12s3.6-6.5 10-6.5S22 12 22 12s-3.6 6.5-10 6.5S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>'),
   eyeOff: sv('<path d="M2 12s3.6-6.5 10-6.5S22 12 22 12s-3.6 6.5-10 6.5S2 12 2 12z"/><circle cx="12" cy="12" r="3"/><path d="M3.5 3.5l17 17"/>'),
+  scale: sv('<path d="M5 4h14l2 16H3z"/><path d="M9 9.5a3 3 0 0 1 6 0"/><path d="M12 9.5l1.5-2"/>'),
   edit: `<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M4 5.5A1.5 1.5 0 0 1 5.5 4H13l-2 2H6v12h12v-5l2-2v7.5a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 18.5zM19.6 2.6l1.8 1.8-9.2 9.2-2.6.8.8-2.6z"/></svg>`,
   google: `<svg viewBox="0 0 24 24" width="30" height="30" aria-hidden="true"><path fill="#E5463B" d="M21.6 12.2c0-.7-.1-1.4-.2-2H12v3.8h5.4a4.6 4.6 0 0 1-2 3v2.5h3.2c1.9-1.7 3-4.3 3-7.3z"/><path fill="#E5463B" d="M12 22c2.7 0 5-.9 6.6-2.4l-3.2-2.5c-.9.6-2 1-3.4 1-2.6 0-4.8-1.8-5.6-4.1H3.1v2.6A10 10 0 0 0 12 22z"/><path fill="#E5463B" d="M6.4 14a6 6 0 0 1 0-3.9V7.5H3.1a10 10 0 0 0 0 9z"/><path fill="#E5463B" d="M12 6c1.5 0 2.8.5 3.8 1.5l2.9-2.9A10 10 0 0 0 3.1 7.5l3.3 2.6C7.2 7.8 9.4 6 12 6z"/></svg>`,
 };
@@ -588,10 +661,24 @@ async function demoUser() {
     ],
     checkins: ck,
     chat: [],
+    notas: [
+      { id: uid(), type: "pressao", sys: 128, dia: 82, pulse: 74, date: ymd(t), time: "08:05", text: "" },
+      { id: uid(), type: "glicemia", value: 104, moment: "Em jejum", date: ymd(t), time: "07:40", text: "" },
+      { id: uid(), type: "pressao", sys: 142, dia: 91, pulse: 80, date: ymd(addDays(t, -1)), time: "08:10", text: "Dormi mal" },
+      { id: uid(), type: "nota", text: "Perguntar à Dra. Ana se posso continuar o Dorflex para a dor no joelho.", date: ymd(addDays(t, -1)), time: "15:20" },
+      { id: uid(), type: "peso", value: 67.8, date: ymd(addDays(t, -2)), time: "07:30", text: "" },
+      { id: uid(), type: "pressao", sys: 124, dia: 80, pulse: 72, date: ymd(addDays(t, -2)), time: "08:00", text: "" },
+      { id: uid(), type: "glicemia", value: 132, moment: "Depois de comer", date: ymd(addDays(t, -3)), time: "14:00", text: "Almoço com sobremesa" },
+    ],
   };
 }
 
 /* ---------- Estado de navegação ---------- */
+const PHONE_MIN_W = 640;
+const scroller = () => (document.documentElement.classList.contains("phone-mode") ? $("#scroller") : null);
+const getScroll = () => (scroller() ? scroller().scrollTop : window.scrollY);
+const setScroll = (y) => { const sc = scroller(); if (sc) sc.scrollTop = y; else window.scrollTo(0, y); };
+const layer = () => $("#phone");
 const S = { view: "welcome", stack: [], authTab: "login", period: 7, agendaDay: ymd(), checkinDraft: null, busy: false, showPass: false };
 const MAIN = ["home", "agenda", "chat", "perfil"];
 function go(view, opts = {}) {
@@ -600,9 +687,10 @@ function go(view, opts = {}) {
   S.view = view;
   if (view === "checkin") S.checkinDraft = null;
   render();
-  window.scrollTo(0, 0);
+  setScroll(0);
+  statusBar();
 }
-function back() { const v = S.stack.pop() || (me() ? "home" : "welcome"); S.view = v; render(); window.scrollTo(0, 0); }
+function back() { const v = S.stack.pop() || (me() ? "home" : "welcome"); S.view = v; render(); setScroll(0); }
 
 /* ---------- Dados derivados ---------- */
 const isTaken = (m) => m.takenOn === ymd();
@@ -618,6 +706,39 @@ function pendingToday(u) {
   const rems = u.lembretes.filter((r) => r.on && r.time >= hm);
   const soon = u.consultas.filter((c) => { const d = parseYmd(c.date); const diff = (d - parseYmd(ymd())) / 864e5; return diff >= 0 && diff <= 7; });
   return { meds, rems, soon, count: meds.length + rems.length + soon.length };
+}
+
+/* ---------- Anotações (pressão, glicemia, peso, recados) ---------- */
+const NOTE_TYPES = {
+  pressao: { label: "Pressão", unit: "mmHg", bg: "var(--sos-soft)", fg: "var(--sos)" },
+  glicemia: { label: "Glicemia", unit: "mg/dL", bg: "var(--lilac-soft)", fg: "#7A5CC9" },
+  peso: { label: "Peso", unit: "kg", bg: "var(--teal-tint)", fg: "var(--teal)" },
+  nota: { label: "Anotação", unit: "", bg: "var(--sun-soft)", fg: "#C98A00" },
+};
+function level(n) {
+  if (n.type === "pressao") {
+    if (n.sys >= 180 || n.dia >= 110) return ["high", "Muito alta"];
+    if (n.sys >= 140 || n.dia >= 90) return ["high", "Alta"];
+    if (n.sys < 90 || n.dia < 60) return ["low", "Baixa"];
+    if (n.sys >= 130 || n.dia >= 85) return ["att", "Atenção"];
+    return ["ok", "Normal"];
+  }
+  if (n.type === "glicemia") {
+    const jejum = n.moment !== "Depois de comer";
+    if (n.value < 70) return ["low", "Baixa"];
+    if (n.value < (jejum ? 100 : 140)) return ["ok", "Normal"];
+    if (n.value < (jejum ? 126 : 200)) return ["att", "Atenção"];
+    return ["high", "Alta"];
+  }
+  return null;
+}
+const noteValue = (n) => n.type === "pressao" ? `${n.sys}/${n.dia}` : n.type === "glicemia" ? `${n.value}` : n.type === "peso" ? `${String(n.value).replace(".", ",")}` : "";
+const sortNotes = (arr) => [...arr].sort((a, b) => (b.date + b.time).localeCompare(a.date + a.time));
+const lastOf = (u, t) => sortNotes((u.notas || []).filter((n) => n.type === t))[0];
+const noteIcon = (t) => ({ pressao: I.heart, glicemia: I.drop, peso: I.scale, nota: I.edit }[t]);
+function dayName(dstr) {
+  const t = ymd(); if (dstr === t) return "Hoje"; if (dstr === ymd(addDays(new Date(), -1))) return "Ontem";
+  const d = parseYmd(dstr); return `${WD[d.getDay()]}, ${brDate(dstr)}`;
 }
 
 /* ---------- Telas ---------- */
@@ -742,6 +863,7 @@ V.home = () => {
     <button class="card feat" data-go="lembretes"><span class="big lilac">${I.bell}</span><h3>Lembretes</h3><p>Não se esqueça!</p></button>
     <button class="card feat" data-go="bemestar"><span class="big teal">${I.pulse}</span><h3>Bem-estar</h3><p>Veja sua evolução</p></button>
   </div>
+  <button class="card wide-card" data-go="notas"><span class="big">${I.edit}</span><div class="grow"><h3>Minhas anotações</h3><p>${(() => { const n = lastOf(u, "pressao"); return n ? `Última pressão: ${noteValue(n)} (${dayName(n.date).toLowerCase()})` : "Pressão, glicemia, peso e recados"; })()}</p></div><span>${I.chev}</span></button>
   <button class="card help-card" data-go="chat"><span class="bubble">${I.bubbles}</span><div class="grow"><h3>Precisa de ajuda?</h3><p>Nossa IA está pronta para te responder!</p></div><span>${I.chev}</span></button>
   <div class="promo">
     <div><h2>Tecnologia para cuidar.</h2><p>Seus remédios, consultas e o seu dia a dia em um só lugar.</p></div>
@@ -750,15 +872,47 @@ V.home = () => {
 </section>${navBar("home")}`;
 };
 
+V.notas = () => {
+  const u = me(); u.notas = u.notas || [];
+  const groups = {};
+  for (const n of sortNotes(u.notas)) (groups[n.date] = groups[n.date] || []).push(n);
+  const last = (t) => { const n = lastOf(u, t); if (!n) return `<b>—</b><span class="lvl" style="background:var(--surface-2);color:var(--muted)">sem registro</span>`; const l = level(n); return `<b>${noteValue(n)}</b>${l ? `<span class="lvl ${l[0]}">${l[1]}</span>` : `<span class="lvl" style="background:var(--surface-2);color:var(--muted)">${ddmm(parseYmd(n.date))}</span>`}`; };
+  return `<section class="screen">${headBand("Anotações", "Pressão, glicemia, peso e recados")}
+  <div class="pad" style="padding-bottom:40px">
+    <div class="quick">
+      ${["pressao", "glicemia", "peso", "nota"].map((t) => `<button data-act="addNote" data-kind="${t}"><span class="qi" style="background:${NOTE_TYPES[t].bg};color:${NOTE_TYPES[t].fg}">${noteIcon(t)}</span>${t === "nota" ? "Recado" : NOTE_TYPES[t].label}</button>`).join("")}
+    </div>
+    <h2 style="font-size:1.25rem;margin-top:24px">Últimas medidas</h2>
+    <div class="last3">
+      <div class="card"><small>Pressão</small>${last("pressao")}</div>
+      <div class="card"><small>Glicemia</small>${last("glicemia")}</div>
+      <div class="card"><small>Peso (kg)</small>${last("peso")}</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px;margin-top:22px">
+      <h2 style="font-size:1.25rem">Histórico</h2>
+      <p class="list-hint" style="text-align:left">Toque em uma anotação para editar. Mostre ao médico na consulta.</p>
+      ${Object.keys(groups).map((d) => `<p class="day-label">${dayName(d)}</p>` + groups[d].map((n) => { const T = NOTE_TYPES[n.type]; const l = level(n); return `
+      <article class="card note-item editable" data-act="edit" data-kind="${n.type}" data-list="notas" data-id="${n.id}" role="button" tabindex="0">
+        <span class="ni" style="background:${T.bg};color:${T.fg}">${noteIcon(n.type)}</span>
+        <div style="min-width:0">${n.type === "nota" ? `<p class="txt">${esc(n.text)}</p><p>${esc(n.time)}</p>` : `<h4>${T.label}: ${noteValue(n)} <span style="font-weight:600;color:var(--muted);font-size:.9rem">${T.unit}</span></h4>
+          <p>${esc(n.time)}${n.type === "glicemia" ? " · " + esc(n.moment) : ""}${n.pulse ? ` · ${n.pulse} bpm` : ""}${n.text ? " · " + esc(n.text) : ""}</p>`}</div>
+        ${l ? `<span class="lvl ${l[0]}">${l[1]}</span>` : `<span></span>`}
+      </article>`; }).join("")).join("") || `<p class="empty-line">Nada anotado ainda. Use os botões acima para anotar sua pressão, glicemia, peso ou um recado.</p>`}
+    </div>
+  </div>
+</section>`;
+};
+
 V.meds = () => {
   const u = me();
   const list = [...u.meds].sort(sortTime);
   return `<section class="screen">${headBand("Medicamentos", "Toque no círculo para marcar como tomado")}
   <div class="list pad">
+    <p class="list-hint">Toque no nome do remédio para editar.</p>
     ${list.map((m) => { const t = isTaken(m); const al = allergyHit(m.name, u.profile.allergies); return `
     <article class="card med ${t ? "taken" : ""}">
       <div class="t"><b>${esc(m.time)}</b><span>${esc(m.freq)}</span></div>
-      <div style="min-width:0"><h3>${esc(m.name)}</h3><p class="dose">${esc(m.dose)}</p>${m.note ? `<p class="note">${esc(m.note)}</p>` : ""}
+      <div style="min-width:0" class="editable" data-act="edit" data-kind="meds" data-id="${m.id}" role="button" tabindex="0"><h3>${esc(m.name)}</h3><p class="dose">${esc(m.dose)}</p>${m.note ? `<p class="note">${esc(m.note)}</p>` : ""}
         ${al ? `<span class="allergy">${I.alert} Você tem alergia cadastrada</span>` : ""}</div>
       <div class="actions">
         <button class="take ${t ? "on" : ""}" data-act="take" data-id="${m.id}" aria-label="${t ? "Desmarcar " : "Marcar como tomado: "}${esc(m.name)}">${t ? I.check : I.circle}</button>
@@ -777,11 +931,12 @@ V.consultas = () => {
   const card = (c, isPast) => `
     <article class="card appt ${isPast ? "past" : ""}">
       <div class="datebox"><small>${brDate(c.date)}</small><b>${esc(c.time)}</b></div>
-      <div style="min-width:0"><h3>${esc(c.specialty)}</h3><p>${esc(c.doctor)}</p>${c.place ? `<p class="place">${I.pin}<span>${esc(c.place)}</span></p>` : ""}</div>
+      <div style="min-width:0" class="editable" data-act="edit" data-kind="consultas" data-id="${c.id}" role="button" tabindex="0"><h3>${esc(c.specialty)}</h3><p>${esc(c.doctor)}</p>${c.place ? `<p class="place">${I.pin}<span>${esc(c.place)}</span></p>` : ""}</div>
       <button class="trash" data-act="del" data-kind="consultas" data-id="${c.id}" aria-label="Apagar consulta">${I.trash}</button>
     </article>`;
   return `<section class="screen">${headBand("Consultas", "Seus próximos agendamentos")}
   <div class="list pad">
+    <p class="list-hint">Toque na consulta para editar.</p>
     ${up.map((c) => card(c)).join("") || `<p class="empty-line">Nenhuma consulta marcada.</p>`}
     ${past.length ? `<p class="sec-title">Anteriores</p>${past.map((c) => card(c, true)).join("")}` : ""}
   </div>
@@ -793,10 +948,11 @@ V.lembretes = () => {
   const u = me();
   return `<section class="screen">${headBand("Lembretes", "Ative os lembretes que quiser")}
   <div class="list pad">
+    <p class="list-hint">Toque no lembrete para editar.</p>
     ${[...u.lembretes].sort(sortTime).map((r) => `
     <article class="card rem ${r.on ? "" : "off"}">
       <div class="alarm">${I.alarm}<b>${esc(r.time)}</b></div>
-      <div style="min-width:0"><h3>${esc(r.title)}</h3>${r.desc ? `<p>${esc(r.desc)}</p>` : ""}</div>
+      <div style="min-width:0" class="editable" data-act="edit" data-kind="lembretes" data-id="${r.id}" role="button" tabindex="0"><h3>${esc(r.title)}</h3>${r.desc ? `<p>${esc(r.desc)}</p>` : ""}</div>
       <div class="side">
         <button class="switch" role="switch" aria-checked="${r.on}" data-act="toggleRem" data-id="${r.id}" aria-label="Ativar ${esc(r.title)}"></button>
         <button class="trash" data-act="del" data-kind="lembretes" data-id="${r.id}" aria-label="Apagar lembrete">${I.trash}</button>
@@ -911,9 +1067,81 @@ V.perfil = () => {
       <div class="info-row"><span class="ic">${I.alert}</span><div style="min-width:0"><small>Alergias</small><b>${esc(p.allergies || "Nenhuma")}</b></div></div>
     </div>
     <button class="edit-btn" data-act="editProfile">${I.edit} Editar Perfil</button>
+    ${settingsCards(u)}
   </div>
 </section>${navBar("perfil")}`;
 };
+
+function settingsCards(u) {
+  const st = DB.settings;
+  const notifState = typeof Notification === "undefined" ? "indisponível" : Notification.permission === "granted" ? "ativadas" : Notification.permission === "denied" ? "bloqueadas" : "desativadas";
+  const count = (k) => (u[k] || []).length;
+  return `
+    <div class="card info-card" id="configuracoes">
+      <h2>Configurações</h2>
+      <div class="set-group"><b>Tamanho do texto</b><div class="opts">
+        ${[[1, "Normal"], [1.12, "Grande"], [1.25, "Maior"]].map(([v, l]) => `<button aria-pressed="${st.font === v}" data-act="font" data-v="${v}">${l}</button>`).join("")}</div></div>
+      <div class="set-group"><b>Aparência</b><div class="opts">
+        ${[["auto", "Automático"], ["light", "Claro"], ["dark", "Escuro"]].map(([v, l]) => `<button aria-pressed="${st.theme === v}" data-act="theme" data-v="${v}">${l}</button>`).join("")}</div></div>
+      <div class="set-group"><b>Avisos no aparelho</b><p class="set-note">Notificações ${notifState}. Os lembretes também aparecem dentro do app enquanto ele está aberto.</p>
+        ${notifState === "desativadas" ? `<button class="btn-ghost" data-act="notifPerm">Ativar notificações</button>` : ""}</div>
+      <div class="set-group"><b>Assistente de IA</b><p class="set-note">${modeText()}.</p>
+        <button class="btn-ghost" data-act="clearChat">Apagar conversa com a IA</button></div>
+    </div>
+    <div class="card info-card" id="meus-dados">
+      <h2>Meus dados</h2>
+      <p class="body">Tudo o que você anota fica guardado <strong>só neste aparelho</strong>, dentro deste navegador. Nada vai para a internet, a não ser as perguntas do chat quando a IA está conectada.</p>
+      <div class="data-counts">
+        <div><b>${count("meds")}</b><span>remédios</span></div><div><b>${count("consultas")}</b><span>consultas</span></div><div><b>${count("lembretes")}</b><span>lembretes</span></div>
+        <div><b>${Object.keys(u.checkins || {}).length}</b><span>check-ins</span></div><div><b>${count("notas")}</b><span>anotações</span></div><div><b>${count("chat")}</b><span>mensagens</span></div>
+      </div>
+      <p class="set-note">Se limpar os dados do navegador ou trocar de aparelho, eles somem. Para não perder nada, salve uma cópia e guarde o arquivo.</p>
+      <button class="btn-ghost" data-act="backup">Salvar cópia dos meus dados</button>
+      <button class="btn-ghost" data-act="restore">Restaurar uma cópia</button>
+      <input type="file" id="restoreFile" accept=".json,application/json" hidden>
+      ${u.demo ? `<button class="btn-ghost" data-act="resetDemo">Voltar aos dados de exemplo</button>` : ""}
+    </div>
+    <button class="btn-danger" data-act="logout" style="margin-bottom:24px">Sair da conta</button>`;
+}
+
+/* ---------- Cópia de segurança ---------- */
+async function exportBackup() {
+  const u = me();
+  const data = JSON.stringify({ app: "OldHealthy", version: 1, savedAt: new Date().toISOString(), user: u }, null, 2);
+  const filename = `oldhealthy-${norm(u.profile.name).split(" ")[0] || "dados"}-${ymd()}.json`;
+  if (window.claude && typeof window.claude.use === "function") {
+    try {
+      const dl = await window.claude.use("downloads");
+      if (dl) { await dl.save({ filename, data }); toast("Cópia salva"); return; }
+    } catch (e) { if (e && e.code === "declined") return; }
+  }
+  try {
+    const url = URL.createObjectURL(new Blob([data], { type: "application/json" }));
+    const a = document.createElement("a"); a.href = url; a.download = filename; document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 4000); toast("Cópia salva em Downloads");
+  } catch { toast("Não foi possível salvar a cópia neste aparelho"); }
+}
+let pendingRestore = null;
+function onRestoreFile(file) {
+  const r = new FileReader();
+  r.onload = () => {
+    try {
+      const j = JSON.parse(r.result);
+      if (!j || j.app !== "OldHealthy" || !j.user || !j.user.email || !j.user.profile) throw new Error("formato");
+      pendingRestore = j;
+      openSheet(`<h2>Restaurar esta cópia?</h2><p class="sub">Cópia de ${esc(j.user.profile.name)}, salva em ${brDate(String(j.savedAt).slice(0, 10))}. Os dados atuais dessa conta serão trocados por ela.</p>
+        <button class="btn-primary plain" data-act="doRestore">Restaurar</button><button class="btn-ghost" data-act="close">Cancelar</button>`);
+    } catch { toast("Esse arquivo não é uma cópia do OldHealthy"); }
+  };
+  r.readAsText(file);
+}
+function doRestore() {
+  const j = pendingRestore; if (!j) return;
+  const u = Object.assign({ meds: [], consultas: [], lembretes: [], checkins: {}, chat: [], notas: [] }, j.user);
+  DB.users[u.email] = u; DB.session = u.email; save(); pendingRestore = null;
+  closeSheet(); S.stack = []; go("perfil", { replace: true }); toast("Dados restaurados");
+}
+document.addEventListener("change", (e) => { if (e.target.id === "restoreFile" && e.target.files[0]) { onRestoreFile(e.target.files[0]); e.target.value = ""; } });
 
 V.notif = () => {
   const u = me(), p = pendingToday(u);
@@ -954,6 +1182,7 @@ async function detectAI() {
     try { AI.sample = await window.claude.use("sample"); } catch { AI.sample = null; }
     if (AI.sample) { AI.mode = "claude"; refreshChatMode(); return; }
   }
+  if (!/^https?:$/.test(location.protocol)) { AI.mode = "offline"; refreshChatMode(); return; }
   try {
     const r = await fetch("api/health", { cache: "no-store" });
     const j = r.ok ? await r.json() : null;
@@ -967,7 +1196,8 @@ function refreshChatMode() { const el = $("#aiMode"); if (el) { el.className = "
 function userContext(u) {
   const p = u.profile;
   const meds = u.meds.map((m) => `${m.name} ${m.dose} às ${m.time} (${m.freq})`).join("; ") || "nenhum cadastrado";
-  return `Nome: ${p.name}. Idade: ${p.age} anos. Tipo sanguíneo: ${p.blood || "não informado"}. Alergias: ${p.allergies || "nenhuma informada"}. Remédios cadastrados: ${meds}.`;
+  const notes = sortNotes(u.notas || []).slice(0, 8).map((n) => `${brDate(n.date)} ${n.time} ${NOTE_TYPES[n.type].label}: ${n.type === "nota" ? n.text : noteValue(n) + " " + NOTE_TYPES[n.type].unit + (n.moment ? " (" + n.moment + ")" : "")}`).join("; ") || "nenhuma";
+  return `Nome: ${p.name}. Idade: ${p.age} anos. Tipo sanguíneo: ${p.blood || "não informado"}. Alergias: ${p.allergies || "nenhuma informada"}. Remédios cadastrados: ${meds}. Últimas anotações: ${notes}.`;
 }
 const RULES = (u) => `Você é a assistente de saúde do aplicativo OldHealthy e conversa com uma pessoa idosa. Fale sempre em português do Brasil, com carinho e respeito, frases curtas e palavras simples. Responda em no máximo 120 palavras. Use listas curtas com "- " quando ajudar, e **negrito** só no essencial. Você não substitui o médico: para dose, troca, início ou suspensão de remédios, oriente a confirmar com o médico ou farmacêutico. Considere as alergias e os remédios da pessoa ao responder e avise se algo citado tiver relação com uma alergia cadastrada. Se a pessoa descrever sinal de emergência (dor ou aperto no peito, falta de ar forte, fraqueza ou formigamento de um lado do corpo, boca torta ou fala enrolada, desmaio, sangramento forte, queda com batida na cabeça, confusão de repente), diga logo no começo para ligar 192 (SAMU) ou apertar o botão SOS do aplicativo.\n\nDados da pessoa: ${userContext(u)}\n\nAs mensagens seguintes são a conversa com ela.`;
 
@@ -981,6 +1211,7 @@ function offlineAnswer(q, u) {
     [/peito|falta de ar|sem ar|desmai|avc|derrame|formig|boca torta|fala enrol|sangr|bati a cabeca|convuls/, () => `**${first}, isso pode ser uma emergência.**\n- Ligue agora para o **192 (SAMU)**.\n- Ou aperte o botão **SOS** na tela inicial.\n- Não fique sozinha: chame alguém por perto e não dirija.`],
     [/^(oi|ola|bom dia|boa tarde|boa noite|e ai|tudo bem)\b/, () => `Olá, ${first}! Que bom falar com você. Como posso ajudar hoje? Pode perguntar sobre seus **remédios**, **pressão**, **sono**, **alimentação** ou **exercícios**.`],
     [/obrigad|valeu/, () => `Por nada, ${first}! Estou aqui sempre que precisar. Cuide-se bem.`],
+    [/minha press|ultima press|como esta minha press|minhas medidas|anotac/, () => { const n = lastOf(u, "pressao"), g = lastOf(u, "glicemia"); if (!n && !g) return "Você ainda não anotou medidas. Na tela **Minhas anotações** você registra pressão, glicemia e peso."; const l = n && level(n); return `Suas últimas medidas:\n${n ? `- **Pressão:** ${noteValue(n)} mmHg (${dayName(n.date).toLowerCase()}), ${l[1].toLowerCase()}.\n` : ""}${g ? `- **Glicemia:** ${g.value} mg/dL ${g.moment.toLowerCase()}, ${level(g)[1].toLowerCase()}.\n` : ""}\n${l && l[0] === "high" ? "A pressão está acima do ideal. Descanse, meça de novo em 15 minutos e, se continuar alta, fale com o médico." : "Continue anotando e leve as medidas na próxima consulta."}`; }],
     [/press/, () => "Caminhar costuma fazer bem para quem tem pressão alta.\n- Comece devagar, 10 a 20 minutos.\n- Use roupa leve e beba água.\n- Pare se sentir tontura, dor no peito ou falta de ar.\n- Se a pressão estiver **muito alta** agora, não faça exercício e fale com o médico.\n\nDica: o lembrete **Medir a pressão** ajuda a acompanhar os valores."],
     [/sono|dormir|insonia|acordo de noite/, () => "Algumas dicas para dormir melhor:\n- Deite e levante sempre no mesmo horário.\n- Evite café, chá preto e refrigerante depois das 16h.\n- Diminua a luz e a TV meia hora antes de dormir.\n- Um chá de camomila morno pode ajudar.\n- Se cochilar de dia, que seja no máximo 30 minutos."],
     [/diabet|acucar|glicem|glicose/, () => "Para ajudar a controlar a diabetes:\n- Prefira arroz integral, feijão, verduras e legumes.\n- Evite doces, refrigerante e suco adoçado.\n- Coma pequenas porções, várias vezes ao dia.\n- Caminhar depois das refeições ajuda a baixar o açúcar.\n- Siga a dieta e os remédios que o médico passou."],
@@ -1088,7 +1319,7 @@ function openSheet(html, onMount) {
   ov.className = "overlay"; ov.id = "overlay";
   ov.innerHTML = `<div class="sheet pad" role="dialog" aria-modal="true"><div class="grab"></div>${html}</div>`;
   ov.addEventListener("click", (e) => { if (e.target === ov) closeSheet(); });
-  document.body.appendChild(ov);
+  layer().appendChild(ov);
   onMount && onMount(ov);
   const f = ov.querySelector("input, select, button"); f && f.focus({ preventScroll: true });
 }
@@ -1096,47 +1327,87 @@ function closeSheet() { const o = $("#overlay"); if (o) o.remove(); if (S.sosTim
 function toast(t) {
   document.querySelectorAll(".toast").forEach((x) => x.remove());
   const el = document.createElement("div"); el.className = "toast"; el.setAttribute("role", "status"); el.textContent = t;
-  document.body.appendChild(el); setTimeout(() => el.remove(), 2600);
+  layer().appendChild(el); setTimeout(() => el.remove(), 2600);
 }
 const fld = (id, label, attrs = "", val = "") => `<div class="field"><label for="${id}">${label}</label><input id="${id}" ${attrs} value="${esc(val)}"></div>`;
 
+const nowLocal = () => { const d = new Date(); return { date: ymd(d), time: nowHM() }; };
 const FORMS = {
-  meds: { title: "Novo medicamento", html: () => `
+  meds: { title: "Novo medicamento", edit: "Editar medicamento", html: () => `
     ${fld("fName", "Nome do remédio", "required")}
     <div class="row2">${fld("fTime", "Horário", 'type="time" required', "08:00")}
     <div class="field"><label for="fFreq">Frequência</label><select id="fFreq"><option>Diário</option><option>Se necessário</option></select></div></div>
     ${fld("fDose", "Dose", 'placeholder="Ex.: 50mg - 1 comprimido"')}
     ${fld("fNote", "Observação", 'placeholder="Ex.: Após o almoço"')}`,
-    read: () => ({ name: $("#fName").value.trim(), time: $("#fTime").value, freq: $("#fFreq").value, dose: $("#fDose").value.trim(), note: $("#fNote").value.trim(), takenOn: null }),
-    ok: (o) => o.name && o.time },
-  consultas: { title: "Nova consulta", html: () => `
+    fill: (o) => { $("#fName").value = o.name; $("#fTime").value = o.time; $("#fFreq").value = o.freq; $("#fDose").value = o.dose || ""; $("#fNote").value = o.note || ""; },
+    read: () => ({ name: $("#fName").value.trim(), time: $("#fTime").value, freq: $("#fFreq").value, dose: $("#fDose").value.trim(), note: $("#fNote").value.trim() }),
+    ok: (o) => o.name && o.time, init: { takenOn: null } },
+  consultas: { title: "Nova consulta", edit: "Editar consulta", html: () => `
     ${fld("fSpec", "Especialidade", 'required placeholder="Ex.: Cardiologista"')}
     ${fld("fDoc", "Médico(a)", 'placeholder="Ex.: Dra. Ana Souza"')}
     <div class="row2">${fld("fDate", "Data", 'type="date" required', ymd(addDays(new Date(), 1)))}${fld("fTime", "Horário", 'type="time" required', "10:00")}</div>
     ${fld("fPlace", "Local", 'placeholder="Ex.: Hospital São Lucas"')}`,
+    fill: (o) => { $("#fSpec").value = o.specialty; $("#fDoc").value = o.doctor || ""; $("#fDate").value = o.date; $("#fTime").value = o.time; $("#fPlace").value = o.place || ""; },
     read: () => ({ specialty: $("#fSpec").value.trim(), doctor: $("#fDoc").value.trim(), date: $("#fDate").value, time: $("#fTime").value, place: $("#fPlace").value.trim() }),
     ok: (o) => o.specialty && o.date && o.time },
-  lembretes: { title: "Novo lembrete", html: () => `
+  lembretes: { title: "Novo lembrete", edit: "Editar lembrete", html: () => `
     ${fld("fTitle", "Lembrete", 'required placeholder="Ex.: Beber água"')}
     ${fld("fTime", "Horário", 'type="time" required', "09:00")}
     ${fld("fDesc", "Detalhe", 'placeholder="Ex.: Beba um copo de água"')}`,
-    read: () => ({ title: $("#fTitle").value.trim(), time: $("#fTime").value, desc: $("#fDesc").value.trim(), on: true }),
-    ok: (o) => o.title && o.time },
+    fill: (o) => { $("#fTitle").value = o.title; $("#fTime").value = o.time; $("#fDesc").value = o.desc || ""; },
+    read: () => ({ title: $("#fTitle").value.trim(), time: $("#fTime").value, desc: $("#fDesc").value.trim() }),
+    ok: (o) => o.title && o.time, init: { on: true } },
+  pressao: { list: "notas", title: "Anotar pressão", edit: "Editar pressão", html: () => { const n = nowLocal(); return `
+    <p class="sub">Escreva os números que aparecem no aparelho. Ex.: 13 por 8 = 130 e 80.</p>
+    <div class="row2">${fld("fSys", "Máxima", 'type="number" inputmode="numeric" min="50" max="260" required placeholder="130"')}${fld("fDia", "Mínima", 'type="number" inputmode="numeric" min="30" max="160" required placeholder="80"')}</div>
+    ${fld("fPulse", "Batimentos (opcional)", 'type="number" inputmode="numeric" min="30" max="220" placeholder="72"')}
+    <div class="row2">${fld("fDate", "Dia", 'type="date" required', n.date)}${fld("fTime", "Hora", 'type="time" required', n.time)}</div>
+    ${fld("fText", "Observação (opcional)", 'placeholder="Ex.: Depois da caminhada"')}`; },
+    fill: (o) => { $("#fSys").value = o.sys; $("#fDia").value = o.dia; $("#fPulse").value = o.pulse || ""; $("#fDate").value = o.date; $("#fTime").value = o.time; $("#fText").value = o.text || ""; },
+    read: () => ({ type: "pressao", sys: Number($("#fSys").value), dia: Number($("#fDia").value), pulse: Number($("#fPulse").value) || null, date: $("#fDate").value, time: $("#fTime").value, text: $("#fText").value.trim() }),
+    ok: (o) => o.sys >= 50 && o.sys <= 260 && o.dia >= 30 && o.dia <= 160 && o.date && o.time },
+  glicemia: { list: "notas", title: "Anotar glicemia", edit: "Editar glicemia", html: () => { const n = nowLocal(); return `
+    ${fld("fVal", "Glicemia (mg/dL)", 'type="number" inputmode="numeric" min="20" max="600" required placeholder="98"')}
+    <div class="field"><label for="fMoment">Quando mediu</label><select id="fMoment"><option>Em jejum</option><option>Depois de comer</option></select></div>
+    <div class="row2">${fld("fDate", "Dia", 'type="date" required', n.date)}${fld("fTime", "Hora", 'type="time" required', n.time)}</div>
+    ${fld("fText", "Observação (opcional)")}`; },
+    fill: (o) => { $("#fVal").value = o.value; $("#fMoment").value = o.moment; $("#fDate").value = o.date; $("#fTime").value = o.time; $("#fText").value = o.text || ""; },
+    read: () => ({ type: "glicemia", value: Number($("#fVal").value), moment: $("#fMoment").value, date: $("#fDate").value, time: $("#fTime").value, text: $("#fText").value.trim() }),
+    ok: (o) => o.value >= 20 && o.value <= 600 && o.date && o.time },
+  peso: { list: "notas", title: "Anotar peso", edit: "Editar peso", html: () => { const n = nowLocal(); return `
+    ${fld("fVal", "Peso (kg)", 'type="number" inputmode="decimal" step="0.1" min="20" max="250" required placeholder="68.5"')}
+    <div class="row2">${fld("fDate", "Dia", 'type="date" required', n.date)}${fld("fTime", "Hora", 'type="time" required', n.time)}</div>`; },
+    fill: (o) => { $("#fVal").value = o.value; $("#fDate").value = o.date; $("#fTime").value = o.time; },
+    read: () => ({ type: "peso", value: Number(String($("#fVal").value).replace(",", ".")), date: $("#fDate").value, time: $("#fTime").value, text: "" }),
+    ok: (o) => o.value >= 20 && o.value <= 250 && o.date && o.time },
+  nota: { list: "notas", title: "Nova anotação", edit: "Editar anotação", html: () => { const n = nowLocal(); return `
+    <div class="field"><label for="fText">O que você quer anotar?</label><textarea id="fText" required placeholder="Ex.: Perguntar à médica sobre a dor no joelho"></textarea></div>
+    <div class="row2">${fld("fDate", "Dia", 'type="date" required', n.date)}${fld("fTime", "Hora", 'type="time" required', n.time)}</div>`; },
+    fill: (o) => { $("#fText").value = o.text; $("#fDate").value = o.date; $("#fTime").value = o.time; },
+    read: () => ({ type: "nota", text: $("#fText").value.trim(), date: $("#fDate").value, time: $("#fTime").value }),
+    ok: (o) => o.text && o.date && o.time },
 };
-function openAdd(kind) {
-  const F = FORMS[kind];
-  openSheet(`<h2>${F.title}</h2><form id="addForm" novalidate>${F.html()}<p class="err" id="addErr" role="alert"></p>
-    <button class="btn-primary plain" type="submit">Salvar</button><button class="btn-ghost" type="button" data-act="close">Cancelar</button></form>`, (ov) => {
+function openForm(kind, item) {
+  const F = FORMS[kind], list = F.list || kind;
+  if (!F) return;
+  openSheet(`<h2>${item ? F.edit : F.title}</h2><form id="addForm" novalidate>${F.html()}<p class="err" id="addErr" role="alert"></p>
+    <button class="btn-primary plain" type="submit">Salvar</button>
+    ${item ? `<button class="btn-ghost" type="button" data-act="del" data-kind="${list}" data-id="${item.id}" style="color:var(--sos)">Apagar</button>` : ""}
+    <button class="btn-ghost" type="button" data-act="close">Cancelar</button></form>`, (ov) => {
+    if (item && F.fill) F.fill(item);
     ov.querySelector("#addForm").addEventListener("submit", (e) => {
       e.preventDefault(); const o = F.read();
-      if (!F.ok(o)) { $("#addErr").textContent = "Preencha os campos obrigatórios."; return; }
-      o.id = uid(); me()[kind].push(o); save(); closeSheet(); render(); toast("Salvo!");
+      if (!F.ok(o)) { $("#addErr").textContent = "Confira os campos: faltou algo ou um número está fora do normal."; return; }
+      const u = me(); u[list] = u[list] || [];
+      if (item) Object.assign(item, o); else u[list].push(Object.assign({ id: uid() }, F.init || {}, o));
+      save(); closeSheet(); const y = getScroll(); render(); setScroll(y); toast(item ? "Alterado!" : "Salvo!");
     });
   });
 }
+const openAdd = (kind) => openForm(kind);
 function confirmDelete(kind, id) {
   const it = me()[kind].find((x) => x.id === id); if (!it) return;
-  const name = it.name || it.specialty || it.title;
+  const name = it.name || it.specialty || it.title || NOTE_TYPES[it.type]?.label || "item";
   openSheet(`<h2>Apagar “${esc(name)}”?</h2><p class="sub">Isso não pode ser desfeito.</p>
     <button class="btn-danger" data-act="doDel" data-kind="${kind}" data-id="${id}">Apagar</button><button class="btn-ghost" data-act="close">Cancelar</button>`);
 }
@@ -1181,23 +1452,6 @@ function openGoogle() {
     <button class="google-acc" data-act="googleOther"><span class="av" style="background:var(--teal-2)">+</span><span><b>Usar outra conta</b><br><small style="color:var(--muted)">Criar cadastro com seu email</small></span></button>
     <p class="set-note">Demonstração: o login real com Google precisa de um ID de cliente do Google configurado na publicação.</p>`);
 }
-function openSettings() {
-  const st = DB.settings, u = me();
-  const notifState = typeof Notification === "undefined" ? "indisponível" : Notification.permission === "granted" ? "ativadas" : Notification.permission === "denied" ? "bloqueadas" : "desativadas";
-  openSheet(`<h2>Configurações</h2>
-    <div class="set-group"><b>Tamanho do texto</b><div class="opts">
-      ${[[1, "Normal"], [1.12, "Grande"], [1.25, "Maior"]].map(([v, l]) => `<button aria-pressed="${st.font === v}" data-act="font" data-v="${v}" style="font-size:${v}rem">A ${l}</button>`).join("")}</div></div>
-    <div class="set-group"><b>Aparência</b><div class="opts">
-      ${[["auto", "Automático"], ["light", "Claro"], ["dark", "Escuro"]].map(([v, l]) => `<button aria-pressed="${st.theme === v}" data-act="theme" data-v="${v}">${l}</button>`).join("")}</div></div>
-    <div class="set-group"><b>Avisos no aparelho</b><p class="set-note">Notificações estão ${notifState}. Os lembretes também aparecem dentro do app com o app aberto.</p>
-      ${notifState === "desativadas" ? `<button class="btn-ghost" data-act="notifPerm">Ativar notificações</button>` : ""}</div>
-    <div class="set-group"><b>Assistente de IA</b><p class="set-note">${modeText()}.</p></div>
-    ${u ? `<div class="set-group"><b>Conta</b>
-      <button class="btn-ghost" data-act="clearChat">Apagar conversa com a IA</button>
-      ${u.demo ? `<button class="btn-ghost" data-act="resetDemo">Restaurar dados de exemplo</button>` : ""}
-      <button class="btn-danger" data-act="logout">Sair da conta</button></div>` : ""}
-    <button class="btn-ghost" data-act="close" style="margin-top:22px">Fechar</button>`);
-}
 function applySettings() {
   const st = DB.settings, root = document.documentElement;
   root.style.fontSize = st.font * 100 + "%";
@@ -1206,26 +1460,28 @@ function applySettings() {
 
 /* ---------- Lembretes em tempo real ---------- */
 const fired = new Set();
-function showAlert(title, body) {
+function showAlert(title, body, withNote) {
   document.querySelectorAll(".alert-banner").forEach((x) => x.remove());
   const el = document.createElement("div"); el.className = "alert-banner"; el.setAttribute("role", "alert");
-  el.innerHTML = `<span class="circ-ico">${I.alarm}</span><div class="grow"><h4>${esc(title)}</h4><p>${esc(body)}</p></div><button class="pill-btn" style="padding:10px 16px">Ok</button>`;
-  el.querySelector("button").onclick = () => el.remove();
-  document.body.appendChild(el);
+  el.innerHTML = `<span class="circ-ico">${I.alarm}</span><div class="grow"><h4>${esc(title)}</h4><p>${esc(body)}</p></div>${withNote ? `<button class="pill-btn" data-act="alertNote" style="padding:10px 14px">Anotar</button>` : ""}<button class="pill-btn ok-btn" style="padding:10px 16px">Ok</button>`;
+  el.querySelector(".ok-btn").onclick = () => el.remove();
+  layer().appendChild(el);
   if (navigator.vibrate) navigator.vibrate([200, 100, 200]);
   try { if (typeof Notification !== "undefined" && Notification.permission === "granted") new Notification(title, { body }); } catch { /* ignore */ }
 }
 function tick() {
   const u = me(); if (!u) return;
   const hm = nowHM(), key = ymd() + hm;
-  for (const r of u.lembretes) if (r.on && r.time === hm && !fired.has(key + r.id)) { fired.add(key + r.id); showAlert(r.title, r.desc || "Hora do seu lembrete"); }
+  for (const r of u.lembretes) if (r.on && r.time === hm && !fired.has(key + r.id)) { fired.add(key + r.id); showAlert(r.title, r.desc || "Hora do seu lembrete", /press/i.test(norm(r.title))); }
   for (const m of u.meds) if (m.freq !== "Se necessário" && !isTaken(m) && m.time === hm && !fired.has(key + m.id)) { fired.add(key + m.id); showAlert(`Hora do remédio: ${m.name}`, m.dose || "Tome conforme orientação"); }
 }
 
 /* ---------- Render e eventos ---------- */
 function render() {
   if (!me() && !["welcome", "auth"].includes(S.view)) S.view = "welcome";
+  if (me() && !me().notas) me().notas = [];
   $("#app").innerHTML = (V[S.view] || V.welcome)();
+  statusBar();
   if (S.view === "chat") { const b = $("#msgs"); b.scrollTop = b.scrollHeight; }
 }
 
@@ -1270,11 +1526,18 @@ document.addEventListener("click", async (e) => {
     }
     case "sos": openSOS(); break;
     case "editProfile": openProfileEdit(); break;
-    case "font": DB.settings.font = Number(a.dataset.v); save(); applySettings(); openSettings(); break;
-    case "theme": DB.settings.theme = a.dataset.v; save(); applySettings(); openSettings(); break;
-    case "notifPerm": try { await Notification.requestPermission(); } catch { /* sem suporte */ } openSettings(); break;
-    case "clearChat": u.chat = []; save(); closeSheet(); render(); toast("Conversa apagada"); break;
-    case "resetDemo": DB.users["maria@oldhealthy.app"] = await demoUser(); save(); closeSheet(); render(); toast("Dados de exemplo restaurados"); break;
+    case "font": { const y = getScroll(); DB.settings.font = Number(a.dataset.v); save(); applySettings(); render(); setScroll(y); break; }
+    case "theme": { const y = getScroll(); DB.settings.theme = a.dataset.v; save(); applySettings(); render(); setScroll(y); break; }
+    case "notifPerm": { try { await Notification.requestPermission(); } catch { /* sem suporte */ } const y = getScroll(); render(); setScroll(y); break; }
+    case "backup": exportBackup(); break;
+    case "restore": $("#restoreFile").click(); break;
+    case "doRestore": doRestore(); break;
+    case "edit": openForm(a.dataset.kind, me()[a.dataset.list || a.dataset.kind].find((x) => x.id === a.dataset.id)); break;
+    case "addNote": openForm(a.dataset.kind); break;
+    case "alertNote": a.closest(".alert-banner").remove(); go("notas"); openForm("pressao"); break;
+    case "clearChat": u.chat = []; save(); toast("Conversa apagada"); break;
+    case "resetDemo": openSheet(`<h2>Restaurar dados de exemplo?</h2><p class="sub">Tudo o que foi anotado nesta conta será trocado pelos dados de exemplo da Maria.</p><button class="btn-danger" data-act="doResetDemo">Restaurar</button><button class="btn-ghost" data-act="close">Cancelar</button>`); break;
+    case "doResetDemo": DB.users["maria@oldhealthy.app"] = await demoUser(); save(); closeSheet(); render(); toast("Dados de exemplo restaurados"); break;
     case "logout": DB.session = null; save(); closeSheet(); S.stack = []; S.view = "welcome"; render(); break;
   }
 });
@@ -1295,26 +1558,47 @@ document.addEventListener("submit", async (e) => {
     const name = $("#suName").value.trim(), age = Number($("#suAge").value), email = norm($("#suEmail").value), pass = $("#suPass").value;
     const err = !name ? "Digite seu nome." : !(age > 0 && age < 121) ? "Digite uma idade válida." : !/^\S+@\S+\.\S+$/.test(email) ? "Digite um email válido." : pass.length < 6 ? "A senha precisa ter pelo menos 6 caracteres." : DB.users[email] ? "Este email já tem cadastro. Use a aba Login." : "";
     if (err) { $("#authErr").textContent = err; return; }
-    DB.users[email] = { email, pass: await hashPass(pass), profile: { name, age, contactName: "", contactPhone: "", blood: "", allergies: "" }, meds: [], consultas: [], lembretes: [], checkins: {}, chat: [] };
+    DB.users[email] = { email, pass: await hashPass(pass), profile: { name, age, contactName: "", contactPhone: "", blood: "", allergies: "" }, meds: [], consultas: [], lembretes: [], checkins: {}, chat: [], notas: [] };
     DB.session = email; save(); S.stack = []; S.showPass = false; go("home", { replace: true }); toast(`Bem-vindo(a), ${name.split(" ")[0]}!`);
   }
 });
-document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeSheet(); });
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape") closeSheet();
+  if ((e.key === "Enter" || e.key === " ") && e.target.matches('[role="button"][data-act]')) { e.preventDefault(); e.target.click(); }
+});
 
 async function ensureDemo() { if (!DB.users["maria@oldhealthy.app"]) { DB.users["maria@oldhealthy.app"] = await demoUser(); save(); } }
+
+/* ---------- Moldura de celular no computador ---------- */
+const LIGHT_BAR = ["auth", "meds", "consultas", "lembretes", "bemestar", "checkin", "notif", "perfil", "notas"];
+function fitPhone() {
+  const root = document.documentElement;
+  const on = window.innerWidth >= PHONE_MIN_W;
+  root.classList.toggle("phone-mode", on);
+  if (on) root.style.setProperty("--ps", Math.min(1, (window.innerHeight - 32) / 876, (window.innerWidth - 32) / 422).toFixed(3));
+}
+function statusBar() {
+  const sb = $("#statusbar"); if (!sb) return;
+  $("#sbTime").textContent = nowHM();
+  sb.classList.toggle("light", LIGHT_BAR.includes(S.view));
+  sb.classList.toggle("chat", S.view === "chat");
+  const sc = scroller(); sb.classList.toggle("solid", !!sc && sc.scrollTop > 8);
+}
+$("#scroller").addEventListener("scroll", () => { const sb = $("#statusbar"); const sc = scroller(); if (sb && sc) sb.classList.toggle("solid", sc.scrollTop > 8); }, { passive: true });
+window.addEventListener("resize", fitPhone);
+fitPhone();
 
 /* ---------- Início ---------- */
 load();
 applySettings();
-$("#gearBtn").innerHTML = I.gear;
-$("#gearBtn").addEventListener("click", openSettings);
 if (me()) S.view = "home";
 render();
 AI.ready = detectAI();
 if ("serviceWorker" in navigator && /^https?:$/.test(location.protocol) && window.top === window.self && !window.claude) {
   navigator.serviceWorker.register("sw.js").catch(() => {});
 }
-setInterval(() => { tick(); if (S.view === "home" && !$("#overlay")) { /* mantém contadores atualizados */ const y = window.scrollY; render(); window.scrollTo(0, y); } }, 30000);
+setInterval(statusBar, 15000);
+setInterval(() => { tick(); if (S.view === "home" && !$("#overlay")) { /* mantém contadores atualizados */ const y = getScroll(); render(); setScroll(y); } }, 30000);
 })();
 </script>
 

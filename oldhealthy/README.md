@@ -14,9 +14,13 @@ App de saúde para pessoas idosas, feito para celular (funciona no navegador e p
 - **Agenda**: o dia hora a hora e as próximas consultas.
 - **Dúvidas (chat de IA)**: assistente em português, com cuidado para idosos e alerta de emergência.
 - **Perfil**: contato de emergência com "Ligar agora", tipo sanguíneo e alergias, editar perfil.
-- **Configurações** (engrenagem azul): tamanho do texto, tema claro/escuro, notificações, apagar conversa e sair.
+- **Anotações**: pressão (com aviso de normal, atenção, alta ou baixa), glicemia, peso e recados, com histórico por dia.
+- **Editar**: toque em um remédio, consulta, lembrete ou anotação para alterar.
+- **Perfil > Configurações**: tamanho do texto, tema claro ou escuro, notificações e apagar a conversa.
+- **Perfil > Meus dados**: mostra onde os dados ficam, salva uma cópia (arquivo .json) e restaura uma cópia.
+- **No computador** o app aparece dentro de uma moldura de celular. No celular, ocupa a tela inteira.
 
-Os dados ficam salvos no próprio aparelho (localStorage).
+Os dados ficam salvos só no próprio aparelho, no navegador (localStorage). Nada vai para a internet, a não ser as perguntas do chat quando a IA está conectada.
 
 ## Apresentar em qualquer computador
 
