@@ -1,0 +1,11 @@
+{
+  "name": "OldHealthy",
+  "short_name": "OldHealthy",
+  "description": "Tecnologia que cuida: remédios, consultas, lembretes, bem-estar e assistente de IA.",
+  "lang": "pt-BR",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#EAF2F8",
+  "theme_color": "#0E7C72",
+  "icons": [{ "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }]
+}

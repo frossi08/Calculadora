@@ -1,0 +1,15 @@
+{
+  "name": "oldhealthy",
+  "version": "1.0.0",
+  "private": true,
+  "description": "OldHealthy - app de cuidado com a saúde para pessoas idosas, com assistente de IA.",
+  "type": "module",
+  "scripts": {
+    "build": "python3 build.py",
+    "start": "node server.js"
+  },
+  "engines": { "node": ">=18" },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^1.6.0"
+  }
+}

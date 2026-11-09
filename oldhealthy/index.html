@@ -1,0 +1,1278 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<link rel="manifest" href="manifest.webmanifest">
+</head>
+<body>
+<title>OldHealthy</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="theme-color" content="#0E7C72">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Figtree:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: one phone-width column (max 480px), screens swapped by JS; inner screens get a teal header band, main tabs get a bottom nav. */
+:root {
+  --bg: #EAF2F8;
+  --bg-top: #DAE8F4;
+  --surface: #FFFFFF;
+  --surface-2: #F4F8FA;
+  --ink: #18227A;
+  --text: #1E2A33;
+  --muted: #5A6A76;
+  --line: #D3E3E7;
+  --teal: #0E7C72;
+  --teal-strong: #0E7C72;
+  --teal-2: #4DB6AC;
+  --teal-soft: #E2F1EF;
+  --teal-tint: #E6F3F1;
+  --sos: #D32F2F;
+  --sos-soft: #FBE3E3;
+  --gear: #1E7FE0;
+  --ok: #2E7D32;
+  --ok-soft: #E3F0E4;
+  --lilac: #A98BDF;
+  --lilac-soft: #F2EDFB;
+  --warn: #EF7D16;
+  --sun-soft: #FFF5D9;
+  --sun: #F2B01E;
+  --shadow: 0 6px 22px rgba(24, 50, 90, .08);
+  --on-teal: #FFFFFF;
+  --font-display: "Plus Jakarta Sans", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --font-body: "Figtree", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --r-lg: 28px;
+  --r-md: 20px;
+  --r-sm: 14px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0C181E; --bg-top: #102530; --surface: #14232A; --surface-2: #192C34;
+    --ink: #CBD8FF; --text: #E5EDF1; --muted: #9DB0BA; --line: #27414B;
+    --teal: #5CC8BB; --teal-strong: #0F6E65; --teal-2: #3FA79B; --teal-soft: #1A3B3C; --teal-tint: #173337;
+    --sos: #E5484D; --sos-soft: #3A1E22; --gear: #3B8FEA; --ok: #5DBB63; --ok-soft: #1D3324;
+    --lilac: #B9A0EC; --lilac-soft: #2A2440; --warn: #F59A45; --sun-soft: #3A321A; --sun: #F5C24A;
+    --shadow: 0 6px 22px rgba(0,0,0,.35); color-scheme: dark;
+  }
+}
+:root[data-theme="dark"], :root[data-oh-theme="dark"] {
+  --bg: #0C181E; --bg-top: #102530; --surface: #14232A; --surface-2: #192C34;
+  --ink: #CBD8FF; --text: #E5EDF1; --muted: #9DB0BA; --line: #27414B;
+  --teal: #5CC8BB; --teal-strong: #0F6E65; --teal-2: #3FA79B; --teal-soft: #1A3B3C; --teal-tint: #173337;
+  --sos: #E5484D; --sos-soft: #3A1E22; --gear: #3B8FEA; --ok: #5DBB63; --ok-soft: #1D3324;
+  --lilac: #B9A0EC; --lilac-soft: #2A2440; --warn: #F59A45; --sun-soft: #3A321A; --sun: #F5C24A;
+  --shadow: 0 6px 22px rgba(0,0,0,.35); color-scheme: dark;
+}
+:root[data-oh-theme="light"] {
+  --bg: #EAF2F8; --bg-top: #DAE8F4; --surface: #FFFFFF; --surface-2: #F4F8FA;
+  --ink: #18227A; --text: #1E2A33; --muted: #5A6A76; --line: #D3E3E7;
+  --teal: #0E7C72; --teal-strong: #0E7C72; --teal-2: #4DB6AC; --teal-soft: #E2F1EF; --teal-tint: #E6F3F1;
+  --sos: #D32F2F; --sos-soft: #FBE3E3; --gear: #1E7FE0; --ok: #2E7D32; --ok-soft: #E3F0E4;
+  --lilac: #A98BDF; --lilac-soft: #F2EDFB; --warn: #EF7D16; --sun-soft: #FFF5D9; --sun: #F2B01E;
+  --shadow: 0 6px 22px rgba(24, 50, 90, .08); color-scheme: light;
+}
+
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+  margin: 0; background: var(--bg); color: var(--text);
+  font-family: var(--font-body); font-size: 1rem; line-height: 1.45;
+  -webkit-font-smoothing: antialiased; -webkit-tap-highlight-color: transparent;
+}
+button, input, select, textarea { font: inherit; color: inherit; }
+button { cursor: pointer; border: 0; background: none; padding: 0; }
+:focus-visible { outline: 3px solid var(--gear); outline-offset: 2px; }
+h1, h2, h3 { font-family: var(--font-display); color: var(--ink); margin: 0; text-wrap: balance; }
+p { margin: 0; }
+svg { display: block; }
+.ico { width: 1.5rem; height: 1.5rem; flex: none; }
+
+#shell {
+  max-width: 480px; margin: 0 auto; min-height: 100%;
+  background: linear-gradient(180deg, var(--bg-top) 0%, var(--bg) 40%, var(--bg) 100%);
+  position: relative; overflow-x: hidden;
+}
+.screen { min-height: 100vh; display: flex; flex-direction: column; }
+.pad { padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.with-nav { padding-bottom: calc(96px + env(safe-area-inset-bottom, 0px)); }
+
+/* Floating settings gear (present on every screen, like the original) */
+.gear {
+  position: fixed; z-index: 40;
+  top: calc(14px + env(safe-area-inset-top, 0px));
+  right: max(16px, calc((100vw - 480px) / 2 + 16px), env(safe-area-inset-right, 0px));
+  width: 58px; height: 58px; border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #4FA3F5, var(--gear) 60%);
+  color: #fff; display: grid; place-items: center;
+  box-shadow: 0 6px 18px rgba(30,127,224,.45), 0 0 0 4px rgba(30,127,224,.18);
+}
+.gear svg { width: 30px; height: 30px; }
+
+/* Welcome */
+.logo-tile {
+  width: 74px; height: 74px; border-radius: 22px; background: var(--surface);
+  display: grid; place-items: center; color: var(--teal-2); box-shadow: var(--shadow);
+}
+.logo-tile svg { width: 36px; height: 36px; }
+.welcome-top { padding-top: 92px; }
+.hero { display: grid; grid-template-columns: minmax(0, 1fr) 40%; align-items: center; gap: 8px; margin-top: 40px; }
+.hero h1 { font-size: 2.35rem; line-height: 1.12; font-weight: 800; letter-spacing: -.01em; }
+.hero p { margin-top: 18px; font-size: 1.08rem; color: var(--text); max-width: 30ch; }
+.hero-img { width: calc(100% + 16px); max-width: none; margin-right: -16px; align-self: center; border-radius: 6px 0 0 6px; aspect-ratio: 434 / 615; object-fit: cover; }
+.cta {
+  margin-top: 30px; display: inline-flex; align-items: center; gap: 16px;
+  padding: 10px 10px 10px 30px; border-radius: 999px; color: #fff;
+  background: linear-gradient(90deg, #4DB6AC, #0E7C72);
+  font-family: var(--font-display); font-weight: 800; font-size: 1.3rem;
+  box-shadow: 0 10px 22px rgba(14,124,114,.28);
+}
+.cta .round { width: 52px; height: 52px; border-radius: 50%; background: #fff; color: #0E7C72; display: grid; place-items: center; }
+.daily-card {
+  margin: 44px 0 32px; padding: 26px 22px 30px; border-radius: 34px;
+  background: color-mix(in srgb, var(--surface) 82%, transparent); box-shadow: var(--shadow);
+}
+.daily-card .row { display: flex; justify-content: space-between; align-items: center; }
+.daily-card h2 { font-size: 1.45rem; font-weight: 700; }
+.plus-btn { color: var(--teal-2); width: 44px; height: 44px; display: grid; place-items: center; }
+.plus-btn svg { width: 34px; height: 34px; }
+.tiles3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 22px; }
+.tile3 { display: flex; flex-direction: column; align-items: center; gap: 10px; font-size: 1.1rem; color: var(--text); }
+.tile3 .box { width: 100%; max-width: 104px; aspect-ratio: 1; border-radius: 24px; background: var(--surface); box-shadow: var(--shadow); display: grid; place-items: center; color: var(--teal); }
+.tile3 .box svg { width: 40px; height: 40px; }
+
+/* Auth */
+.auth-bg {
+  height: 300px; position: relative; overflow: hidden;
+  background:
+    radial-gradient(circle at 18% 30%, rgba(255,255,255,.55) 0 3px, transparent 4px),
+    radial-gradient(circle at 70% 48%, rgba(255,255,255,.7) 0 4px, transparent 6px),
+    radial-gradient(circle at 46% 62%, rgba(255,255,255,.5) 0 5px, transparent 7px),
+    radial-gradient(circle at 84% 22%, rgba(190,255,245,.6) 0 6px, transparent 9px),
+    radial-gradient(circle at 30% 80%, rgba(255,255,255,.45) 0 3px, transparent 5px),
+    radial-gradient(circle at 60% 15%, rgba(140,230,220,.55) 0 10px, transparent 16px),
+    radial-gradient(circle at 10% 60%, rgba(140,230,220,.35) 0 14px, transparent 22px),
+    radial-gradient(ellipse at 50% 50%, #3E9AA0 0%, #2B7A86 45%, #1E5966 100%);
+}
+.auth-bg::after {
+  content: ""; position: absolute; inset: -20% -10%;
+  background: linear-gradient(160deg, transparent 35%, rgba(200,255,250,.35) 48%, rgba(255,255,255,.15) 52%, transparent 62%);
+}
+.auth-tabs { position: absolute; z-index: 2; left: 0; right: 0; top: 110px; display: flex; justify-content: space-around; padding-right: 60px; }
+.auth-tabs button { font-family: var(--font-display); font-weight: 800; letter-spacing: .06em; font-size: 1.45rem; color: rgba(255,255,255,.62); }
+.auth-tabs button[aria-selected="true"] { color: #fff; }
+.auth-sheet { background: var(--surface); border-radius: 44px 44px 0 0; margin-top: -60px; position: relative; z-index: 3; padding-top: 34px; padding-bottom: 40px; flex: 1; }
+.auth-sheet h1 { color: var(--teal); text-align: center; font-size: 1.85rem; font-weight: 800; margin-bottom: 26px; }
+.field { position: relative; margin-top: 22px; }
+.field label { position: absolute; left: 24px; top: -11px; padding: 0 8px; background: var(--surface); color: var(--teal); font-size: .95rem; }
+.field input, .field select, .field textarea {
+  width: 100%; border: 2px solid color-mix(in srgb, var(--teal-2) 45%, transparent); border-radius: 999px;
+  padding: 18px 24px; font-size: 1.15rem; background: var(--surface); color: var(--text);
+}
+.field textarea { border-radius: 22px; resize: vertical; min-height: 84px; }
+.field input:focus, .field select:focus, .field textarea:focus { outline: none; border-color: var(--teal); }
+.field .eye { position: absolute; right: 18px; top: 50%; transform: translateY(-50%); color: var(--muted); padding: 6px; }
+.hint { text-align: right; font-style: italic; color: var(--muted); font-size: .92rem; margin-top: 16px; }
+.btn-primary {
+  width: 100%; margin-top: 26px; padding: 18px; border-radius: 999px; background: var(--teal-2); color: #fff;
+  font-family: var(--font-display); font-weight: 800; font-size: 1.3rem; letter-spacing: .18em;
+  box-shadow: 0 12px 24px rgba(77,182,172,.3);
+}
+.btn-primary:disabled { opacity: .5; box-shadow: none; cursor: not-allowed; }
+.btn-primary.plain { letter-spacing: .02em; }
+.divider { display: flex; align-items: center; gap: 16px; color: var(--muted); margin: 28px 0 22px; font-size: 1.05rem; }
+.divider::before, .divider::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+.btn-google { width: 100%; padding: 16px; border-radius: 999px; border: 2px solid color-mix(in srgb, var(--teal-2) 40%, transparent); display: flex; justify-content: center; align-items: center; gap: 14px; font-family: var(--font-display); font-weight: 800; font-size: 1.15rem; color: var(--ink); }
+.err { color: var(--sos); margin-top: 14px; font-weight: 600; min-height: 1.4em; }
+
+/* Home */
+.brand { display: flex; align-items: center; gap: 16px; padding-top: 100px; }
+.brand .logo-tile { width: 70px; height: 70px; }
+.brand h2 { font-size: 1.6rem; font-weight: 800; }
+.brand small { color: var(--muted); font-size: 1rem; }
+.bell { margin-left: auto; position: relative; width: 70px; height: 70px; border-radius: 22px; background: var(--surface); box-shadow: var(--shadow); display: grid; place-items: center; color: var(--teal-2); }
+.bell svg { width: 32px; height: 32px; }
+.badge { position: absolute; top: -8px; right: -6px; min-width: 28px; height: 28px; padding: 0 7px; border-radius: 999px; background: var(--sos); color: #fff; font-weight: 700; font-size: .9rem; display: grid; place-items: center; border: 3px solid var(--surface); font-variant-numeric: tabular-nums; }
+.greet { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 12px; align-items: center; margin-top: 36px; }
+.greet h1 { font-size: 2.4rem; font-weight: 800; }
+.greet p { font-size: 1.12rem; margin-top: 8px; }
+.sos-wrap { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+.sos {
+  width: 152px; height: 152px; border-radius: 50%; background: var(--sos); color: #fff;
+  font-family: var(--font-display); font-weight: 800; font-size: 2.6rem; letter-spacing: .04em;
+  box-shadow: 0 0 0 7px var(--sos-soft), 0 0 0 11px var(--sos), 0 14px 30px rgba(211,47,47,.35);
+}
+.sos-label { color: var(--sos); font-family: var(--font-display); font-weight: 800; letter-spacing: .14em; font-size: .95rem; }
+.card { background: var(--surface); border-radius: var(--r-lg); box-shadow: var(--shadow); }
+.checkin-card { margin-top: 30px; display: flex; flex-wrap: wrap; align-items: center; gap: 14px 16px; padding: 18px; border: 2px solid color-mix(in srgb, var(--teal-2) 35%, transparent); background: color-mix(in srgb, var(--surface) 70%, transparent); }
+.sun-box { width: 74px; height: 74px; border-radius: 20px; background: var(--sun-soft); display: grid; place-items: center; color: var(--sun); flex: none; }
+.sun-box svg { width: 42px; height: 42px; }
+.checkin-card h3 { font-size: 1.3rem; font-weight: 800; line-height: 1.15; }
+.checkin-card p { color: var(--muted); font-size: 1.02rem; }
+.checkin-card .grow { flex: 1; min-width: 150px; }
+.checkin-card .pill-btn { margin-left: auto; }
+.pill-btn { background: var(--teal-2); color: #fff; border-radius: 999px; padding: 14px 20px; font-family: var(--font-display); font-weight: 800; font-size: 1.05rem; display: inline-flex; align-items: center; gap: 10px; white-space: nowrap; }
+.today-card { margin-top: 22px; padding: 18px 18px 8px; }
+.today-head { display: flex; align-items: center; gap: 16px; width: 100%; text-align: left; }
+.sq-ico { width: 56px; height: 56px; border-radius: 16px; background: var(--teal-2); color: #fff; display: grid; place-items: center; flex: none; }
+.today-head h3 { font-size: 1.4rem; font-weight: 800; flex: 1; }
+.today-head .chev { color: var(--teal); }
+.today-item { display: flex; align-items: center; gap: 16px; padding: 18px 6px; }
+.today-item + .today-item { border-top: 1px solid var(--line); }
+.circ-ico { width: 58px; height: 58px; border-radius: 50%; background: var(--teal-2); color: #fff; display: grid; place-items: center; flex: none; }
+.circ-ico.lilac { background: var(--lilac); }
+.today-item .grow { flex: 1; min-width: 0; }
+.today-item h4 { margin: 0; font-family: var(--font-display); color: var(--ink); font-size: 1.2rem; font-weight: 800; }
+.today-item p { font-size: 1.08rem; color: var(--text); }
+.done-dot { width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; border: 2px solid var(--teal-2); color: var(--teal-2); flex: none; }
+.done-dot.on { background: var(--teal-2); color: #fff; }
+.empty-line { color: var(--muted); padding: 14px 6px 18px; }
+.grid4 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 22px; }
+.feat { padding: 20px 12px 22px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 4px; }
+.feat .big { width: 108px; height: 108px; border-radius: 26px; display: grid; place-items: center; margin-bottom: 10px; background: var(--teal-tint); color: var(--teal-2); }
+.feat .big svg { width: 50px; height: 50px; }
+.feat .big.lilac { background: var(--lilac-soft); color: var(--lilac); }
+.feat .big.teal { color: var(--teal); }
+.feat h3 { font-size: 1.22rem; font-weight: 800; }
+.feat p { color: var(--muted); font-size: .98rem; }
+.help-card { margin-top: 22px; display: flex; align-items: center; gap: 16px; padding: 18px; width: 100%; text-align: left; border: 2px solid color-mix(in srgb, var(--teal-2) 35%, transparent); background: color-mix(in srgb, var(--surface) 70%, transparent); }
+.help-card .bubble { width: 70px; height: 70px; border-radius: 50%; background: var(--teal-tint); color: var(--teal-2); display: grid; place-items: center; flex: none; }
+.help-card .bubble svg { width: 38px; height: 38px; }
+.help-card h3 { font-size: 1.28rem; font-weight: 800; }
+.help-card p { color: var(--text); }
+.help-card .grow { flex: 1; min-width: 0; }
+.promo { display: grid; grid-template-columns: minmax(0, 1fr) 42%; gap: 14px; align-items: center; margin-top: 30px; }
+.promo h2 { font-size: 1.75rem; font-weight: 800; line-height: 1.15; }
+.promo p { color: var(--muted); margin-top: 8px; }
+.promo img { width: 100%; border-radius: 18px; aspect-ratio: 1; object-fit: cover; object-position: top; }
+
+/* Bottom nav */
+.nav {
+  position: fixed; z-index: 30; bottom: 0; left: 50%; transform: translateX(-50%);
+  width: 100%; max-width: 480px; background: var(--surface); border-top: 1px solid var(--line);
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  padding: 10px max(8px, env(safe-area-inset-right, 0px)) calc(10px + env(safe-area-inset-bottom, 0px)) max(8px, env(safe-area-inset-left, 0px));
+}
+.nav button { display: flex; flex-direction: column; align-items: center; gap: 4px; color: var(--muted); font-size: 1.02rem; font-weight: 500; padding: 4px 0; }
+.nav button svg { width: 34px; height: 34px; }
+.nav button[aria-current="page"] { color: var(--teal); font-weight: 700; }
+
+/* Inner screen header */
+.head-band {
+  background: var(--teal-strong); color: #fff; border-radius: 0 0 30px 30px;
+  padding-top: calc(28px + env(safe-area-inset-top, 0px)); padding-bottom: 22px;
+  display: flex; align-items: center; gap: 16px;
+  padding-right: max(92px, env(safe-area-inset-right, 0px));
+}
+.head-band .back { width: 58px; height: 58px; border-radius: 50%; background: rgba(255,255,255,.18); color: #fff; display: grid; place-items: center; flex: none; }
+.head-band h1 { color: #fff; font-size: 1.8rem; font-weight: 800; }
+.head-band p { color: rgba(255,255,255,.85); font-size: 1.02rem; }
+.list { display: flex; flex-direction: column; gap: 16px; margin-top: 22px; padding-bottom: 120px; }
+.fab {
+  position: fixed; z-index: 25; right: max(18px, calc((100vw - 480px) / 2 + 18px)); bottom: calc(24px + env(safe-area-inset-bottom, 0px));
+  height: 62px; padding: 0 24px 0 18px; border-radius: 999px; background: var(--teal-strong); color: #fff;
+  display: inline-flex; align-items: center; gap: 8px; font-family: var(--font-display); font-weight: 800; font-size: 1.1rem;
+  box-shadow: 0 10px 24px rgba(14,124,114,.38);
+}
+.fab.raise { bottom: calc(108px + env(safe-area-inset-bottom, 0px)); }
+
+/* Medicamentos */
+.med { display: grid; grid-template-columns: 92px minmax(0, 1fr) auto; gap: 10px; align-items: center; padding: 20px 16px; }
+.med.taken { background: var(--teal-tint); box-shadow: none; }
+.med .t { text-align: center; }
+.med .t b { display: block; font-family: var(--font-display); font-weight: 800; font-size: 1.75rem; color: var(--teal); font-variant-numeric: tabular-nums; line-height: 1.1; }
+.med.taken .t b { color: var(--teal-2); }
+.med .t span { color: var(--muted); font-size: .92rem; }
+.med h3 { font-size: 1.4rem; font-weight: 800; }
+.med.taken h3 { color: color-mix(in srgb, var(--ink) 65%, var(--lilac)); }
+.med .dose { font-size: 1.1rem; }
+.med .note { font-style: italic; color: var(--muted); }
+.med .actions { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+.take { width: 62px; height: 62px; border-radius: 50%; background: var(--teal-2); color: #fff; display: grid; place-items: center; opacity: .8; }
+.take.on { background: #5E9E62; opacity: 1; }
+.trash { color: #E05252; padding: 6px; }
+.allergy { display: inline-flex; align-items: center; gap: 6px; margin-top: 6px; color: var(--sos); background: var(--sos-soft); border-radius: 999px; padding: 4px 10px; font-size: .88rem; font-weight: 700; }
+.allergy svg { width: 16px; height: 16px; }
+
+/* Consultas */
+.appt { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 16px; align-items: center; padding: 18px 16px; }
+.datebox { background: var(--teal-tint); border-radius: 18px; padding: 12px 14px; text-align: center; min-width: 118px; }
+.datebox small { display: block; color: var(--teal); font-family: var(--font-display); font-weight: 700; font-size: .98rem; font-variant-numeric: tabular-nums; }
+.datebox b { font-family: var(--font-display); font-weight: 800; font-size: 1.75rem; color: var(--ink); font-variant-numeric: tabular-nums; }
+.appt h3 { font-size: 1.3rem; font-weight: 800; overflow-wrap: anywhere; }
+.appt p { font-size: 1.05rem; }
+.appt .place { display: flex; gap: 6px; color: var(--muted); align-items: flex-start; margin-top: 4px; }
+.appt .place svg { width: 18px; height: 18px; color: var(--teal); margin-top: 3px; }
+.appt.past { opacity: .6; }
+.sec-title { font-family: var(--font-display); color: var(--muted); font-weight: 700; font-size: .95rem; letter-spacing: .08em; text-transform: uppercase; margin-top: 10px; }
+
+/* Lembretes */
+.rem { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 16px; align-items: center; padding: 16px; }
+.alarm { width: 92px; height: 92px; border-radius: 22px; background: var(--teal-2); color: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; }
+.alarm b { font-family: var(--font-display); font-weight: 800; font-size: 1.25rem; font-variant-numeric: tabular-nums; }
+.rem.off .alarm { background: var(--line); color: var(--muted); }
+.rem h3 { font-size: 1.3rem; font-weight: 800; overflow-wrap: anywhere; }
+.rem p { color: var(--muted); }
+.rem .side { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+.switch { width: 74px; height: 40px; border-radius: 999px; background: #C9CFD3; border: 3px solid #C9CFD3; position: relative; transition: background .2s; flex: none; }
+.switch::after { content: ""; position: absolute; top: 2px; left: 2px; width: 30px; height: 30px; border-radius: 50%; background: #fff; transition: transform .2s; }
+.switch[aria-checked="true"] { background: var(--teal-strong); border-color: var(--teal-strong); }
+.switch[aria-checked="true"]::after { transform: translateX(34px); }
+
+/* Bem-estar */
+.seg { display: flex; gap: 12px; margin-top: 22px; flex-wrap: wrap; }
+.seg button { padding: 12px 22px; border-radius: 999px; border: 2px solid color-mix(in srgb, var(--teal-2) 40%, transparent); font-family: var(--font-display); font-weight: 700; font-size: 1.1rem; color: var(--ink); background: var(--surface); }
+.seg button[aria-pressed="true"] { background: var(--teal-strong); color: #fff; border-color: var(--teal-strong); }
+.stats { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 20px; }
+.stat { padding: 20px; }
+.stat .ic { width: 52px; height: 52px; border-radius: 14px; display: grid; place-items: center; margin-bottom: 14px; }
+.stat b { display: block; font-family: var(--font-display); font-weight: 800; font-size: 1.75rem; color: var(--ink); font-variant-numeric: tabular-nums; }
+.stat span { color: var(--muted); }
+.chart-card { margin-top: 20px; padding: 22px 20px; }
+.chart-card h3 { font-size: 1.4rem; font-weight: 800; }
+.chart-card > p { color: var(--muted); }
+.bars { display: flex; align-items: flex-end; gap: 6px; height: 190px; margin-top: 24px; }
+.bars .col { flex: 1; min-width: 0; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; gap: 8px; }
+.bars .bar { width: 100%; max-width: 42px; border-radius: 999px; }
+.bars .dash { width: 70%; max-width: 30px; height: 8px; border-radius: 999px; background: var(--line); }
+.bars .lbl { font-size: .82rem; color: var(--muted); font-variant-numeric: tabular-nums; white-space: nowrap; height: 1.2em; }
+.legend { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 16px; font-size: 1rem; }
+.legend span { display: inline-flex; align-items: center; gap: 6px; }
+.legend i { width: 14px; height: 14px; border-radius: 50%; display: inline-block; }
+.pain { display: grid; gap: 8px; margin-top: 20px; }
+.pain div { height: 40px; border-radius: 10px; background: var(--line); }
+.pain div.on { background: var(--sos); }
+.pain-note { margin-top: 14px; font-weight: 600; }
+
+/* Check-in */
+.moods { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 16px; }
+.mood { border: 2px solid var(--line); border-radius: 20px; background: var(--surface); padding: 16px 4px 12px; display: flex; flex-direction: column; align-items: center; gap: 10px; font-weight: 600; font-size: 1.02rem; }
+.mood svg { width: 54px; height: 54px; }
+.mood[aria-pressed="true"] { border-color: var(--teal); background: var(--teal-tint); box-shadow: 0 0 0 2px var(--teal); }
+.qrow { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 20px 22px; margin-top: 14px; font-family: var(--font-display); font-weight: 700; font-size: 1.2rem; color: var(--text); }
+
+/* Chat */
+.chat-head { display: flex; align-items: center; gap: 16px; padding-top: calc(26px + env(safe-area-inset-top, 0px)); padding-bottom: 16px; border-bottom: 1px solid var(--line); background: var(--surface); padding-right: max(92px, env(safe-area-inset-right, 0px)); }
+.chat-head .av { width: 62px; height: 62px; border-radius: 50%; background: var(--teal-strong); color: #fff; display: grid; place-items: center; flex: none; }
+.chat-head h1 { font-size: 1.45rem; font-weight: 800; }
+.chat-head p { color: var(--muted); font-size: .98rem; }
+.chat-wrap { display: flex; flex-direction: column; height: 100vh; height: 100dvh; padding-bottom: calc(96px + env(safe-area-inset-bottom, 0px)); }
+.msgs { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 14px; padding-top: 18px; padding-bottom: 18px; background: var(--surface-2); }
+.msg { max-width: 86%; padding: 14px 18px; border-radius: 24px; font-size: 1.15rem; line-height: 1.5; overflow-wrap: anywhere; }
+.msg.me { align-self: flex-end; background: var(--teal-strong); color: #fff; border-bottom-right-radius: 8px; }
+.msg.ai { align-self: flex-start; background: var(--surface); border: 1.5px solid color-mix(in srgb, var(--teal-2) 35%, transparent); border-bottom-left-radius: 8px; }
+.msg.ai p + p, .msg.ai p + ul, .msg.ai ul + p, .msg.ai p + ol, .msg.ai ol + p { margin-top: 10px; }
+.msg.ai ul, .msg.ai ol { margin: 0; padding-left: 1.2em; }
+.msg.ai li + li { margin-top: 4px; }
+.msg .meta { display: block; font-size: .8rem; color: var(--muted); margin-top: 8px; }
+.msg.err-msg { border-color: var(--sos); }
+.typing { display: inline-flex; gap: 6px; padding: 6px 0; }
+.typing i { width: 9px; height: 9px; border-radius: 50%; background: var(--teal-2); animation: blink 1.2s infinite; }
+.typing i:nth-child(2) { animation-delay: .2s; } .typing i:nth-child(3) { animation-delay: .4s; }
+@keyframes blink { 0%, 80%, 100% { opacity: .25; } 40% { opacity: 1; } }
+.chips { display: flex; gap: 10px; overflow-x: auto; padding-top: 12px; padding-bottom: 12px; background: var(--surface-2); scrollbar-width: none; }
+.chips button { white-space: nowrap; padding: 12px 18px; border-radius: 999px; background: var(--teal-tint); border: 1.5px solid color-mix(in srgb, var(--teal-2) 40%, transparent); color: var(--teal); font-family: var(--font-display); font-weight: 700; font-size: 1.02rem; }
+.composer { display: flex; gap: 12px; align-items: center; padding-top: 12px; padding-bottom: 12px; background: var(--surface); border-top: 1px solid var(--line); }
+.composer input { flex: 1; min-width: 0; border: 2px solid color-mix(in srgb, var(--teal-2) 40%, transparent); border-radius: 999px; padding: 16px 22px; font-size: 1.15rem; background: var(--surface); }
+.composer input:focus { outline: none; border-color: var(--teal); }
+.send { width: 62px; height: 62px; border-radius: 50%; background: var(--teal-2); color: #fff; display: grid; place-items: center; flex: none; }
+.send:disabled { opacity: .5; }
+.ai-mode { display: inline-flex; align-items: center; gap: 6px; font-size: .85rem; color: var(--muted); }
+.ai-mode i { width: 9px; height: 9px; border-radius: 50%; background: var(--warn); }
+.ai-mode.on i { background: var(--ok); }
+
+/* Perfil */
+.profile-band { background: var(--teal-strong); color: #fff; border-radius: 0 0 40px 40px; text-align: center; padding-top: calc(26px + env(safe-area-inset-top, 0px)); padding-bottom: 30px; }
+.avatar { width: 150px; height: 150px; margin: 0 auto; border-radius: 50%; background: var(--teal-2); border: 5px solid #fff; display: grid; place-items: center; color: #fff; }
+.avatar svg { width: 80px; height: 80px; }
+.profile-band h1 { color: #fff; font-size: 2rem; margin-top: 14px; }
+.profile-band p { color: rgba(255,255,255,.82); font-size: 1.15rem; }
+.info-card { margin-top: 22px; padding: 22px; }
+.info-card h2 { font-size: 1.3rem; font-weight: 800; padding-bottom: 14px; border-bottom: 1.5px solid var(--line); }
+.info-row { display: flex; gap: 16px; align-items: center; padding: 16px 0; }
+.info-row + .info-row { border-top: 1.5px solid var(--line); }
+.info-row .ic { width: 58px; height: 58px; border-radius: 16px; background: var(--teal-tint); color: var(--teal); display: grid; place-items: center; flex: none; }
+.info-row small { display: block; color: var(--muted); font-size: .98rem; }
+.info-row b { font-size: 1.3rem; font-weight: 600; overflow-wrap: anywhere; }
+.call-btn { width: 100%; margin-top: 8px; padding: 18px; border-radius: 999px; background: var(--teal-strong); color: #fff; display: flex; justify-content: center; align-items: center; gap: 12px; font-family: var(--font-display); font-weight: 700; font-size: 1.3rem; text-decoration: none; }
+.edit-btn { width: 100%; margin-top: 22px; margin-bottom: 20px; padding: 18px; border-radius: 999px; background: var(--teal-2); color: #fff; display: flex; justify-content: center; align-items: center; gap: 12px; font-family: var(--font-display); font-weight: 700; font-size: 1.3rem; }
+
+/* Agenda */
+.days { display: flex; gap: 10px; overflow-x: auto; margin-top: 20px; padding-bottom: 6px; scrollbar-width: none; }
+.days button { flex: none; width: 64px; padding: 12px 0; border-radius: 18px; background: var(--surface); box-shadow: var(--shadow); display: flex; flex-direction: column; align-items: center; color: var(--muted); }
+.days button b { font-family: var(--font-display); font-size: 1.4rem; color: var(--ink); font-variant-numeric: tabular-nums; }
+.days button[aria-pressed="true"] { background: var(--teal-strong); color: #fff; }
+.days button[aria-pressed="true"] b { color: #fff; }
+.tl { display: flex; flex-direction: column; gap: 12px; margin-top: 18px; }
+.tl-item { display: grid; grid-template-columns: 70px minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 14px 16px; }
+.tl-item .when { font-family: var(--font-display); font-weight: 800; font-size: 1.25rem; color: var(--teal); font-variant-numeric: tabular-nums; }
+.tl-item h4 { margin: 0; font-family: var(--font-display); color: var(--ink); font-size: 1.12rem; }
+.tl-item p { color: var(--muted); font-size: .98rem; }
+.tag { font-size: .8rem; font-weight: 700; padding: 4px 10px; border-radius: 999px; background: var(--teal-tint); color: var(--teal); white-space: nowrap; }
+.tag.lilac { background: var(--lilac-soft); color: var(--lilac); }
+.tag.blue { background: color-mix(in srgb, var(--gear) 15%, transparent); color: var(--gear); }
+.page-title { padding-top: calc(30px + env(safe-area-inset-top, 0px)); padding-right: max(92px, env(safe-area-inset-right, 0px)); }
+.page-title h1 { font-size: 2rem; font-weight: 800; }
+.page-title p { color: var(--muted); }
+
+/* Sheets, toasts, banners */
+.overlay { position: fixed; inset: 0; z-index: 60; background: rgba(8, 20, 30, .5); display: flex; align-items: flex-end; justify-content: center; }
+.sheet { width: 100%; max-width: 480px; max-height: 92vh; overflow-y: auto; background: var(--surface); border-radius: 30px 30px 0 0; padding-top: 22px; padding-bottom: calc(26px + env(safe-area-inset-bottom, 0px)); }
+.sheet .grab { width: 54px; height: 6px; border-radius: 999px; background: var(--line); margin: 0 auto 16px; }
+.sheet h2 { font-size: 1.5rem; font-weight: 800; }
+.sheet .sub { color: var(--muted); margin-top: 4px; }
+.sheet .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.btn-ghost { width: 100%; margin-top: 12px; padding: 16px; border-radius: 999px; border: 2px solid var(--line); font-family: var(--font-display); font-weight: 700; font-size: 1.1rem; color: var(--ink); }
+.btn-danger { width: 100%; margin-top: 12px; padding: 16px; border-radius: 999px; background: var(--sos); color: #fff; font-family: var(--font-display); font-weight: 800; font-size: 1.15rem; }
+.set-group { margin-top: 22px; }
+.set-group > b { display: block; font-family: var(--font-display); color: var(--ink); font-size: 1.1rem; margin-bottom: 10px; }
+.opts { display: flex; gap: 10px; flex-wrap: wrap; }
+.opts button { flex: 1; min-width: 84px; padding: 14px 10px; border-radius: 16px; border: 2px solid var(--line); font-weight: 700; color: var(--ink); background: var(--surface); }
+.opts button[aria-pressed="true"] { border-color: var(--teal); background: var(--teal-tint); color: var(--teal); }
+.set-note { color: var(--muted); font-size: .95rem; margin-top: 8px; }
+.toast { position: fixed; z-index: 80; left: 50%; transform: translateX(-50%); top: calc(90px + env(safe-area-inset-top, 0px)); background: var(--ink); color: var(--surface); padding: 14px 22px; border-radius: 999px; font-weight: 600; box-shadow: var(--shadow); max-width: calc(100% - 32px); text-align: center; }
+.alert-banner { position: fixed; z-index: 70; top: calc(12px + env(safe-area-inset-top, 0px)); left: 50%; transform: translateX(-50%); width: calc(100% - 32px); max-width: 448px; background: var(--surface); border: 3px solid var(--teal-2); border-radius: 24px; padding: 16px; display: flex; gap: 14px; align-items: center; box-shadow: 0 16px 40px rgba(0,0,0,.25); }
+.alert-banner .grow { flex: 1; min-width: 0; }
+.alert-banner h4 { margin: 0; font-family: var(--font-display); color: var(--ink); font-size: 1.15rem; }
+.sos-sheet { text-align: center; }
+.sos-count { width: 150px; height: 150px; margin: 18px auto; border-radius: 50%; background: var(--sos); color: #fff; display: grid; place-items: center; font-family: var(--font-display); font-weight: 800; font-size: 3.6rem; box-shadow: 0 0 0 10px var(--sos-soft); }
+.num-row { display: flex; align-items: center; gap: 12px; padding: 14px 16px; border-radius: 18px; background: var(--surface-2); margin-top: 10px; text-align: left; }
+.num-row .grow { flex: 1; min-width: 0; }
+.num-row b { font-size: 1.3rem; font-variant-numeric: tabular-nums; user-select: all; }
+.num-row a, .num-row button { padding: 10px 16px; border-radius: 999px; background: var(--teal-strong); color: #fff; font-weight: 700; text-decoration: none; }
+.num-row.red a { background: var(--sos); }
+.notif-item { display: flex; gap: 14px; align-items: center; padding: 14px 0; }
+.notif-item + .notif-item { border-top: 1px solid var(--line); }
+.google-acc { display: flex; align-items: center; gap: 14px; padding: 14px; border-radius: 18px; border: 2px solid var(--line); width: 100%; text-align: left; margin-top: 12px; }
+.google-acc .av { width: 46px; height: 46px; border-radius: 50%; background: var(--lilac); color: #fff; display: grid; place-items: center; font-weight: 800; font-size: 1.2rem; }
+
+@media (max-width: 380px) {
+  .hero h1, .greet h1 { font-size: 2rem; }
+  .sos { width: 124px; height: 124px; font-size: 2.1rem; }
+  .med { grid-template-columns: 74px minmax(0, 1fr) auto; }
+  .med .t b { font-size: 1.45rem; }
+  .datebox { min-width: 96px; padding: 10px; }
+  .datebox b { font-size: 1.4rem; }
+  .alarm { width: 76px; height: 76px; }
+  .checkin-card { flex-wrap: wrap; }
+}
+@media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+</style>
+
+<div id="shell"><div id="app"></div></div>
+<button class="gear" id="gearBtn" aria-label="Configurações"></button>
+
+<script>
+(() => {
+"use strict";
+const VOVO = "data:image/jpeg;base64,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";
+
+/* ---------- Ícones ---------- */
+const sv = (p, vb = "0 0 24 24", extra = "") => `<svg class="ico" viewBox="${vb}" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" ${extra}>${p}</svg>`;
+const I = {
+  pulse: sv('<path d="M2 12h4l2.5-6 4 13 3-9 1.5 2h2"/><circle cx="20.5" cy="12" r="1.6" fill="currentColor"/>'),
+  gear: `<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M19.4 13a7.6 7.6 0 0 0 0-2l2.1-1.6-2-3.5-2.5 1a7.4 7.4 0 0 0-1.7-1L15 3.3h-4l-.4 2.6a7.4 7.4 0 0 0-1.7 1l-2.5-1-2 3.5L6.5 11a7.6 7.6 0 0 0 0 2l-2.1 1.6 2 3.5 2.5-1a7.4 7.4 0 0 0 1.7 1l.4 2.6h4l.4-2.6a7.4 7.4 0 0 0 1.7-1l2.5 1 2-3.5zM12 15.5a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7z"/></svg>`,
+  bell: `<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2.5a1.5 1.5 0 0 1 1.5 1.5v.6A6.5 6.5 0 0 1 18.5 11v4l2 2.5v1H3.5v-1l2-2.5v-4a6.5 6.5 0 0 1 5-6.4V4A1.5 1.5 0 0 1 12 2.5zM9.5 20h5a2.5 2.5 0 0 1-5 0z"/></svg>`,
+  medkit: `<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M9 3h6a2 2 0 0 1 2 2v1h2.5A2.5 2.5 0 0 1 22 8.5v10a2.5 2.5 0 0 1-2.5 2.5h-15A2.5 2.5 0 0 1 2 18.5v-10A2.5 2.5 0 0 1 4.5 6H7V5a2 2 0 0 1 2-2zm0 2v1h6V5zm2 5v3H8v2h3v3h2v-3h3v-2h-3v-3z"/></svg>`,
+  cal: `<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M7 2h2v2h6V2h2v2h2.5A2.5 2.5 0 0 1 22 6.5v12a2.5 2.5 0 0 1-2.5 2.5h-15A2.5 2.5 0 0 1 2 18.5v-12A2.5 2.5 0 0 1 4.5 4H7zM4 9v9.5c0 .3.2.5.5.5h15c.3 0 .5-.2.5-.5V9z"/><g fill="currentColor"><circle cx="8" cy="12" r="1.2"/><circle cx="12" cy="12" r="1.2"/><circle cx="16" cy="12" r="1.2"/><circle cx="8" cy="16" r="1.2"/><circle cx="12" cy="16" r="1.2"/><circle cx="16" cy="16" r="1.2"/></g></svg>`,
+  calLine: sv('<rect x="3" y="4.5" width="18" height="16" rx="2.5"/><path d="M3 9h18M8 2.5v4M16 2.5v4"/><g fill="currentColor" stroke="none"><circle cx="8" cy="13" r="1.1"/><circle cx="12" cy="13" r="1.1"/><circle cx="16" cy="13" r="1.1"/><circle cx="8" cy="17" r="1.1"/><circle cx="12" cy="17" r="1.1"/><circle cx="16" cy="17" r="1.1"/></g>'),
+  home: `<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2.8 1.8 11.5l1.3 1.5L4.5 12v9h6v-6h3v6h6v-9l1.4 1 1.3-1.5z"/></svg>`,
+  homeLine: sv('<path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10v10h5v-6h3v6h5V10"/>'),
+  chat: `<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2.5c5.5 0 10 4 10 9s-4.5 9-10 9c-1.2 0-2.4-.2-3.5-.6L3 21.5l1.4-4.3A8.6 8.6 0 0 1 2 11.5c0-5 4.5-9 10-9z"/><g fill="#fff"><circle cx="8" cy="11.5" r="1.3"/><circle cx="12" cy="11.5" r="1.3"/><circle cx="16" cy="11.5" r="1.3"/></g></svg>`,
+  chatLine: sv('<path d="M12 3c5 0 9 3.6 9 8.2s-4 8.2-9 8.2c-1.1 0-2.2-.2-3.2-.5L4 20.5l1.3-3.9A7.8 7.8 0 0 1 3 11.2C3 6.6 7 3 12 3z"/><g fill="currentColor" stroke="none"><circle cx="8.2" cy="11.3" r="1.1"/><circle cx="12" cy="11.3" r="1.1"/><circle cx="15.8" cy="11.3" r="1.1"/></g>'),
+  bubbles: `<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M14 3c4.4 0 8 2.9 8 6.6 0 1.6-.7 3.1-1.9 4.3l.8 3.1-3.3-1.5c-1.1.4-2.3.7-3.6.7-4.4 0-8-3-8-6.6S9.6 3 14 3z"/><path fill="currentColor" opacity=".55" d="M5.2 9.6C3.2 10.8 2 12.6 2 14.6c0 1.3.5 2.5 1.4 3.5L2.8 21l3-1.3c.9.3 1.9.5 3 .5 2.6 0 4.9-1.1 6.1-2.8-5.4-.3-9.6-3.7-9.7-7.8z"/></svg>`,
+  user: `<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 12.5a5 5 0 1 0 0-10 5 5 0 0 0 0 10zm-8.5 9c0-4.4 3.8-7 8.5-7s8.5 2.6 8.5 7z"/></svg>`,
+  userLine: sv('<circle cx="12" cy="7.5" r="4.2"/><path d="M4 21c0-4.2 3.6-6.8 8-6.8s8 2.6 8 6.8"/>'),
+  userCircle: `<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm0 4a3.5 3.5 0 1 1 0 7 3.5 3.5 0 0 1 0-7zm0 14a8 8 0 0 1-6.2-3c.9-1.8 3.4-2.9 6.2-2.9s5.3 1.1 6.2 2.9A8 8 0 0 1 12 20z"/></svg>`,
+  alarm: sv('<circle cx="12" cy="13" r="7.5"/><path d="M12 9v4l2.5 2M4 4.5 6.5 2.5M20 4.5l-2.5-2"/>'),
+  heart: `<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 21s-8.5-5.2-8.5-11.2A4.8 4.8 0 0 1 12 6.6a4.8 4.8 0 0 1 8.5 3.2C20.5 15.8 12 21 12 21z"/></svg>`,
+  checkCircle: `<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="currentColor"/><path d="m7.5 12.3 3 3 6-6.3" stroke="#fff" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+  moon: `<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M20.5 15.2A8.5 8.5 0 0 1 8.8 3.5a8.5 8.5 0 1 0 11.7 11.7z"/></svg>`,
+  check: sv('<path d="m5 12.5 4.5 4.5L19 7.5"/>', "0 0 24 24", 'stroke-width="2.6"'),
+  circle: sv('<circle cx="12" cy="12" r="8"/>'),
+  trash: sv('<path d="M4 6.5h16M9.5 6.5V4h5v2.5M6.5 6.5l1 14h9l1-14M10 10.5v6.5M14 10.5v6.5"/>'),
+  pin: `<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a7 7 0 0 1 7 7c0 5.2-7 13-7 13S5 14.2 5 9a7 7 0 0 1 7-7zm0 4.3a2.7 2.7 0 1 0 0 5.4 2.7 2.7 0 0 0 0-5.4z"/></svg>`,
+  phone: `<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M6.6 10.8a15.2 15.2 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 0 1 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1z"/></svg>`,
+  drop: `<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2.5S5 10.3 5 15a7 7 0 0 0 14 0c0-4.7-7-12.5-7-12.5zm-2.3 16.8A4.3 4.3 0 0 1 7.6 15h1.6a2.8 2.8 0 0 0 1.4 2.9z"/></svg>`,
+  alert: `<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="currentColor"/><path d="M12 7v6" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/><circle cx="12" cy="16.8" r="1.4" fill="#fff"/></svg>`,
+  sun: sv('<circle cx="12" cy="12" r="4.5" fill="currentColor"/><path d="M12 1.8v2.6M12 19.6v2.6M1.8 12h2.6M19.6 12h2.6M4.8 4.8l1.8 1.8M17.4 17.4l1.8 1.8M4.8 19.2l1.8-1.8M17.4 6.6l1.8-1.8"/>'),
+  back: sv('<path d="M19 12H5M11 6l-6 6 6 6"/>', "0 0 24 24", 'stroke-width="2.4"'),
+  arrow: sv('<path d="M5 12h14M13 6l6 6-6 6"/>', "0 0 24 24", 'stroke-width="2.4"'),
+  chev: sv('<path d="m9 5 7 7-7 7"/>', "0 0 24 24", 'stroke-width="2.6"'),
+  plus: sv('<path d="M12 5v14M5 12h14"/>', "0 0 24 24", 'stroke-width="2.2"'),
+  send: `<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M3 3.5 21.5 12 3 20.5l2.2-7.3L13 12l-7.8-1.2z"/></svg>`,
+  eye: sv('<path d="M2 12s3.6-6.5 10-6.5S22 12 22 12s-3.6 6.5-10 6.5S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>'),
+  eyeOff: sv('<path d="M2 12s3.6-6.5 10-6.5S22 12 22 12s-3.6 6.5-10 6.5S2 12 2 12z"/><circle cx="12" cy="12" r="3"/><path d="M3.5 3.5l17 17"/>'),
+  edit: `<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M4 5.5A1.5 1.5 0 0 1 5.5 4H13l-2 2H6v12h12v-5l2-2v7.5a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 18.5zM19.6 2.6l1.8 1.8-9.2 9.2-2.6.8.8-2.6z"/></svg>`,
+  google: `<svg viewBox="0 0 24 24" width="30" height="30" aria-hidden="true"><path fill="#E5463B" d="M21.6 12.2c0-.7-.1-1.4-.2-2H12v3.8h5.4a4.6 4.6 0 0 1-2 3v2.5h3.2c1.9-1.7 3-4.3 3-7.3z"/><path fill="#E5463B" d="M12 22c2.7 0 5-.9 6.6-2.4l-3.2-2.5c-.9.6-2 1-3.4 1-2.6 0-4.8-1.8-5.6-4.1H3.1v2.6A10 10 0 0 0 12 22z"/><path fill="#E5463B" d="M6.4 14a6 6 0 0 1 0-3.9V7.5H3.1a10 10 0 0 0 0 9z"/><path fill="#E5463B" d="M12 6c1.5 0 2.8.5 3.8 1.5l2.9-2.9A10 10 0 0 0 3.1 7.5l3.3 2.6C7.2 7.8 9.4 6 12 6z"/></svg>`,
+};
+const FACE = {
+  otimo: (c) => `<svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="22" fill="${c}"/><circle cx="17" cy="19" r="2.8" fill="#fff"/><circle cx="31" cy="19" r="2.8" fill="#fff"/><path d="M13 27h22a11 11 0 0 1-22 0z" fill="#fff"/></svg>`,
+  bem: (c) => `<svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="20.5" fill="none" stroke="${c}" stroke-width="3"/><circle cx="17" cy="19" r="2.6" fill="${c}"/><circle cx="31" cy="19" r="2.6" fill="${c}"/><path d="M15 27h18a9 9 0 0 1-18 0z" fill="${c}"/></svg>`,
+  regular: (c) => `<svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="20.5" fill="none" stroke="${c}" stroke-width="3"/><circle cx="17" cy="20" r="2.6" fill="${c}"/><circle cx="31" cy="20" r="2.6" fill="${c}"/><path d="M15 34a9 7 0 0 1 18 0z" fill="${c}"/></svg>`,
+  mal: (c) => `<svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="22" fill="${c}"/><circle cx="17" cy="20" r="2.8" fill="#fff"/><circle cx="31" cy="20" r="2.8" fill="#fff"/><path d="M14 34a10 8 0 0 1 20 0z" fill="#fff"/></svg>`,
+};
+const MOODS = [
+  { k: "otimo", label: "Ótimo", score: 4, color: "#2E7D32" },
+  { k: "bem", label: "Bem", score: 3, color: "#4DB6AC" },
+  { k: "regular", label: "Regular", score: 2, color: "#EF7D16" },
+  { k: "mal", label: "Mal", score: 1, color: "#D32F2F" },
+];
+const moodBy = (k) => MOODS.find((m) => m.k === k);
+
+/* ---------- Utilidades ---------- */
+const $ = (s, r = document) => r.querySelector(s);
+const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const pad2 = (n) => String(n).padStart(2, "0");
+const ymd = (d = new Date()) => `${d.getFullYear()}-${pad2(d.getMonth() + 1)}-${pad2(d.getDate())}`;
+const addDays = (d, n) => { const x = new Date(d); x.setDate(x.getDate() + n); return x; };
+const parseYmd = (s) => { const [y, m, d] = s.split("-").map(Number); return new Date(y, m - 1, d); };
+const brDate = (s) => { const d = parseYmd(s); return `${pad2(d.getDate())}/${pad2(d.getMonth() + 1)}/${d.getFullYear()}`; };
+const ddmm = (d) => `${pad2(d.getDate())}/${pad2(d.getMonth() + 1)}`;
+const nowHM = () => { const d = new Date(); return `${pad2(d.getHours())}:${pad2(d.getMinutes())}`; };
+const uid = () => Math.random().toString(36).slice(2, 10) + Date.now().toString(36);
+const WD = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
+const norm = (s) => String(s || "").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").trim();
+
+async function hashPass(p) {
+  try {
+    const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode("oh:" + p));
+    return [...new Uint8Array(buf)].map((b) => b.toString(16).padStart(2, "0")).join("");
+  } catch {
+    let h = 5381; for (const ch of "oh:" + p) h = ((h << 5) + h + ch.charCodeAt(0)) | 0; return "f" + (h >>> 0).toString(16);
+  }
+}
+
+/* ---------- Armazenamento ---------- */
+const KEY = "oldhealthy:v1";
+let DB = null;
+function load() {
+  try { const raw = localStorage.getItem(KEY); if (raw) DB = JSON.parse(raw); } catch { DB = null; }
+  if (!DB || typeof DB !== "object") DB = { users: {}, session: null, settings: { font: 1, theme: "auto" } };
+  DB.settings = Object.assign({ font: 1, theme: "auto" }, DB.settings || {});
+}
+function save() { try { localStorage.setItem(KEY, JSON.stringify(DB)); } catch { /* sem armazenamento: segue em memória */ } }
+const me = () => (DB.session && DB.users[DB.session]) || null;
+
+async function demoUser() {
+  const t = new Date(), today = ymd(t);
+  const ck = {};
+  const pattern = [
+    [1, "bem", true, false, true], [2, "otimo", true, false, true], [3, "regular", false, true, true],
+    [4, "bem", true, false, true], [6, "bem", false, false, true], [7, "otimo", true, false, true],
+    [9, "regular", false, true, false], [11, "bem", true, false, true], [13, "mal", false, true, true],
+    [15, "bem", true, false, true], [18, "otimo", true, false, true], [21, "bem", true, true, true],
+    [24, "regular", false, false, true], [27, "bem", true, false, true],
+  ];
+  for (const [ago, mood, slept, pain, meds] of pattern) ck[ymd(addDays(t, -ago))] = { mood, slept, pain, meds };
+  return {
+    email: "maria@oldhealthy.app", pass: await hashPass("Maria@123"), demo: true,
+    profile: { name: "Maria", age: 68, contactName: "Carlos (filho)", contactPhone: "+5511999998888", blood: "O+", allergies: "Dipirona" },
+    meds: [
+      { id: uid(), time: "06:00", freq: "Diário", name: "Losartana", dose: "50mg - 1 comprimido", note: "Tomar em jejum", takenOn: today },
+      { id: uid(), time: "09:00", freq: "Diário", name: "Ômega 3", dose: "1 cápsula", note: "", takenOn: today },
+      { id: uid(), time: "10:00", freq: "Diário", name: "Dorflex", dose: "500mg", note: "tomar 2 comprimidos a cada vez", takenOn: null },
+      { id: uid(), time: "12:00", freq: "Diário", name: "Metformina", dose: "500mg - 1 comprimido", note: "Após o almoço", takenOn: null },
+      { id: uid(), time: "13:00", freq: "Se necessário", name: "Dipirona", dose: "500mg", note: "", takenOn: null },
+      { id: uid(), time: "20:00", freq: "Diário", name: "Sinvastatina", dose: "20mg - 1 comprimido", note: "Antes de dormir", takenOn: null },
+    ],
+    consultas: [
+      { id: uid(), date: ymd(addDays(t, 4)), time: "10:00", specialty: "Endocrinologista", doctor: "Dra. Ana Souza", place: "Hospital São Lucas" },
+      { id: uid(), date: ymd(addDays(t, 17)), time: "16:00", specialty: "Oftalmologista", doctor: "Dr. Paulo Mendes", place: "Clínica Visão Clara" },
+      { id: uid(), date: ymd(addDays(t, 39)), time: "14:30", specialty: "Cardiologista", doctor: "Dr. Roberto Almeida", place: "Clínica Coração Forte - Sala 305" },
+    ],
+    lembretes: [
+      { id: uid(), time: "08:00", title: "Medir a pressão", desc: "Anotar os valores", on: true },
+      { id: uid(), time: "10:00", title: "Beber água", desc: "Beba um copo de água", on: true },
+      { id: uid(), time: "17:00", title: "Caminhada leve", desc: "20 minutos de caminhada", on: true },
+    ],
+    checkins: ck,
+    chat: [],
+  };
+}
+
+/* ---------- Estado de navegação ---------- */
+const S = { view: "welcome", stack: [], authTab: "login", period: 7, agendaDay: ymd(), checkinDraft: null, busy: false, showPass: false };
+const MAIN = ["home", "agenda", "chat", "perfil"];
+function go(view, opts = {}) {
+  if (!opts.replace && S.view !== view) S.stack.push(S.view);
+  if (MAIN.includes(view)) S.stack = S.stack.filter((v) => !MAIN.includes(v) || v === "home");
+  S.view = view;
+  if (view === "checkin") S.checkinDraft = null;
+  render();
+  window.scrollTo(0, 0);
+}
+function back() { const v = S.stack.pop() || (me() ? "home" : "welcome"); S.view = v; render(); window.scrollTo(0, 0); }
+
+/* ---------- Dados derivados ---------- */
+const isTaken = (m) => m.takenOn === ymd();
+const sortTime = (a, b) => a.time.localeCompare(b.time);
+function allergyHit(medName, allergies) {
+  const a = norm(allergies).split(/[,;\/]| e /).map((x) => x.trim()).filter((x) => x.length > 2);
+  const n = norm(medName);
+  return a.some((x) => n.includes(x) || x.includes(n));
+}
+function pendingToday(u) {
+  const hm = nowHM();
+  const meds = u.meds.filter((m) => m.freq !== "Se necessário" && !isTaken(m));
+  const rems = u.lembretes.filter((r) => r.on && r.time >= hm);
+  const soon = u.consultas.filter((c) => { const d = parseYmd(c.date); const diff = (d - parseYmd(ymd())) / 864e5; return diff >= 0 && diff <= 7; });
+  return { meds, rems, soon, count: meds.length + rems.length + soon.length };
+}
+
+/* ---------- Telas ---------- */
+const navBar = (cur) => `
+  <nav class="nav" aria-label="Navegação principal">
+    <button data-go="home" ${cur === "home" ? 'aria-current="page"' : ""}>${cur === "home" ? I.home : I.homeLine}<span>Início</span></button>
+    <button data-go="agenda" ${cur === "agenda" ? 'aria-current="page"' : ""}>${I.calLine}<span>Agenda</span></button>
+    <button data-go="chat" ${cur === "chat" ? 'aria-current="page"' : ""}>${cur === "chat" ? I.chat : I.chatLine}<span>Dúvidas</span></button>
+    <button data-go="perfil" ${cur === "perfil" ? 'aria-current="page"' : ""}>${cur === "perfil" ? I.user : I.userLine}<span>Perfil</span></button>
+  </nav>`;
+const headBand = (title, sub) => `
+  <header class="head-band pad">
+    <button class="back" data-act="back" aria-label="Voltar">${I.back}</button>
+    <div><h1>${title}</h1><p>${sub}</p></div>
+  </header>`;
+
+const V = {};
+
+V.welcome = () => `
+<section class="screen pad">
+  <div class="welcome-top"><div class="logo-tile">${I.pulse}</div></div>
+  <div class="hero">
+    <div>
+      <h1>Seu Bem-Estar Começa Aqui</h1>
+      <p>Tecnologia desenvolvida para oferecer mais praticidade no cuidado com a sua saúde.</p>
+      <button class="cta" data-go="auth">Começar <span class="round">${I.arrow}</span></button>
+    </div>
+    <img class="hero-img" src="${VOVO}" alt="Ilustração de uma senhora sorrindo e acenando">
+  </div>
+  <div class="daily-card">
+    <div class="row"><h2>Seu cuidado diário</h2><button class="plus-btn" data-go="auth" aria-label="Começar">${I.plus}</button></div>
+    <div class="tiles3">
+      <button class="tile3" data-go="auth"><span class="box">${I.medkit}</span>Lembretes</button>
+      <button class="tile3" data-go="auth"><span class="box">${I.cal}</span>Agenda</button>
+      <button class="tile3" data-go="auth"><span class="box">${I.pulse}</span>Bem-estar</button>
+    </div>
+  </div>
+</section>`;
+
+V.auth = () => {
+  const login = S.authTab === "login";
+  return `
+<section class="screen">
+  <div class="auth-bg">
+    <div class="auth-tabs" role="tablist">
+      <button role="tab" aria-selected="${!login}" data-act="tab" data-tab="cadastro">CADASTRAR</button>
+      <button role="tab" aria-selected="${login}" data-act="tab" data-tab="login">LOGIN</button>
+    </div>
+  </div>
+  <div class="auth-sheet pad">
+    ${login ? `
+    <h1>Bem-Vindo(a) de Volta</h1>
+    <form id="loginForm" novalidate>
+      <div class="field"><label for="lgEmail">Email</label><input id="lgEmail" type="email" autocomplete="email" inputmode="email" value="maria@oldhealthy.app" required></div>
+      <div class="field"><label for="lgPass">Senha</label><input id="lgPass" type="${S.showPass ? "text" : "password"}" autocomplete="current-password" required>
+        <button type="button" class="eye" data-act="eye" aria-label="${S.showPass ? "Esconder senha" : "Mostrar senha"}">${S.showPass ? I.eye : I.eyeOff}</button></div>
+      <p class="hint">Demo: maria@oldhealthy.app / Maria@123</p>
+      <p class="err" id="authErr" role="alert"></p>
+      <button class="btn-primary" type="submit">Entrar</button>
+    </form>` : `
+    <h1>Crie Sua Conta</h1>
+    <form id="signupForm" novalidate>
+      <div class="field"><label for="suName">Nome</label><input id="suName" autocomplete="name" required></div>
+      <div class="field"><label for="suAge">Idade</label><input id="suAge" type="number" inputmode="numeric" min="1" max="120" required></div>
+      <div class="field"><label for="suEmail">Email</label><input id="suEmail" type="email" autocomplete="email" inputmode="email" required></div>
+      <div class="field"><label for="suPass">Senha</label><input id="suPass" type="${S.showPass ? "text" : "password"}" autocomplete="new-password" minlength="6" required>
+        <button type="button" class="eye" data-act="eye" aria-label="${S.showPass ? "Esconder senha" : "Mostrar senha"}">${S.showPass ? I.eye : I.eyeOff}</button></div>
+      <p class="err" id="authErr" role="alert"></p>
+      <button class="btn-primary" type="submit">Cadastrar</button>
+    </form>`}
+    <div class="divider">Entrar com</div>
+    <button class="btn-google" data-act="google">${I.google} Continuar com Google</button>
+  </div>
+</section>`;
+};
+
+V.home = () => {
+  const u = me(), p = pendingToday(u), today = ymd();
+  const ck = u.checkins[today];
+  const hm = nowHM();
+  const dailyMeds = u.meds.filter((m) => m.freq !== "Se necessário").sort(sortTime);
+  const nextMed = dailyMeds.find((m) => !isTaken(m) && m.time >= hm) || dailyMeds.find((m) => !isTaken(m)) || dailyMeds[dailyMeds.length - 1];
+  const appToday = u.consultas.filter((c) => c.date === today).sort(sortTime);
+  const nextRem = u.lembretes.filter((r) => r.on && r.time >= hm).sort(sortTime)[0];
+  const items = [];
+  if (nextMed) items.push(`
+    <div class="today-item">
+      <span class="circ-ico">${I.medkit}</span>
+      <div class="grow"><h4>Medicamento</h4><p>${esc(nextMed.time)} - ${esc(nextMed.name)}</p></div>
+      <button class="done-dot ${isTaken(nextMed) ? "on" : ""}" data-act="take" data-id="${nextMed.id}" aria-label="${isTaken(nextMed) ? "Desmarcar" : "Marcar como tomado"}">${I.check}</button>
+    </div>`);
+  for (const c of appToday) items.push(`
+    <div class="today-item"><span class="circ-ico lilac">${I.cal}</span>
+      <div class="grow"><h4>Consulta</h4><p>${esc(c.time)} - ${esc(c.specialty)}</p></div></div>`);
+  if (nextRem) items.push(`
+    <div class="today-item"><span class="circ-ico">${I.alarm}</span>
+      <div class="grow"><h4>Lembrete</h4><p>${esc(nextRem.time)} - ${esc(nextRem.title)}</p></div></div>`);
+  const m = ck && moodBy(ck.mood);
+  return `
+<section class="screen pad with-nav">
+  <div class="brand">
+    <div class="logo-tile">${I.pulse}</div>
+    <div style="min-width:0"><h2>OldHealthy</h2><small>Tecnologia que cuida</small></div>
+    <button class="bell" data-go="notif" aria-label="Notificações: ${p.count}">${I.bell}${p.count ? `<span class="badge">${p.count}</span>` : ""}</button>
+  </div>
+  <div class="greet">
+    <div><h1>Olá, ${esc(u.profile.name.split(" ")[0])}!</h1><p>Que bom te ver por aqui! Vamos cuidar da sua saúde hoje?</p></div>
+    <div class="sos-wrap"><button class="sos" data-act="sos" aria-label="SOS emergência">SOS</button><span class="sos-label">EMERGÊNCIA</span></div>
+  </div>
+  <div class="card checkin-card">
+    <span class="sun-box">${m ? `<span style="width:46px;height:46px;display:block">${FACE[m.k](m.color)}</span>` : I.sun}</span>
+    <div class="grow"><h3>Check&#8209;in diário</h3><p>${m ? `Hoje: ${m.label}` : "Você está bem hoje?"}</p></div>
+    <button class="pill-btn" data-go="checkin">${m ? "Editar" : "Responder"} ${I.arrow}</button>
+  </div>
+  <div class="card today-card">
+    <button class="today-head" data-go="agenda"><span class="sq-ico">${I.cal}</span><h3>Hoje no seu dia</h3><span class="chev">${I.chev}</span></button>
+    ${items.join("") || `<p class="empty-line">Nada marcado para hoje.</p>`}
+  </div>
+  <div class="grid4">
+    <button class="card feat" data-go="meds"><span class="big">${I.medkit}</span><h3>Medicamentos</h3><p>Veja seus horários</p></button>
+    <button class="card feat" data-go="consultas"><span class="big">${I.cal}</span><h3>Consultas</h3><p>Seus próximos agendamentos</p></button>
+    <button class="card feat" data-go="lembretes"><span class="big lilac">${I.bell}</span><h3>Lembretes</h3><p>Não se esqueça!</p></button>
+    <button class="card feat" data-go="bemestar"><span class="big teal">${I.pulse}</span><h3>Bem-estar</h3><p>Veja sua evolução</p></button>
+  </div>
+  <button class="card help-card" data-go="chat"><span class="bubble">${I.bubbles}</span><div class="grow"><h3>Precisa de ajuda?</h3><p>Nossa IA está pronta para te responder!</p></div><span>${I.chev}</span></button>
+  <div class="promo">
+    <div><h2>Tecnologia para cuidar.</h2><p>Seus remédios, consultas e o seu dia a dia em um só lugar.</p></div>
+    <img src="${VOVO}" alt="">
+  </div>
+</section>${navBar("home")}`;
+};
+
+V.meds = () => {
+  const u = me();
+  const list = [...u.meds].sort(sortTime);
+  return `<section class="screen">${headBand("Medicamentos", "Toque no círculo para marcar como tomado")}
+  <div class="list pad">
+    ${list.map((m) => { const t = isTaken(m); const al = allergyHit(m.name, u.profile.allergies); return `
+    <article class="card med ${t ? "taken" : ""}">
+      <div class="t"><b>${esc(m.time)}</b><span>${esc(m.freq)}</span></div>
+      <div style="min-width:0"><h3>${esc(m.name)}</h3><p class="dose">${esc(m.dose)}</p>${m.note ? `<p class="note">${esc(m.note)}</p>` : ""}
+        ${al ? `<span class="allergy">${I.alert} Você tem alergia cadastrada</span>` : ""}</div>
+      <div class="actions">
+        <button class="take ${t ? "on" : ""}" data-act="take" data-id="${m.id}" aria-label="${t ? "Desmarcar " : "Marcar como tomado: "}${esc(m.name)}">${t ? I.check : I.circle}</button>
+        <button class="trash" data-act="del" data-kind="meds" data-id="${m.id}" aria-label="Apagar ${esc(m.name)}">${I.trash}</button>
+      </div>
+    </article>`; }).join("") || `<p class="empty-line">Nenhum medicamento cadastrado. Toque em “Adicionar”.</p>`}
+  </div>
+  <button class="fab" data-act="add" data-kind="meds">${I.plus} Adicionar</button>
+</section>`;
+};
+
+V.consultas = () => {
+  const u = me(), today = ymd();
+  const sorted = [...u.consultas].sort((a, b) => (a.date + a.time).localeCompare(b.date + b.time));
+  const up = sorted.filter((c) => c.date >= today), past = sorted.filter((c) => c.date < today).reverse();
+  const card = (c, isPast) => `
+    <article class="card appt ${isPast ? "past" : ""}">
+      <div class="datebox"><small>${brDate(c.date)}</small><b>${esc(c.time)}</b></div>
+      <div style="min-width:0"><h3>${esc(c.specialty)}</h3><p>${esc(c.doctor)}</p>${c.place ? `<p class="place">${I.pin}<span>${esc(c.place)}</span></p>` : ""}</div>
+      <button class="trash" data-act="del" data-kind="consultas" data-id="${c.id}" aria-label="Apagar consulta">${I.trash}</button>
+    </article>`;
+  return `<section class="screen">${headBand("Consultas", "Seus próximos agendamentos")}
+  <div class="list pad">
+    ${up.map((c) => card(c)).join("") || `<p class="empty-line">Nenhuma consulta marcada.</p>`}
+    ${past.length ? `<p class="sec-title">Anteriores</p>${past.map((c) => card(c, true)).join("")}` : ""}
+  </div>
+  <button class="fab" data-act="add" data-kind="consultas">${I.plus} Nova consulta</button>
+</section>`;
+};
+
+V.lembretes = () => {
+  const u = me();
+  return `<section class="screen">${headBand("Lembretes", "Ative os lembretes que quiser")}
+  <div class="list pad">
+    ${[...u.lembretes].sort(sortTime).map((r) => `
+    <article class="card rem ${r.on ? "" : "off"}">
+      <div class="alarm">${I.alarm}<b>${esc(r.time)}</b></div>
+      <div style="min-width:0"><h3>${esc(r.title)}</h3>${r.desc ? `<p>${esc(r.desc)}</p>` : ""}</div>
+      <div class="side">
+        <button class="switch" role="switch" aria-checked="${r.on}" data-act="toggleRem" data-id="${r.id}" aria-label="Ativar ${esc(r.title)}"></button>
+        <button class="trash" data-act="del" data-kind="lembretes" data-id="${r.id}" aria-label="Apagar lembrete">${I.trash}</button>
+      </div>
+    </article>`).join("") || `<p class="empty-line">Nenhum lembrete. Toque em “Novo lembrete”.</p>`}
+  </div>
+  <button class="fab" data-act="add" data-kind="lembretes">${I.plus} Novo lembrete</button>
+</section>`;
+};
+
+V.bemestar = () => {
+  const u = me(), N = S.period, t = new Date();
+  const days = Array.from({ length: N }, (_, i) => addDays(t, i - N + 1));
+  const recs = days.map((d) => u.checkins[ymd(d)] || null);
+  const done = recs.filter(Boolean);
+  const avg = done.length ? Math.round(done.reduce((s, r) => s + (moodBy(r.mood)?.score || 0), 0) / done.length) : 0;
+  const avgLabel = avg ? MOODS.find((m) => m.score === avg).label : "—";
+  const pct = Math.round((done.length / N) * 100);
+  const slept = done.filter((r) => r.slept).length;
+  const medDays = days.filter((d, i) => (recs[i] && recs[i].meds) || (ymd(d) === ymd() && u.meds.some((m) => m.freq !== "Se necessário") && u.meds.filter((m) => m.freq !== "Se necessário").every(isTaken))).length;
+  const painDays = recs.filter((r) => r && r.pain).length;
+  const every = N === 7 ? 1 : 5;
+  return `<section class="screen">${headBand("Bem-estar", "Como você tem estado")}
+  <div class="pad" style="padding-bottom:40px">
+    <div class="seg">
+      <button aria-pressed="${N === 7}" data-act="period" data-n="7">Últimos 7 dias</button>
+      <button aria-pressed="${N === 30}" data-act="period" data-n="30">Últimos 30 dias</button>
+    </div>
+    <div class="stats">
+      <div class="card stat"><span class="ic" style="background:var(--sos-soft);color:var(--sos)">${I.heart}</span><b>${avgLabel}</b><span>Humor médio</span></div>
+      <div class="card stat"><span class="ic" style="background:var(--ok-soft);color:var(--ok)">${I.checkCircle}</span><b>${pct}%</b><span>Check-ins realizados</span></div>
+      <div class="card stat"><span class="ic" style="background:var(--lilac-soft);color:#6C63C9">${I.moon}</span><b>${slept}/${N}</b><span>Dias dormindo bem</span></div>
+      <div class="card stat"><span class="ic" style="background:var(--teal-tint);color:var(--teal)">${I.medkit}</span><b>${medDays}/${N}</b><span>Dias tomou remédio</span></div>
+    </div>
+    <div class="card chart-card">
+      <h3>Humor por dia</h3><p>Quanto mais alto, melhor</p>
+      <div class="bars" style="gap:${N === 7 ? 8 : 3}px">
+        ${days.map((d, i) => { const r = recs[i]; const m = r && moodBy(r.mood); const show = (N - 1 - i) % every === 0; return `
+        <div class="col" title="${ddmm(d)}${m ? ": " + m.label : ": sem check-in"}">
+          ${m ? `<div class="bar" style="height:${(m.score / 4) * 82}%;background:${m.color}"></div>` : `<div class="dash"></div>`}
+          <span class="lbl">${show ? ddmm(d) : ""}</span>
+        </div>`; }).join("")}
+      </div>
+      <div class="legend">${MOODS.map((m) => `<span><i style="background:${m.color}"></i>${m.label}</span>`).join("")}</div>
+    </div>
+    <div class="card chart-card">
+      <h3>Dias com dor</h3><p>Barras vermelhas = sentiu dor</p>
+      <div class="pain" style="grid-template-columns:repeat(${N === 7 ? 7 : 10},1fr)">
+        ${recs.map((r, i) => `<div class="${r && r.pain ? "on" : ""}" title="${ddmm(days[i])}"></div>`).join("")}
+      </div>
+      <p class="pain-note">${painDays} dia(s) com dor nos últimos ${N} dias</p>
+    </div>
+  </div>
+</section>`;
+};
+
+V.checkin = () => {
+  const u = me(), today = ymd();
+  if (!S.checkinDraft) S.checkinDraft = Object.assign({ mood: null, slept: true, pain: false, meds: true }, u.checkins[today] || {});
+  const d = S.checkinDraft;
+  const q = (k, label) => `<div class="card qrow"><span id="lbl-${k}">${label}</span><button class="switch" role="switch" aria-labelledby="lbl-${k}" aria-checked="${!!d[k]}" data-act="ckToggle" data-k="${k}"></button></div>`;
+  return `<section class="screen">${headBand("Check&#8209;in diário", "Como você está se sentindo hoje?")}
+  <div class="pad" style="padding-top:24px;padding-bottom:40px">
+    <h2 style="font-size:1.4rem">Como você está hoje?</h2>
+    <div class="moods">${MOODS.map((m) => `<button class="mood" aria-pressed="${d.mood === m.k}" data-act="mood" data-k="${m.k}">${FACE[m.k](m.color)}${m.label}</button>`).join("")}</div>
+    ${q("slept", "Dormiu bem?")}${q("pain", "Sentiu alguma dor?")}${q("meds", "Tomou os medicamentos?")}
+    <button class="btn-primary plain" data-act="sendCheckin" ${d.mood ? "" : "disabled"}>Enviar check-in</button>
+  </div>
+</section>`;
+};
+
+V.agenda = () => {
+  const u = me(), t = new Date(), sel = S.agendaDay;
+  const strip = Array.from({ length: 14 }, (_, i) => addDays(t, i));
+  const items = [];
+  for (const m of u.meds) items.push({ time: m.time, title: m.name, sub: m.dose, tag: m.freq === "Se necessário" ? "Se necessário" : "Remédio", cls: "", done: sel === ymd() && isTaken(m) });
+  for (const r of u.lembretes.filter((r) => r.on)) items.push({ time: r.time, title: r.title, sub: r.desc, tag: "Lembrete", cls: "lilac" });
+  for (const c of u.consultas.filter((c) => c.date === sel)) items.push({ time: c.time, title: c.specialty, sub: `${c.doctor}${c.place ? " · " + c.place : ""}`, tag: "Consulta", cls: "blue" });
+  items.sort(sortTime);
+  const next = [...u.consultas].filter((c) => c.date >= ymd()).sort((a, b) => (a.date + a.time).localeCompare(b.date + b.time)).slice(0, 3);
+  return `<section class="screen pad with-nav">
+  <div class="page-title"><h1>Agenda</h1><p>Seu dia, hora a hora</p></div>
+  <div class="days" role="group" aria-label="Escolha o dia">
+    ${strip.map((d) => `<button aria-pressed="${ymd(d) === sel}" data-act="day" data-d="${ymd(d)}"><span>${WD[d.getDay()]}</span><b>${d.getDate()}</b></button>`).join("")}
+  </div>
+  <div class="tl">
+    ${items.map((it) => `<div class="card tl-item" style="${it.done ? "opacity:.6" : ""}"><span class="when">${esc(it.time)}</span><div style="min-width:0"><h4>${esc(it.title)}${it.done ? " · tomado" : ""}</h4>${it.sub ? `<p>${esc(it.sub)}</p>` : ""}</div><span class="tag ${it.cls}">${esc(it.tag)}</span></div>`).join("") || `<p class="empty-line">Nada marcado para este dia.</p>`}
+  </div>
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-top:28px">
+    <h2 style="font-size:1.35rem">Próximas consultas</h2>
+    <button class="pill-btn" data-go="consultas" style="padding:10px 16px">Ver todas</button>
+  </div>
+  <div class="tl">${next.map((c) => `<div class="card tl-item"><span class="when" style="font-size:1rem">${ddmm(parseYmd(c.date))}</span><div style="min-width:0"><h4>${esc(c.specialty)}</h4><p>${esc(c.time)} · ${esc(c.doctor)}</p></div><span class="tag blue">${WD[parseYmd(c.date).getDay()]}</span></div>`).join("") || `<p class="empty-line">Nenhuma consulta marcada.</p>`}</div>
+</section>${navBar("agenda")}`;
+};
+
+V.perfil = () => {
+  const u = me(), p = u.profile;
+  return `<section class="screen with-nav">
+  <div class="profile-band pad"><div class="avatar">${I.user}</div><h1>${esc(p.name)}</h1><p>${esc(p.age)} anos</p></div>
+  <div class="pad">
+    <div class="card info-card">
+      <h2>Contato de Emergência</h2>
+      <div class="info-row"><span class="ic">${I.userCircle}</span><div style="min-width:0"><small>Nome</small><b>${esc(p.contactName || "—")}</b></div></div>
+      <div class="info-row"><span class="ic">${I.phone}</span><div style="min-width:0"><small>Telefone</small><b>${esc(p.contactPhone || "—")}</b></div></div>
+      ${p.contactPhone ? `<a class="call-btn" href="tel:${esc(p.contactPhone.replace(/[^\d+]/g, ""))}">${I.phone} Ligar agora</a>` : ""}
+    </div>
+    <div class="card info-card">
+      <h2>Informações de Saúde</h2>
+      <div class="info-row"><span class="ic">${I.drop}</span><div><small>Tipo sanguíneo</small><b>${esc(p.blood || "—")}</b></div></div>
+      <div class="info-row"><span class="ic">${I.alert}</span><div style="min-width:0"><small>Alergias</small><b>${esc(p.allergies || "Nenhuma")}</b></div></div>
+    </div>
+    <button class="edit-btn" data-act="editProfile">${I.edit} Editar Perfil</button>
+  </div>
+</section>${navBar("perfil")}`;
+};
+
+V.notif = () => {
+  const u = me(), p = pendingToday(u);
+  const row = (ico, t, s) => `<div class="notif-item"><span class="circ-ico">${ico}</span><div style="min-width:0"><h4 style="margin:0;font-family:var(--font-display);color:var(--ink)">${t}</h4><p style="color:var(--muted)">${s}</p></div></div>`;
+  return `<section class="screen">${headBand("Notificações", "O que falta hoje")}
+  <div class="pad" style="padding-top:20px;padding-bottom:40px">
+    <div class="card" style="padding:8px 18px">
+      ${p.meds.sort(sortTime).map((m) => row(I.medkit, `Tomar ${esc(m.name)}`, `${esc(m.time)} · ${esc(m.dose)}`)).join("")}
+      ${p.rems.sort(sortTime).map((r) => row(I.alarm, esc(r.title), `${esc(r.time)}${r.desc ? " · " + esc(r.desc) : ""}`)).join("")}
+      ${p.soon.map((c) => row(I.cal, `Consulta: ${esc(c.specialty)}`, `${brDate(c.date)} às ${esc(c.time)}`)).join("")}
+      ${p.count ? "" : `<p class="empty-line">Tudo em dia por hoje.</p>`}
+    </div>
+  </div>
+</section>`;
+};
+
+/* ---------- Chat de IA ---------- */
+const CHIPS = ["Posso caminhar com pressão alta?", "Como melhorar meu sono?", "O que comer para controlar a diabetes?", "Posso tomar Dorflex junto com Losartana?", "Dicas para não esquecer os remédios"];
+function md(text) {
+  const lines = esc(text).replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>").split(/\n/);
+  let out = "", list = null, para = [];
+  const flushP = () => { if (para.length) { out += `<p>${para.join("<br>")}</p>`; para = []; } };
+  const flushL = () => { if (list) { out += `<${list.t}>${list.items.map((i) => `<li>${i}</li>`).join("")}</${list.t}>`; list = null; } };
+  for (const raw of lines) {
+    const l = raw.trim();
+    const ul = l.match(/^[-*•]\s+(.*)/), ol = l.match(/^\d+[.)]\s+(.*)/);
+    if (ul || ol) { flushP(); const t = ul ? "ul" : "ol"; if (!list || list.t !== t) { flushL(); list = { t, items: [] }; } list.items.push((ul || ol)[1]); }
+    else if (!l) { flushP(); flushL(); }
+    else { flushL(); para.push(l.replace(/^#+\s*/, "")); }
+  }
+  flushP(); flushL();
+  return out;
+}
+
+const AI = { mode: "checking", sample: null };
+async function detectAI() {
+  if (window.claude && typeof window.claude.use === "function") {
+    try { AI.sample = await window.claude.use("sample"); } catch { AI.sample = null; }
+    if (AI.sample) { AI.mode = "claude"; refreshChatMode(); return; }
+  }
+  try {
+    const r = await fetch("api/health", { cache: "no-store" });
+    const j = r.ok ? await r.json() : null;
+    AI.mode = j && j.ai ? "server" : (j ? "server-nokey" : "offline");
+  } catch { AI.mode = "offline"; }
+  refreshChatMode();
+}
+const modeText = () => ({ claude: "IA conectada", server: "IA conectada", "server-nokey": "Servidor sem chave de API", offline: "IA offline: respostas básicas", checking: "Conectando à IA…" }[AI.mode]);
+function refreshChatMode() { const el = $("#aiMode"); if (el) { el.className = "ai-mode" + (AI.mode === "claude" || AI.mode === "server" ? " on" : ""); el.lastChild.textContent = modeText(); } }
+
+function userContext(u) {
+  const p = u.profile;
+  const meds = u.meds.map((m) => `${m.name} ${m.dose} às ${m.time} (${m.freq})`).join("; ") || "nenhum cadastrado";
+  return `Nome: ${p.name}. Idade: ${p.age} anos. Tipo sanguíneo: ${p.blood || "não informado"}. Alergias: ${p.allergies || "nenhuma informada"}. Remédios cadastrados: ${meds}.`;
+}
+const RULES = (u) => `Você é a assistente de saúde do aplicativo OldHealthy e conversa com uma pessoa idosa. Fale sempre em português do Brasil, com carinho e respeito, frases curtas e palavras simples. Responda em no máximo 120 palavras. Use listas curtas com "- " quando ajudar, e **negrito** só no essencial. Você não substitui o médico: para dose, troca, início ou suspensão de remédios, oriente a confirmar com o médico ou farmacêutico. Considere as alergias e os remédios da pessoa ao responder e avise se algo citado tiver relação com uma alergia cadastrada. Se a pessoa descrever sinal de emergência (dor ou aperto no peito, falta de ar forte, fraqueza ou formigamento de um lado do corpo, boca torta ou fala enrolada, desmaio, sangramento forte, queda com batida na cabeça, confusão de repente), diga logo no começo para ligar 192 (SAMU) ou apertar o botão SOS do aplicativo.\n\nDados da pessoa: ${userContext(u)}\n\nAs mensagens seguintes são a conversa com ela.`;
+
+function offlineAnswer(q) {
+  const n = norm(q);
+  if (/peito|falta de ar|desmai|avc|derrame|formig|sangr/.test(n)) return "**Isso pode ser uma emergência.**\n- Ligue agora para o **192 (SAMU)**.\n- Ou aperte o botão **SOS** na tela inicial.\nNão fique sozinha: chame alguém por perto.";
+  if (/press/.test(n)) return "Caminhar costuma fazer bem para quem tem pressão alta.\n- Comece devagar, 10 a 20 minutos.\n- Pare se sentir tontura, dor no peito ou falta de ar.\n- Se a pressão estiver **muito alta** agora, não faça exercício e fale com o médico.";
+  if (/sono|dormir|insonia/.test(n)) return "Algumas dicas para dormir melhor:\n- Deite e levante sempre no mesmo horário.\n- Evite café e chá preto depois das 16h.\n- Diminua a luz e a TV meia hora antes de dormir.\n- Um chá de camomila morno pode ajudar.";
+  if (/diabet|acucar|glicem/.test(n)) return "Para ajudar a controlar a diabetes:\n- Prefira arroz integral, feijão, verduras e legumes.\n- Evite doces, refrigerante e suco adoçado.\n- Coma em pequenas porções, várias vezes ao dia.\n- Siga a dieta que seu médico passou.";
+  if (/esquec|lembr/.test(n)) return "Para não esquecer os remédios:\n- Use a tela **Medicamentos** e marque cada dose.\n- Ative os **Lembretes** nos horários certos.\n- Deixe os remédios perto de algo que você usa todo dia.";
+  if (/junto|tomar|remedio|dose/.test(n)) return "Sobre misturar ou mudar remédios, o mais seguro é **perguntar ao seu médico ou farmacêutico**. Leve a lista da tela Medicamentos na próxima consulta.";
+  return "Estou sem conexão com a inteligência artificial agora, então só sei responder perguntas simples. Tente perguntar sobre **pressão**, **sono**, **diabetes** ou **remédios**. Em emergência, ligue **192**.";
+}
+
+async function askAI(u, onText) {
+  const turns = u.chat.slice(-20).map((m) => ({ role: m.role, content: m.content }));
+  if (AI.mode === "claude" && AI.sample) {
+    const r = await AI.sample([{ role: "user", content: RULES(u) }, ...turns], { cache: false, effort: "low", onText: ({ text }) => onText(text) });
+    return r.text;
+  }
+  if (AI.mode === "server") {
+    const r = await fetch("api/chat", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ messages: turns, context: userContext(u) }) });
+    const j = await r.json().catch(() => ({}));
+    if (!r.ok) throw { code: "server", message: j.error || "Falha no servidor" };
+    return j.text;
+  }
+  await new Promise((r) => setTimeout(r, 500));
+  return offlineAnswer(turns[turns.length - 1].content);
+}
+
+V.chat = () => {
+  const u = me();
+  const first = u.profile.name.split(" ")[0];
+  return `<section class="chat-wrap">
+  <header class="chat-head pad">
+    <span class="av">${I.bubbles}</span>
+    <div style="min-width:0"><h1>Dúvidas de saúde</h1><p>Assistente IA - sempre com carinho</p>
+      <span class="ai-mode" id="aiMode"><i></i><span>${modeText()}</span></span></div>
+  </header>
+  <div class="msgs pad" id="msgs" aria-live="polite">
+    <div class="msg ai"><p>Olá, ${esc(first)}! Sou sua assistente de saúde. Pode me perguntar sobre remédios, alimentação, sono ou exercícios. Em emergência, ligue <strong>192</strong> ou use o botão SOS.</p></div>
+    ${u.chat.map((m) => m.role === "user" ? `<div class="msg me">${esc(m.content)}</div>` : `<div class="msg ai">${md(m.content)}</div>`).join("")}
+  </div>
+  <div class="chips pad">${CHIPS.map((c) => `<button data-act="chip">${esc(c)}</button>`).join("")}</div>
+  <form class="composer pad" id="chatForm">
+    <label for="chatInput" class="sr" style="position:absolute;left:-9999px">Sua dúvida</label>
+    <input id="chatInput" placeholder="Escreva sua dúvida..." autocomplete="off" maxlength="1500">
+    <button class="send" type="submit" aria-label="Enviar" ${S.busy ? "disabled" : ""}>${I.send}</button>
+  </form>
+</section>${navBar("chat")}`;
+};
+
+async function sendChat(text) {
+  const u = me(); text = text.trim();
+  if (!text || S.busy) return;
+  S.busy = true;
+  u.chat.push({ role: "user", content: text }); save();
+  const box = $("#msgs");
+  box.insertAdjacentHTML("beforeend", `<div class="msg me">${esc(text)}</div><div class="msg ai" id="pending"><span class="typing"><i></i><i></i><i></i></span></div>`);
+  box.scrollTop = box.scrollHeight;
+  $("#chatInput").value = ""; $(".send").disabled = true;
+  const pend = $("#pending");
+  try {
+    const answer = await askAI(u, (t) => { pend.innerHTML = md(t); box.scrollTop = box.scrollHeight; });
+    u.chat.push({ role: "assistant", content: answer }); save();
+    pend.innerHTML = md(answer); pend.removeAttribute("id");
+  } catch (e) {
+    const code = e && e.code;
+    const msg = code === "not_granted" || code === "sampling_disabled" ? "A IA não foi autorizada nesta tela. Vou responder no modo básico." :
+      code === "rate_limited" ? "Muitas perguntas seguidas. Espere um pouquinho e tente de novo." :
+      code === "refused" ? "Não consigo responder essa pergunta. Que tal falar com seu médico?" :
+      "Não consegui falar com a IA agora. Tente de novo em instantes.";
+    if (code === "not_granted" || code === "sampling_disabled") { AI.mode = "offline"; refreshChatMode(); }
+    u.chat.pop(); save();
+    pend.classList.add("err-msg"); pend.innerHTML = `<p>${msg}</p>`; pend.removeAttribute("id");
+  } finally {
+    S.busy = false; const b = $(".send"); if (b) b.disabled = false;
+    box.scrollTop = box.scrollHeight;
+  }
+}
+
+/* ---------- Sheets ---------- */
+function openSheet(html, onMount) {
+  closeSheet();
+  const ov = document.createElement("div");
+  ov.className = "overlay"; ov.id = "overlay";
+  ov.innerHTML = `<div class="sheet pad" role="dialog" aria-modal="true"><div class="grab"></div>${html}</div>`;
+  ov.addEventListener("click", (e) => { if (e.target === ov) closeSheet(); });
+  document.body.appendChild(ov);
+  onMount && onMount(ov);
+  const f = ov.querySelector("input, select, button"); f && f.focus({ preventScroll: true });
+}
+function closeSheet() { const o = $("#overlay"); if (o) o.remove(); if (S.sosTimer) { clearInterval(S.sosTimer); S.sosTimer = null; } }
+function toast(t) {
+  document.querySelectorAll(".toast").forEach((x) => x.remove());
+  const el = document.createElement("div"); el.className = "toast"; el.setAttribute("role", "status"); el.textContent = t;
+  document.body.appendChild(el); setTimeout(() => el.remove(), 2600);
+}
+const fld = (id, label, attrs = "", val = "") => `<div class="field"><label for="${id}">${label}</label><input id="${id}" ${attrs} value="${esc(val)}"></div>`;
+
+const FORMS = {
+  meds: { title: "Novo medicamento", html: () => `
+    ${fld("fName", "Nome do remédio", "required")}
+    <div class="row2">${fld("fTime", "Horário", 'type="time" required', "08:00")}
+    <div class="field"><label for="fFreq">Frequência</label><select id="fFreq"><option>Diário</option><option>Se necessário</option></select></div></div>
+    ${fld("fDose", "Dose", 'placeholder="Ex.: 50mg - 1 comprimido"')}
+    ${fld("fNote", "Observação", 'placeholder="Ex.: Após o almoço"')}`,
+    read: () => ({ name: $("#fName").value.trim(), time: $("#fTime").value, freq: $("#fFreq").value, dose: $("#fDose").value.trim(), note: $("#fNote").value.trim(), takenOn: null }),
+    ok: (o) => o.name && o.time },
+  consultas: { title: "Nova consulta", html: () => `
+    ${fld("fSpec", "Especialidade", 'required placeholder="Ex.: Cardiologista"')}
+    ${fld("fDoc", "Médico(a)", 'placeholder="Ex.: Dra. Ana Souza"')}
+    <div class="row2">${fld("fDate", "Data", 'type="date" required', ymd(addDays(new Date(), 1)))}${fld("fTime", "Horário", 'type="time" required', "10:00")}</div>
+    ${fld("fPlace", "Local", 'placeholder="Ex.: Hospital São Lucas"')}`,
+    read: () => ({ specialty: $("#fSpec").value.trim(), doctor: $("#fDoc").value.trim(), date: $("#fDate").value, time: $("#fTime").value, place: $("#fPlace").value.trim() }),
+    ok: (o) => o.specialty && o.date && o.time },
+  lembretes: { title: "Novo lembrete", html: () => `
+    ${fld("fTitle", "Lembrete", 'required placeholder="Ex.: Beber água"')}
+    ${fld("fTime", "Horário", 'type="time" required', "09:00")}
+    ${fld("fDesc", "Detalhe", 'placeholder="Ex.: Beba um copo de água"')}`,
+    read: () => ({ title: $("#fTitle").value.trim(), time: $("#fTime").value, desc: $("#fDesc").value.trim(), on: true }),
+    ok: (o) => o.title && o.time },
+};
+function openAdd(kind) {
+  const F = FORMS[kind];
+  openSheet(`<h2>${F.title}</h2><form id="addForm" novalidate>${F.html()}<p class="err" id="addErr" role="alert"></p>
+    <button class="btn-primary plain" type="submit">Salvar</button><button class="btn-ghost" type="button" data-act="close">Cancelar</button></form>`, (ov) => {
+    ov.querySelector("#addForm").addEventListener("submit", (e) => {
+      e.preventDefault(); const o = F.read();
+      if (!F.ok(o)) { $("#addErr").textContent = "Preencha os campos obrigatórios."; return; }
+      o.id = uid(); me()[kind].push(o); save(); closeSheet(); render(); toast("Salvo!");
+    });
+  });
+}
+function confirmDelete(kind, id) {
+  const it = me()[kind].find((x) => x.id === id); if (!it) return;
+  const name = it.name || it.specialty || it.title;
+  openSheet(`<h2>Apagar “${esc(name)}”?</h2><p class="sub">Isso não pode ser desfeito.</p>
+    <button class="btn-danger" data-act="doDel" data-kind="${kind}" data-id="${id}">Apagar</button><button class="btn-ghost" data-act="close">Cancelar</button>`);
+}
+function openProfileEdit() {
+  const p = me().profile;
+  openSheet(`<h2>Editar perfil</h2><form id="profForm" novalidate>
+    ${fld("pName", "Nome", "required", p.name)}${fld("pAge", "Idade", 'type="number" min="1" max="120"', p.age)}
+    ${fld("pCName", "Contato de emergência", "", p.contactName)}${fld("pCPhone", "Telefone do contato", 'type="tel" inputmode="tel"', p.contactPhone)}
+    <div class="row2"><div class="field"><label for="pBlood">Tipo sanguíneo</label><select id="pBlood">${["", "A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"].map((b) => `<option ${b === p.blood ? "selected" : ""} value="${b}">${b || "Não sei"}</option>`).join("")}</select></div>
+    ${fld("pAll", "Alergias", "", p.allergies)}</div>
+    <button class="btn-primary plain" type="submit">Salvar</button><button class="btn-ghost" type="button" data-act="close">Cancelar</button></form>`, (ov) => {
+    ov.querySelector("#profForm").addEventListener("submit", (e) => {
+      e.preventDefault();
+      Object.assign(p, { name: $("#pName").value.trim() || p.name, age: Number($("#pAge").value) || p.age, contactName: $("#pCName").value.trim(), contactPhone: $("#pCPhone").value.trim(), blood: $("#pBlood").value, allergies: $("#pAll").value.trim() });
+      save(); closeSheet(); render(); toast("Perfil atualizado");
+    });
+  });
+}
+function openSOS() {
+  const p = me().profile; let n = 5;
+  const tel = (p.contactPhone || "").replace(/[^\d+]/g, "");
+  const numbers = () => `
+    ${tel ? `<div class="num-row"><div class="grow"><small style="color:var(--muted)">${esc(p.contactName || "Contato")}</small><br><b>${esc(p.contactPhone)}</b></div><a href="tel:${esc(tel)}">Ligar</a></div>` : ""}
+    <div class="num-row red"><div class="grow"><small style="color:var(--muted)">SAMU</small><br><b>192</b></div><a href="tel:192">Ligar</a></div>
+    <div class="num-row red"><div class="grow"><small style="color:var(--muted)">Bombeiros</small><br><b>193</b></div><a href="tel:193">Ligar</a></div>
+    <p class="set-note">Se o botão Ligar não abrir o telefone, disque o número mostrado.</p>`;
+  openSheet(`<div class="sos-sheet" id="sosBody"><h2>Pedindo ajuda</h2><p class="sub">Ligando para ${esc(p.contactName || "o SAMU")} em</p>
+    <div class="sos-count" id="sosN">${n}</div><button class="btn-ghost" data-act="close">Cancelar</button></div>`);
+  S.sosTimer = setInterval(() => {
+    n--; const el = $("#sosN");
+    if (!el) { clearInterval(S.sosTimer); S.sosTimer = null; return; }
+    if (n > 0) { el.textContent = n; if (navigator.vibrate) navigator.vibrate(120); return; }
+    clearInterval(S.sosTimer); S.sosTimer = null;
+    $("#sosBody").innerHTML = `<h2 style="color:var(--sos)">Emergência</h2><p class="sub">Toque para ligar agora.</p>${numbers()}<button class="btn-ghost" data-act="close">Fechar</button>`;
+    try { location.href = "tel:" + (tel || "192"); } catch { /* sem discador */ }
+  }, 1000);
+}
+function openGoogle() {
+  openSheet(`<div style="display:flex;align-items:center;gap:10px">${I.google}<h2>Escolha uma conta</h2></div>
+    <p class="sub">para continuar no OldHealthy</p>
+    <button class="google-acc" data-act="googleDemo"><span class="av">M</span><span><b>Maria</b><br><small style="color:var(--muted)">maria@oldhealthy.app</small></span></button>
+    <button class="google-acc" data-act="googleOther"><span class="av" style="background:var(--teal-2)">+</span><span><b>Usar outra conta</b><br><small style="color:var(--muted)">Criar cadastro com seu email</small></span></button>
+    <p class="set-note">Demonstração: o login real com Google precisa de um ID de cliente do Google configurado na publicação.</p>`);
+}
+function openSettings() {
+  const st = DB.settings, u = me();
+  const notifState = typeof Notification === "undefined" ? "indisponível" : Notification.permission === "granted" ? "ativadas" : Notification.permission === "denied" ? "bloqueadas" : "desativadas";
+  openSheet(`<h2>Configurações</h2>
+    <div class="set-group"><b>Tamanho do texto</b><div class="opts">
+      ${[[1, "Normal"], [1.12, "Grande"], [1.25, "Maior"]].map(([v, l]) => `<button aria-pressed="${st.font === v}" data-act="font" data-v="${v}" style="font-size:${v}rem">A ${l}</button>`).join("")}</div></div>
+    <div class="set-group"><b>Aparência</b><div class="opts">
+      ${[["auto", "Automático"], ["light", "Claro"], ["dark", "Escuro"]].map(([v, l]) => `<button aria-pressed="${st.theme === v}" data-act="theme" data-v="${v}">${l}</button>`).join("")}</div></div>
+    <div class="set-group"><b>Avisos no aparelho</b><p class="set-note">Notificações estão ${notifState}. Os lembretes também aparecem dentro do app com o app aberto.</p>
+      ${notifState === "desativadas" ? `<button class="btn-ghost" data-act="notifPerm">Ativar notificações</button>` : ""}</div>
+    <div class="set-group"><b>Assistente de IA</b><p class="set-note">${modeText()}.</p></div>
+    ${u ? `<div class="set-group"><b>Conta</b>
+      <button class="btn-ghost" data-act="clearChat">Apagar conversa com a IA</button>
+      ${u.demo ? `<button class="btn-ghost" data-act="resetDemo">Restaurar dados de exemplo</button>` : ""}
+      <button class="btn-danger" data-act="logout">Sair da conta</button></div>` : ""}
+    <button class="btn-ghost" data-act="close" style="margin-top:22px">Fechar</button>`);
+}
+function applySettings() {
+  const st = DB.settings, root = document.documentElement;
+  root.style.fontSize = st.font * 100 + "%";
+  if (st.theme === "auto") root.removeAttribute("data-oh-theme"); else root.setAttribute("data-oh-theme", st.theme);
+}
+
+/* ---------- Lembretes em tempo real ---------- */
+const fired = new Set();
+function showAlert(title, body) {
+  document.querySelectorAll(".alert-banner").forEach((x) => x.remove());
+  const el = document.createElement("div"); el.className = "alert-banner"; el.setAttribute("role", "alert");
+  el.innerHTML = `<span class="circ-ico">${I.alarm}</span><div class="grow"><h4>${esc(title)}</h4><p>${esc(body)}</p></div><button class="pill-btn" style="padding:10px 16px">Ok</button>`;
+  el.querySelector("button").onclick = () => el.remove();
+  document.body.appendChild(el);
+  if (navigator.vibrate) navigator.vibrate([200, 100, 200]);
+  try { if (typeof Notification !== "undefined" && Notification.permission === "granted") new Notification(title, { body }); } catch { /* ignore */ }
+}
+function tick() {
+  const u = me(); if (!u) return;
+  const hm = nowHM(), key = ymd() + hm;
+  for (const r of u.lembretes) if (r.on && r.time === hm && !fired.has(key + r.id)) { fired.add(key + r.id); showAlert(r.title, r.desc || "Hora do seu lembrete"); }
+  for (const m of u.meds) if (m.freq !== "Se necessário" && !isTaken(m) && m.time === hm && !fired.has(key + m.id)) { fired.add(key + m.id); showAlert(`Hora do remédio: ${m.name}`, m.dose || "Tome conforme orientação"); }
+}
+
+/* ---------- Render e eventos ---------- */
+function render() {
+  if (!me() && !["welcome", "auth"].includes(S.view)) S.view = "welcome";
+  $("#app").innerHTML = (V[S.view] || V.welcome)();
+  if (S.view === "chat") { const b = $("#msgs"); b.scrollTop = b.scrollHeight; }
+}
+
+document.addEventListener("click", async (e) => {
+  const g = e.target.closest("[data-go]");
+  if (g) { closeSheet(); go(g.dataset.go); return; }
+  const a = e.target.closest("[data-act]"); if (!a) return;
+  const act = a.dataset.act, u = me();
+  switch (act) {
+    case "back": back(); break;
+    case "close": closeSheet(); break;
+    case "tab": S.authTab = a.dataset.tab; S.showPass = false; render(); break;
+    case "eye": {
+      const inp = a.parentElement.querySelector("input"); S.showPass = !S.showPass;
+      inp.type = S.showPass ? "text" : "password"; a.innerHTML = S.showPass ? I.eye : I.eyeOff; a.setAttribute("aria-label", S.showPass ? "Esconder senha" : "Mostrar senha"); break;
+    }
+    case "google": openGoogle(); break;
+    case "googleDemo": await ensureDemo(); DB.session = "maria@oldhealthy.app"; save(); closeSheet(); S.stack = []; go("home", { replace: true }); break;
+    case "googleOther": closeSheet(); S.authTab = "cadastro"; render(); break;
+    case "take": { const m = u.meds.find((x) => x.id === a.dataset.id); if (m) { m.takenOn = isTaken(m) ? null : ymd(); save(); render(); if (m.takenOn) toast(`${m.name} marcado como tomado`); } break; }
+    case "del": confirmDelete(a.dataset.kind, a.dataset.id); break;
+    case "doDel": { const k = a.dataset.kind; u[k] = u[k].filter((x) => x.id !== a.dataset.id); save(); closeSheet(); render(); toast("Apagado"); break; }
+    case "add": openAdd(a.dataset.kind); break;
+    case "toggleRem": { const r = u.lembretes.find((x) => x.id === a.dataset.id); r.on = !r.on; save(); render(); break; }
+    case "period": S.period = Number(a.dataset.n); render(); break;
+    case "mood": S.checkinDraft.mood = a.dataset.k; render(); break;
+    case "ckToggle": S.checkinDraft[a.dataset.k] = !S.checkinDraft[a.dataset.k]; a.setAttribute("aria-checked", S.checkinDraft[a.dataset.k]); break;
+    case "sendCheckin": {
+      const d = S.checkinDraft; u.checkins[ymd()] = { mood: d.mood, slept: !!d.slept, pain: !!d.pain, meds: !!d.meds }; save();
+      S.stack = []; go("home", { replace: true }); toast(d.mood === "mal" ? "Check-in salvo. Se piorar, fale com alguém ou use o SOS." : "Check-in enviado! Obrigado.");
+      break;
+    }
+    case "day": S.agendaDay = a.dataset.d; render(); break;
+    case "chip": sendChat(a.textContent); break;
+    case "sos": openSOS(); break;
+    case "editProfile": openProfileEdit(); break;
+    case "font": DB.settings.font = Number(a.dataset.v); save(); applySettings(); openSettings(); break;
+    case "theme": DB.settings.theme = a.dataset.v; save(); applySettings(); openSettings(); break;
+    case "notifPerm": try { await Notification.requestPermission(); } catch { /* sem suporte */ } openSettings(); break;
+    case "clearChat": u.chat = []; save(); closeSheet(); render(); toast("Conversa apagada"); break;
+    case "resetDemo": DB.users["maria@oldhealthy.app"] = await demoUser(); save(); closeSheet(); render(); toast("Dados de exemplo restaurados"); break;
+    case "logout": DB.session = null; save(); closeSheet(); S.stack = []; S.view = "welcome"; render(); break;
+  }
+});
+
+document.addEventListener("submit", async (e) => {
+  const f = e.target;
+  if (f.id === "chatForm") { e.preventDefault(); sendChat($("#chatInput").value); return; }
+  if (f.id === "loginForm") {
+    e.preventDefault();
+    const email = norm($("#lgEmail").value), pass = $("#lgPass").value;
+    if (email === "maria@oldhealthy.app") await ensureDemo();
+    const u = DB.users[email];
+    if (!u || u.pass !== await hashPass(pass)) { $("#authErr").textContent = "Email ou senha incorretos. Confira e tente de novo."; return; }
+    DB.session = email; save(); S.stack = []; S.showPass = false; go("home", { replace: true });
+  }
+  if (f.id === "signupForm") {
+    e.preventDefault();
+    const name = $("#suName").value.trim(), age = Number($("#suAge").value), email = norm($("#suEmail").value), pass = $("#suPass").value;
+    const err = !name ? "Digite seu nome." : !(age > 0 && age < 121) ? "Digite uma idade válida." : !/^\S+@\S+\.\S+$/.test(email) ? "Digite um email válido." : pass.length < 6 ? "A senha precisa ter pelo menos 6 caracteres." : DB.users[email] ? "Este email já tem cadastro. Use a aba Login." : "";
+    if (err) { $("#authErr").textContent = err; return; }
+    DB.users[email] = { email, pass: await hashPass(pass), profile: { name, age, contactName: "", contactPhone: "", blood: "", allergies: "" }, meds: [], consultas: [], lembretes: [], checkins: {}, chat: [] };
+    DB.session = email; save(); S.stack = []; S.showPass = false; go("home", { replace: true }); toast(`Bem-vindo(a), ${name.split(" ")[0]}!`);
+  }
+});
+document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeSheet(); });
+
+async function ensureDemo() { if (!DB.users["maria@oldhealthy.app"]) { DB.users["maria@oldhealthy.app"] = await demoUser(); save(); } }
+
+/* ---------- Início ---------- */
+load();
+applySettings();
+$("#gearBtn").innerHTML = I.gear;
+$("#gearBtn").addEventListener("click", openSettings);
+if (me()) S.view = "home";
+render();
+detectAI();
+setInterval(() => { tick(); if (S.view === "home" && !$("#overlay")) { /* mantém contadores atualizados */ const y = window.scrollY; render(); window.scrollTo(0, y); } }, 30000);
+})();
+</script>
+
+</body>
+</html>
