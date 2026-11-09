@@ -18,6 +18,11 @@ App de saúde para pessoas idosas, feito para celular (funciona no navegador e p
 
 Os dados ficam salvos no próprio aparelho (localStorage).
 
+## Apresentar em qualquer computador
+
+Abra o arquivo **`OldHealthy.html`** com dois cliques (Chrome, Edge ou Firefox). Não precisa de internet, conta ou instalação. Entre com `maria@oldhealthy.app` / `Maria@123`.
+Nesse modo o chat responde em **modo demonstração**: respostas prontas e personalizadas (remédios e alergias da Maria, pressão, diabetes, sono, alimentação, exercícios, dores, tontura, quedas, emoções, emergência).
+
 ## Rodar com a IA funcionando
 
 O chat usa a API do Claude, que **é paga**: você precisa de uma chave em https://console.anthropic.com (créditos pré-pagos).

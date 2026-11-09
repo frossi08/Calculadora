@@ -954,8 +954,8 @@ async function detectAI() {
   } catch { AI.mode = "offline"; }
   refreshChatMode();
 }
-const modeText = () => ({ claude: "IA conectada", server: "IA conectada", "server-nokey": "Servidor sem chave de API", offline: "IA offline: respostas básicas", checking: "Conectando à IA…" }[AI.mode]);
-function refreshChatMode() { const el = $("#aiMode"); if (el) { el.className = "ai-mode" + (AI.mode === "claude" || AI.mode === "server" ? " on" : ""); el.lastChild.textContent = modeText(); } }
+const modeText = () => ({ claude: "IA conectada", server: "IA conectada", "server-nokey": "Modo demonstração", offline: "Modo demonstração", checking: "Conectando à IA…" }[AI.mode]);
+function refreshChatMode() { const el = $("#aiMode"); if (el) { el.className = "ai-mode" + (AI.mode === "checking" ? "" : " on"); el.lastChild.textContent = modeText(); } }
 
 function userContext(u) {
   const p = u.profile;
@@ -964,15 +964,43 @@ function userContext(u) {
 }
 const RULES = (u) => `Você é a assistente de saúde do aplicativo OldHealthy e conversa com uma pessoa idosa. Fale sempre em português do Brasil, com carinho e respeito, frases curtas e palavras simples. Responda em no máximo 120 palavras. Use listas curtas com "- " quando ajudar, e **negrito** só no essencial. Você não substitui o médico: para dose, troca, início ou suspensão de remédios, oriente a confirmar com o médico ou farmacêutico. Considere as alergias e os remédios da pessoa ao responder e avise se algo citado tiver relação com uma alergia cadastrada. Se a pessoa descrever sinal de emergência (dor ou aperto no peito, falta de ar forte, fraqueza ou formigamento de um lado do corpo, boca torta ou fala enrolada, desmaio, sangramento forte, queda com batida na cabeça, confusão de repente), diga logo no começo para ligar 192 (SAMU) ou apertar o botão SOS do aplicativo.\n\nDados da pessoa: ${userContext(u)}\n\nAs mensagens seguintes são a conversa com ela.`;
 
-function offlineAnswer(q) {
-  const n = norm(q);
-  if (/peito|falta de ar|desmai|avc|derrame|formig|sangr/.test(n)) return "**Isso pode ser uma emergência.**\n- Ligue agora para o **192 (SAMU)**.\n- Ou aperte o botão **SOS** na tela inicial.\nNão fique sozinha: chame alguém por perto.";
-  if (/press/.test(n)) return "Caminhar costuma fazer bem para quem tem pressão alta.\n- Comece devagar, 10 a 20 minutos.\n- Pare se sentir tontura, dor no peito ou falta de ar.\n- Se a pressão estiver **muito alta** agora, não faça exercício e fale com o médico.";
-  if (/sono|dormir|insonia/.test(n)) return "Algumas dicas para dormir melhor:\n- Deite e levante sempre no mesmo horário.\n- Evite café e chá preto depois das 16h.\n- Diminua a luz e a TV meia hora antes de dormir.\n- Um chá de camomila morno pode ajudar.";
-  if (/diabet|acucar|glicem/.test(n)) return "Para ajudar a controlar a diabetes:\n- Prefira arroz integral, feijão, verduras e legumes.\n- Evite doces, refrigerante e suco adoçado.\n- Coma em pequenas porções, várias vezes ao dia.\n- Siga a dieta que seu médico passou.";
-  if (/esquec|lembr/.test(n)) return "Para não esquecer os remédios:\n- Use a tela **Medicamentos** e marque cada dose.\n- Ative os **Lembretes** nos horários certos.\n- Deixe os remédios perto de algo que você usa todo dia.";
-  if (/junto|tomar|remedio|dose/.test(n)) return "Sobre misturar ou mudar remédios, o mais seguro é **perguntar ao seu médico ou farmacêutico**. Leve a lista da tela Medicamentos na próxima consulta.";
-  return "Estou sem conexão com a inteligência artificial agora, então só sei responder perguntas simples. Tente perguntar sobre **pressão**, **sono**, **diabetes** ou **remédios**. Em emergência, ligue **192**.";
+/* Assistente de demonstração: funciona sem internet e sem conta, com respostas prontas e personalizadas. */
+function offlineAnswer(q, u) {
+  const n = norm(q), p = u.profile, first = p.name.split(" ")[0];
+  const meds = u.meds.filter((m) => n.includes(norm(m.name).split(" ")[0]));
+  const allergyWords = norm(p.allergies).split(/[,;\/]| e /).map((x) => x.trim()).filter((x) => x.length > 2);
+  const allergyHits = allergyWords.filter((a) => n.includes(a));
+  const T = [
+    [/peito|falta de ar|sem ar|desmai|avc|derrame|formig|boca torta|fala enrol|sangr|bati a cabeca|convuls/, () => `**${first}, isso pode ser uma emergência.**\n- Ligue agora para o **192 (SAMU)**.\n- Ou aperte o botão **SOS** na tela inicial.\n- Não fique sozinha: chame alguém por perto e não dirija.`],
+    [/^(oi|ola|bom dia|boa tarde|boa noite|e ai|tudo bem)\b/, () => `Olá, ${first}! Que bom falar com você. Como posso ajudar hoje? Pode perguntar sobre seus **remédios**, **pressão**, **sono**, **alimentação** ou **exercícios**.`],
+    [/obrigad|valeu/, () => `Por nada, ${first}! Estou aqui sempre que precisar. Cuide-se bem.`],
+    [/press/, () => "Caminhar costuma fazer bem para quem tem pressão alta.\n- Comece devagar, 10 a 20 minutos.\n- Use roupa leve e beba água.\n- Pare se sentir tontura, dor no peito ou falta de ar.\n- Se a pressão estiver **muito alta** agora, não faça exercício e fale com o médico.\n\nDica: o lembrete **Medir a pressão** ajuda a acompanhar os valores."],
+    [/sono|dormir|insonia|acordo de noite/, () => "Algumas dicas para dormir melhor:\n- Deite e levante sempre no mesmo horário.\n- Evite café, chá preto e refrigerante depois das 16h.\n- Diminua a luz e a TV meia hora antes de dormir.\n- Um chá de camomila morno pode ajudar.\n- Se cochilar de dia, que seja no máximo 30 minutos."],
+    [/diabet|acucar|glicem|glicose/, () => "Para ajudar a controlar a diabetes:\n- Prefira arroz integral, feijão, verduras e legumes.\n- Evite doces, refrigerante e suco adoçado.\n- Coma pequenas porções, várias vezes ao dia.\n- Caminhar depois das refeições ajuda a baixar o açúcar.\n- Siga a dieta e os remédios que o médico passou."],
+    [/colesterol|gordura/, () => "Para cuidar do colesterol:\n- Prefira peixe, frango sem pele, aveia e azeite.\n- Evite frituras, embutidos e gordura de carne.\n- Coma frutas e verduras todos os dias.\n- Continue a **Sinvastatina** como o médico orientou."],
+    [/esquec|lembrar|nao lembro/, () => "Para não esquecer os remédios:\n- Use a tela **Medicamentos** e toque no círculo a cada dose.\n- Ative os **Lembretes** nos horários certos.\n- Deixe os remédios perto de algo que você usa todo dia, como a escova de dentes.\n- Uma caixinha separada por dias também ajuda."],
+    [/agua|hidrat|calor|sede/, () => "Beber água é muito importante, porque com a idade a sede diminui.\n- Tente beber de 6 a 8 copos por dia.\n- Deixe uma garrafinha sempre por perto.\n- Sucos naturais, sopas e frutas como melancia também ajudam.\n- Se o médico limitou a água, siga a orientação dele."],
+    [/comer|aliment|comida|dieta|fruta/, () => "Uma alimentação boa para o dia a dia:\n- Metade do prato com verduras e legumes.\n- Arroz e feijão, de preferência integrais.\n- Uma proteína: ovo, frango, peixe ou carne magra.\n- Pouco sal e pouco açúcar.\n- Frutas nos lanches."],
+    [/caminh|exercic|atividade|academia|alonga/, () => "Exercício faz muito bem em qualquer idade.\n- Caminhada leve de 20 a 30 minutos, quase todos os dias.\n- Alongamentos pela manhã.\n- Hidroginástica é ótima para as articulações.\n- Comece devagar e pare se sentir dor no peito, tontura ou falta de ar."],
+    [/costas|joelho|articula|artrite|artrose|dor no corpo|coluna/, () => "Para dores nas costas e articulações:\n- Compressa morna por 15 minutos alivia.\n- Alongamentos leves e caminhada ajudam.\n- Evite carregar peso e ficar muito tempo na mesma posição.\n- Se a dor for forte ou não passar, fale com o médico antes de tomar remédio por conta própria."],
+    [/tontura|tonta|vertigem/, () => "Se sentir tontura:\n- **Sente-se ou deite na hora** para evitar queda.\n- Levante devagar da cama: sente primeiro, depois fique de pé.\n- Beba um pouco de água.\n- Se vier com dor no peito, fala enrolada ou fraqueza, ligue **192**.\n- Se acontecer com frequência, conte ao médico."],
+    [/queda|cair|cai |escorreg/, () => "Para evitar quedas em casa:\n- Tire tapetes soltos do caminho.\n- Deixe uma luz acesa à noite no caminho do banheiro.\n- Use barras de apoio no banheiro.\n- Prefira sapatos fechados com sola de borracha.\n- Se cair e bater a cabeça, procure atendimento."],
+    [/memoria|esquecida|confus/, () => "Para manter a memória ativa:\n- Faça palavras cruzadas, leia e converse bastante.\n- Durma bem e caminhe.\n- Anote compromissos na **Agenda** do app.\n- Se notar esquecimentos que atrapalham o dia a dia, comente com o médico."],
+    [/triste|sozinh|ansied|deprim|desanim|medo/, () => `${first}, obrigada por contar como está se sentindo.\n- Converse com alguém de confiança, como o ${p.contactName || "seu contato de emergência"}.\n- Sair um pouco ao sol e caminhar ajuda o humor.\n- Grupos de convivência e igreja são ótimas companhias.\n- Se a tristeza durar muitos dias, fale com o médico. Você merece cuidado.`],
+    [/gripe|resfri|vacina|febre|tosse/, () => "Sobre gripe e vacinas:\n- Tome a **vacina da gripe todo ano**, de graça no posto de saúde.\n- Descanse e beba bastante líquido.\n- Febre alta, falta de ar ou tosse por mais de uma semana: procure o médico."],
+    [/intestino|prisao de ventre|constip/, () => "Para o intestino funcionar melhor:\n- Beba bastante água.\n- Coma frutas como mamão e ameixa, e verduras.\n- Caminhe todos os dias.\n- Tente ir ao banheiro sempre no mesmo horário."],
+  ];
+  let answer = null;
+  if (meds.length) {
+    const list = meds.map((m) => `- **${m.name}** ${m.dose ? "(" + m.dose + ")" : ""} às ${m.time}${m.note ? ": " + m.note.toLowerCase() : ""}`).join("\n");
+    answer = `Pelo que está no seu app:\n${list}\n\n${meds.length > 1 || /junto|mistur|mesmo tempo|com /.test(n) ? "Muitos remédios podem ser tomados no mesmo dia, mas **misturar ou mudar horários deve ser confirmado com seu médico ou farmacêutico**." : "Tome sempre na dose e no horário que o médico passou. Na dúvida, pergunte ao farmacêutico."}`;
+  } else {
+    for (const [re, fn] of T) if (re.test(n)) { answer = fn(); break; }
+  }
+  if (!answer && /remedio|medica|dose|tomar|comprimido/.test(n)) answer = "Sobre remédios, o mais seguro é **confirmar com seu médico ou farmacêutico** antes de mudar a dose, o horário ou tomar algo novo. Leve a lista da tela **Medicamentos** na próxima consulta.";
+  if (!answer) answer = `Boa pergunta, ${first}! Posso ajudar com **pressão**, **diabetes**, **sono**, **alimentação**, **exercícios**, **dores**, **tontura**, **quedas** e com os seus **remédios**. Para qualquer sintoma novo ou forte, fale com seu médico. Em emergência, ligue **192**.`;
+  if (allergyHits.length) answer = `**Atenção:** você tem alergia cadastrada a **${allergyHits.join(", ")}**. Não tome sem falar com o médico.\n\n` + answer;
+  return answer;
 }
 
 async function askAI(u, onText) {
@@ -988,8 +1016,11 @@ async function askAI(u, onText) {
     if (!r.ok) throw { code: "server", message: j.error || "Falha no servidor" };
     return j.text;
   }
-  await new Promise((r) => setTimeout(r, 500));
-  return offlineAnswer(turns[turns.length - 1].content);
+  const full = offlineAnswer(turns[turns.length - 1].content, u);
+  await new Promise((r) => setTimeout(r, 700));
+  const words = full.split(/(\s+)/);
+  for (let i = 0; i < words.length; i += 4) { onText(words.slice(0, i + 4).join("")); await new Promise((r) => setTimeout(r, 35)); }
+  return full;
 }
 
 V.chat = () => {

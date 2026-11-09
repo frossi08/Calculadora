@@ -23,6 +23,10 @@ doc = (
 (here / "index.html").write_text(doc, encoding="utf-8")
 print("index.html gerado")
 
+# Arquivo único para apresentar em qualquer computador (abre com dois cliques, sem servidor).
+(here / "OldHealthy.html").write_text(doc.replace(manifest, ""), encoding="utf-8")
+print("OldHealthy.html gerado")
+
 if len(sys.argv) > 1:
     pathlib.Path(sys.argv[1]).write_text(body, encoding="utf-8")
     print("versão sem doctype gerada em", sys.argv[1])
