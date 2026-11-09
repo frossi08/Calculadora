@@ -441,6 +441,7 @@ svg { display: block; }
 .num-row b { font-size: 1.3rem; font-variant-numeric: tabular-nums; user-select: all; }
 .num-row a, .num-row button { padding: 10px 16px; border-radius: 999px; background: var(--teal-strong); color: #fff; font-weight: 700; text-decoration: none; }
 .num-row.red a { background: var(--sos); }
+.num-row .copy { background: var(--surface); color: var(--ink); border: 2px solid var(--line); }
 .notif-item { display: flex; gap: 14px; align-items: center; padding: 14px 0; }
 .notif-item + .notif-item { border-top: 1px solid var(--line); }
 .google-acc { display: flex; align-items: center; gap: 14px; padding: 14px; border-radius: 18px; border: 2px solid var(--line); width: 100%; text-align: left; margin-top: 12px; }
@@ -903,6 +904,7 @@ V.perfil = () => {
       <div class="info-row"><span class="ic">${I.userCircle}</span><div style="min-width:0"><small>Nome</small><b>${esc(p.contactName || "—")}</b></div></div>
       <div class="info-row"><span class="ic">${I.phone}</span><div style="min-width:0"><small>Telefone</small><b>${esc(p.contactPhone || "—")}</b></div></div>
       ${p.contactPhone ? `<a class="call-btn" href="tel:${esc(p.contactPhone.replace(/[^\d+]/g, ""))}">${I.phone} Ligar agora</a>` : ""}
+      ${p.contactPhone ? `<button class="btn-ghost" data-act="copy" data-v="${esc(p.contactPhone)}" style="margin-top:10px"><b style="font:inherit">Copiar número</b></button>` : ""}
     </div>
     <div class="card info-card">
       <h2>Informações de Saúde</h2>
@@ -982,6 +984,7 @@ function offlineAnswer(q) {
 }
 
 async function askAI(u, onText) {
+  if (AI.ready) await AI.ready;
   const turns = u.chat.slice(-20).map((m) => ({ role: m.role, content: m.content }));
   if (AI.mode === "claude" && AI.sample) {
     const r = await AI.sample([{ role: "user", content: RULES(u) }, ...turns], { cache: false, effort: "low", onText: ({ text }) => onText(text) });
@@ -1126,9 +1129,9 @@ function openSOS() {
   const p = me().profile; let n = 5;
   const tel = (p.contactPhone || "").replace(/[^\d+]/g, "");
   const numbers = () => `
-    ${tel ? `<div class="num-row"><div class="grow"><small style="color:var(--muted)">${esc(p.contactName || "Contato")}</small><br><b>${esc(p.contactPhone)}</b></div><a href="tel:${esc(tel)}">Ligar</a></div>` : ""}
-    <div class="num-row red"><div class="grow"><small style="color:var(--muted)">SAMU</small><br><b>192</b></div><a href="tel:192">Ligar</a></div>
-    <div class="num-row red"><div class="grow"><small style="color:var(--muted)">Bombeiros</small><br><b>193</b></div><a href="tel:193">Ligar</a></div>
+    ${tel ? `<div class="num-row"><div class="grow"><small style="color:var(--muted)">${esc(p.contactName || "Contato")}</small><br><b>${esc(p.contactPhone)}</b></div><button class="copy" data-act="copy" data-v="${esc(p.contactPhone)}">Copiar</button><a href="tel:${esc(tel)}">Ligar</a></div>` : ""}
+    <div class="num-row red"><div class="grow"><small style="color:var(--muted)">SAMU</small><br><b>192</b></div><button class="copy" data-act="copy" data-v="192">Copiar</button><a href="tel:192">Ligar</a></div>
+    <div class="num-row red"><div class="grow"><small style="color:var(--muted)">Bombeiros</small><br><b>193</b></div><button class="copy" data-act="copy" data-v="193">Copiar</button><a href="tel:193">Ligar</a></div>
     <p class="set-note">Se o botão Ligar não abrir o telefone, disque o número mostrado.</p>`;
   openSheet(`<div class="sos-sheet" id="sosBody"><h2>Pedindo ajuda</h2><p class="sub">Ligando para ${esc(p.contactName || "o SAMU")} em</p>
     <div class="sos-count" id="sosN">${n}</div><button class="btn-ghost" data-act="close">Cancelar</button></div>`);
@@ -1227,6 +1230,14 @@ document.addEventListener("click", async (e) => {
     }
     case "day": S.agendaDay = a.dataset.d; render(); break;
     case "chip": sendChat(a.textContent); break;
+    case "copy": {
+      const v = a.dataset.v;
+      navigator.clipboard.writeText(v).then(() => toast(`Número ${v} copiado`), () => {
+        const r = document.createRange(); const b = a.parentElement.querySelector("b"); r.selectNodeContents(b);
+        const sel = getSelection(); sel.removeAllRanges(); sel.addRange(r); toast("Número selecionado: copie e disque");
+      });
+      break;
+    }
     case "sos": openSOS(); break;
     case "editProfile": openProfileEdit(); break;
     case "font": DB.settings.font = Number(a.dataset.v); save(); applySettings(); openSettings(); break;
@@ -1269,7 +1280,10 @@ $("#gearBtn").innerHTML = I.gear;
 $("#gearBtn").addEventListener("click", openSettings);
 if (me()) S.view = "home";
 render();
-detectAI();
+AI.ready = detectAI();
+if ("serviceWorker" in navigator && /^https?:$/.test(location.protocol) && window.top === window.self && !window.claude) {
+  navigator.serviceWorker.register("sw.js").catch(() => {});
+}
 setInterval(() => { tick(); if (S.view === "home" && !$("#overlay")) { /* mantém contadores atualizados */ const y = window.scrollY; render(); window.scrollTo(0, y); } }, 30000);
 })();
 </script>
