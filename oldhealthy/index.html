@@ -80,6 +80,7 @@
 }
 
 * { box-sizing: border-box; }
+[hidden] { display: none !important; }
 html, body { height: 100%; }
 body {
   margin: 0; background: var(--bg); color: var(--text);
@@ -442,12 +443,63 @@ svg { display: block; }
 .alert-banner h4 { margin: 0; font-family: var(--font-display); color: var(--ink); font-size: calc(1.15rem * var(--hs)); }
 .sos-sheet { text-align: center; }
 .sos-count { width: 150px; height: 150px; margin: 18px auto; border-radius: 50%; background: var(--sos); color: #fff; display: grid; place-items: center; font-family: var(--font-display); font-weight: 800; font-size: calc(3.6rem * var(--hs)); box-shadow: 0 0 0 10px var(--sos-soft); }
-.num-row { display: flex; align-items: center; gap: 12px; padding: 14px 16px; border-radius: 18px; background: var(--surface-2); margin-top: 10px; text-align: left; }
-.num-row .grow { flex: 1; min-width: 0; }
-.num-row b { font-size: 1.3rem; font-variant-numeric: tabular-nums; user-select: all; }
-.num-row a, .num-row button { padding: 10px 16px; border-radius: 999px; background: var(--teal-strong); color: #fff; font-weight: 700; text-decoration: none; }
-.num-row.red a { background: var(--sos); }
+.num-row { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 12px; padding: 14px 16px; border-radius: 18px; background: var(--surface-2); margin-top: 10px; text-align: left; }
+.num-row .grow { flex: 1 1 150px; min-width: 0; }
+.num-row small { display: block; color: var(--muted); font-size: .9rem; }
+.num-row b { display: block; font-size: 1.25rem; font-variant-numeric: tabular-nums; white-space: nowrap; user-select: all; }
+.num-actions { display: flex; gap: 8px; margin-left: auto; }
+.num-row button { display: inline-flex; align-items: center; gap: 6px; padding: 10px 16px; border-radius: 999px; background: var(--teal-strong); color: #fff; font-weight: 700; }
+.num-row button .ico { width: 1.1rem; height: 1.1rem; }
+.num-row.red [data-act="call"] { background: var(--sos); }
 .num-row .copy { background: var(--surface); color: var(--ink); border: 2px solid var(--line); }
+
+/* Tela de ligação (simulação realista) */
+.call-screen {
+  position: fixed; inset: 0; z-index: 120; display: flex; flex-direction: column; align-items: center; text-align: center; color: #fff;
+  padding: calc(var(--sat) + 34px) 24px calc(var(--sab) + 22px);
+  background: radial-gradient(120% 70% at 50% 0%, #2f6f6f 0%, #163a3f 45%, #0a171b 100%);
+  animation: callIn .35s ease-out;
+}
+.call-screen.emerg { background: radial-gradient(120% 70% at 50% 0%, #7a2a2a 0%, #3a1416 45%, #120709 100%); }
+.call-screen.leaving { animation: callOut .4s ease-in forwards; }
+@keyframes callIn { from { opacity: 0; transform: translateY(24px) scale(.98); } to { opacity: 1; transform: none; } }
+@keyframes callOut { to { opacity: 0; transform: translateY(16px); } }
+.call-status { font-size: 1.05rem; color: rgba(255,255,255,.75); min-height: 1.4em; font-variant-numeric: tabular-nums; letter-spacing: .02em; }
+.call-name { color: #fff; font-size: calc(2rem * var(--hs)); font-weight: 700; margin-top: 6px; }
+.call-num { color: rgba(255,255,255,.8); font-size: 1.15rem; margin-top: 4px; font-variant-numeric: tabular-nums; }
+.call-sub { color: rgba(255,255,255,.65); font-size: .95rem; margin-top: 2px; min-height: 1.3em; }
+.call-mid { flex: 1; display: grid; place-items: center; width: 100%; min-height: 0; }
+.call-avatar { position: relative; width: 132px; height: 132px; display: grid; place-items: center; }
+.call-avatar .av { position: relative; z-index: 2; width: 132px; height: 132px; border-radius: 50%; display: grid; place-items: center; background: linear-gradient(160deg, #6fd0c4, #2a8f86); font-family: var(--font-display); font-weight: 800; font-size: 2.8rem; box-shadow: 0 10px 30px rgba(0,0,0,.35); }
+.call-screen.emerg .call-avatar .av { background: linear-gradient(160deg, #ff7a7a, #c62828); }
+.call-avatar .av svg { width: 64px; height: 64px; }
+.call-avatar .ring { position: absolute; inset: 0; border-radius: 50%; border: 2px solid rgba(255,255,255,.55); animation: ring 2.4s ease-out infinite; }
+.call-avatar .ring:nth-child(2) { animation-delay: .8s; }
+.call-avatar .ring:nth-child(3) { animation-delay: 1.6s; }
+@keyframes ring { from { transform: scale(1); opacity: .7; } to { transform: scale(2.1); opacity: 0; } }
+.call-screen.connected .ring { animation: none; opacity: 0; }
+.call-screen.connected .call-avatar .av { animation: talk 1.6s ease-in-out infinite; }
+@keyframes talk { 0%, 100% { box-shadow: 0 0 0 0 rgba(255,255,255,.25), 0 10px 30px rgba(0,0,0,.35); } 50% { box-shadow: 0 0 0 14px rgba(255,255,255,0), 0 10px 30px rgba(0,0,0,.35); } }
+.call-actions { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px 26px; margin-bottom: 26px; }
+.call-actions button { display: flex; flex-direction: column; align-items: center; gap: 8px; color: #fff; font-size: .9rem; }
+.call-actions .cb { width: 72px; height: 72px; border-radius: 50%; display: grid; place-items: center; background: rgba(255,255,255,.16); backdrop-filter: blur(6px); transition: background .15s, color .15s; }
+.call-actions .cb svg { width: 30px; height: 30px; }
+.call-actions button[aria-pressed="true"] .cb { background: #fff; color: #0f2a2e; }
+.end-call { width: 78px; height: 78px; border-radius: 50%; background: #E53935; color: #fff; display: grid; place-items: center; box-shadow: 0 10px 26px rgba(229,57,53,.45); }
+.end-call svg { width: 36px; height: 36px; transform: rotate(135deg); }
+.end-call:active { transform: scale(.94); }
+.call-note { margin-top: 14px; font-size: .78rem; color: rgba(255,255,255,.5); }
+.keypad { width: 100%; display: flex; flex-direction: column; align-items: center; }
+.keypad .typed { font-size: 1.8rem; min-height: 1.4em; letter-spacing: .1em; font-variant-numeric: tabular-nums; }
+.keys { display: grid; grid-template-columns: repeat(3, 72px); gap: 14px 24px; margin-top: 8px; }
+.key { width: 72px; height: 72px; border-radius: 50%; background: rgba(255,255,255,.16); color: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; line-height: 1; }
+.key b { font-size: 1.8rem; font-weight: 500; font-family: var(--font-body); }
+.key small { font-size: .62rem; letter-spacing: .14em; opacity: .7; margin-top: 2px; min-height: .8em; }
+.key:active { background: rgba(255,255,255,.4); }
+.call-screen.kp .call-actions, .call-screen.kp .call-sub { display: none; }
+.call-screen.kp .call-mid { align-items: end; padding-bottom: 22px; }
+.call-bottom { position: relative; width: 100%; display: flex; justify-content: center; }
+.kp-hide { position: absolute; right: 18px; top: 50%; transform: translateY(-50%); color: #fff; font-size: 1.05rem; font-weight: 600; padding: 10px; }
 .notif-item { display: flex; gap: 14px; align-items: center; padding: 14px 0; }
 .notif-item + .notif-item { border-top: 1px solid var(--line); }
 .google-acc { display: flex; align-items: center; gap: 14px; padding: 14px; border-radius: 18px; border: 2px solid var(--line); width: 100%; text-align: left; margin-top: 12px; }
@@ -469,18 +521,19 @@ html.phone-mode #scroller { position: absolute; inset: 0; overflow-y: auto; over
 html.phone-mode #scroller::-webkit-scrollbar { display: none; }
 html.phone-mode #shell { min-height: 100%; }
 html.phone-mode #statusbar {
-  display: flex; position: absolute; z-index: 95; top: 0; left: 0; right: 0; height: 52px;
+  display: flex; position: absolute; z-index: 130; top: 0; left: 0; right: 0; height: 52px;
   padding: 16px 32px 0 40px; justify-content: space-between; align-items: center;
   font: 600 16px/1 var(--font-body); color: var(--text); pointer-events: none; font-variant-numeric: tabular-nums;
 }
 html.phone-mode #statusbar.light { color: #fff; }
+html.phone-mode #statusbar.in-call, html.phone-mode #statusbar.in-call.solid { background: transparent; box-shadow: none; }
 html.phone-mode #statusbar.solid { background: var(--bg); box-shadow: 0 1px 0 var(--line); }
 html.phone-mode #statusbar.light.solid { background: var(--teal-strong); box-shadow: none; }
 html.phone-mode #statusbar.chat.solid, html.phone-mode #statusbar.chat { background: var(--surface); }
 #statusbar .island { position: absolute; left: 50%; top: 11px; transform: translateX(-50%); width: 120px; height: 34px; border-radius: 20px; background: #000; }
 #statusbar .sb-right { display: flex; align-items: center; gap: 6px; }
 #statusbar svg { width: auto; height: 13px; }
-html.phone-mode #homebar { display: block; position: absolute; z-index: 95; bottom: 8px; left: 50%; transform: translateX(-50%); width: 136px; height: 5px; border-radius: 3px; background: var(--text); opacity: .75; pointer-events: none; }
+html.phone-mode #homebar { display: block; position: absolute; z-index: 130; bottom: 8px; left: 50%; transform: translateX(-50%); width: 136px; height: 5px; border-radius: 3px; background: var(--text); opacity: .75; pointer-events: none; }
 
 /* Anotações */
 .quick { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 20px; }
@@ -635,6 +688,10 @@ const I = {
   eye: sv('<path d="M2 12s3.6-6.5 10-6.5S22 12 22 12s-3.6 6.5-10 6.5S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>'),
   eyeOff: sv('<path d="M2 12s3.6-6.5 10-6.5S22 12 22 12s-3.6 6.5-10 6.5S2 12 2 12z"/><circle cx="12" cy="12" r="3"/><path d="M3.5 3.5l17 17"/>'),
   scale: sv('<path d="M5 4h14l2 16H3z"/><path d="M9 9.5a3 3 0 0 1 6 0"/><path d="M12 9.5l1.5-2"/>'),
+  mic: sv('<rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21"/><path d="M3 3l18 18"/>'),
+  grid: `<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><g fill="currentColor"><circle cx="6" cy="5" r="1.9"/><circle cx="12" cy="5" r="1.9"/><circle cx="18" cy="5" r="1.9"/><circle cx="6" cy="11" r="1.9"/><circle cx="12" cy="11" r="1.9"/><circle cx="18" cy="11" r="1.9"/><circle cx="6" cy="17" r="1.9"/><circle cx="12" cy="17" r="1.9"/><circle cx="18" cy="17" r="1.9"/><circle cx="12" cy="22" r="1.6"/></g></svg>`,
+  speaker: sv('<path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z" fill="currentColor"/><path d="M15.5 9a4 4 0 0 1 0 6M18 6.5a7.5 7.5 0 0 1 0 11"/>'),
+  cross: `<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M9 2.5h6v6.5h6.5v6H15v6.5H9V15H2.5V9H9z"/></svg>`,
   edit: `<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M4 5.5A1.5 1.5 0 0 1 5.5 4H13l-2 2H6v12h12v-5l2-2v7.5a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 18.5zM19.6 2.6l1.8 1.8-9.2 9.2-2.6.8.8-2.6z"/></svg>`,
   google: `<svg viewBox="0 0 24 24" width="30" height="30" aria-hidden="true"><path fill="#E5463B" d="M21.6 12.2c0-.7-.1-1.4-.2-2H12v3.8h5.4a4.6 4.6 0 0 1-2 3v2.5h3.2c1.9-1.7 3-4.3 3-7.3z"/><path fill="#E5463B" d="M12 22c2.7 0 5-.9 6.6-2.4l-3.2-2.5c-.9.6-2 1-3.4 1-2.6 0-4.8-1.8-5.6-4.1H3.1v2.6A10 10 0 0 0 12 22z"/><path fill="#E5463B" d="M6.4 14a6 6 0 0 1 0-3.9V7.5H3.1a10 10 0 0 0 0 9z"/><path fill="#E5463B" d="M12 6c1.5 0 2.8.5 3.8 1.5l2.9-2.9A10 10 0 0 0 3.1 7.5l3.3 2.6C7.2 7.8 9.4 6 12 6z"/></svg>`,
 };
@@ -662,6 +719,15 @@ const parseYmd = (s) => { const [y, m, d] = s.split("-").map(Number); return new
 const brDate = (s) => { const d = parseYmd(s); return `${pad2(d.getDate())}/${pad2(d.getMonth() + 1)}/${d.getFullYear()}`; };
 const ddmm = (d) => `${pad2(d.getDate())}/${pad2(d.getMonth() + 1)}`;
 const nowHM = () => { const d = new Date(); return `${pad2(d.getHours())}:${pad2(d.getMinutes())}`; };
+function fmtPhone(raw) {
+  let d = String(raw || "").replace(/\D/g, "");
+  if (d.length > 11 && d.startsWith("55")) d = d.slice(2);
+  if (d.length === 11) return `(${d.slice(0, 2)}) ${d.slice(2, 7)}-${d.slice(7)}`;
+  if (d.length === 10) return `(${d.slice(0, 2)}) ${d.slice(2, 6)}-${d.slice(6)}`;
+  if (d.length === 9) return `${d.slice(0, 5)}-${d.slice(5)}`;
+  return String(raw || "").trim();
+}
+const DEMO_PHONE = "(11) 90000-1234";
 const uid = () => Math.random().toString(36).slice(2, 10) + Date.now().toString(36);
 const WD = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
 const norm = (s) => String(s || "").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").trim();
@@ -682,6 +748,7 @@ function load() {
   try { const raw = localStorage.getItem(KEY); if (raw) DB = JSON.parse(raw); } catch { DB = null; }
   if (!DB || typeof DB !== "object") DB = { users: {}, session: null, settings: { font: 1, theme: "auto" } };
   DB.settings = Object.assign({ font: 1, theme: "auto" }, DB.settings || {});
+  for (const u of Object.values(DB.users || {})) if (u.profile && /^\+?5511999998888$/.test(String(u.profile.contactPhone))) u.profile.contactPhone = DEMO_PHONE;
 }
 function save() { try { localStorage.setItem(KEY, JSON.stringify(DB)); } catch { /* sem armazenamento: segue em memória */ } }
 const me = () => (DB.session && DB.users[DB.session]) || null;
@@ -699,7 +766,7 @@ async function demoUser() {
   for (const [ago, mood, slept, pain, meds] of pattern) ck[ymd(addDays(t, -ago))] = { mood, slept, pain, meds };
   return {
     email: "maria@oldhealthy.app", pass: await hashPass("Maria@123"), demo: true,
-    profile: { name: "Maria", age: 68, contactName: "Carlos (filho)", contactPhone: "+5511999998888", blood: "O+", allergies: "Dipirona" },
+    profile: { name: "Maria", age: 68, contactName: "Carlos (filho)", contactPhone: DEMO_PHONE, blood: "O+", allergies: "Dipirona" },
     meds: [
       { id: uid(), time: "06:00", freq: "Diário", name: "Losartana", dose: "50mg - 1 comprimido", note: "Tomar em jejum", takenOn: today },
       { id: uid(), time: "09:00", freq: "Diário", name: "Ômega 3", dose: "1 cápsula", note: "", takenOn: today },
@@ -1116,9 +1183,9 @@ V.perfil = () => {
     <div class="card info-card">
       <h2>Contato de Emergência</h2>
       <div class="info-row"><span class="ic">${I.userCircle}</span><div style="min-width:0"><small>Nome</small><b>${esc(p.contactName || "—")}</b></div></div>
-      <div class="info-row"><span class="ic">${I.phone}</span><div style="min-width:0"><small>Telefone</small><b>${esc(p.contactPhone || "—")}</b></div></div>
-      ${p.contactPhone ? `<a class="call-btn" href="tel:${esc(p.contactPhone.replace(/[^\d+]/g, ""))}">${I.phone} Ligar agora</a>` : ""}
-      ${p.contactPhone ? `<button class="btn-ghost" data-act="copy" data-v="${esc(p.contactPhone)}" style="margin-top:10px"><b style="font:inherit">Copiar número</b></button>` : ""}
+      <div class="info-row"><span class="ic">${I.phone}</span><div style="min-width:0"><small>Telefone</small><b style="font-variant-numeric:tabular-nums">${esc(fmtPhone(p.contactPhone) || "—")}</b></div></div>
+      ${p.contactPhone ? `<button class="call-btn" data-act="call" data-name="${esc(p.contactName || "Contato")}" data-num="${esc(fmtPhone(p.contactPhone))}">${I.phone} Ligar agora</button>
+      <button class="btn-ghost" data-act="copy" data-v="${esc(fmtPhone(p.contactPhone))}" style="margin-top:10px">Copiar número</button>` : ""}
     </div>
     <div class="card info-card">
       <h2>Informações de Saúde</h2>
@@ -1200,6 +1267,11 @@ function doRestore() {
   DB.users[u.email] = u; DB.session = u.email; save(); pendingRestore = null;
   closeSheet(); S.stack = []; go("perfil", { replace: true }); toast("Dados restaurados");
 }
+document.addEventListener("input", (e) => {
+  if (e.target.id !== "pCPhone") return;
+  const d = e.target.value.replace(/\D/g, "").slice(0, 11);
+  e.target.value = d.length > 7 ? `(${d.slice(0, 2)}) ${d.slice(2, d.length === 11 ? 7 : 6)}-${d.slice(d.length === 11 ? 7 : 6)}` : d.length > 2 ? `(${d.slice(0, 2)}) ${d.slice(2)}` : d;
+});
 document.addEventListener("change", (e) => { if (e.target.id === "restoreFile" && e.target.files[0]) { onRestoreFile(e.target.files[0]); e.target.value = ""; } });
 
 V.notif = () => {
@@ -1474,36 +1546,121 @@ function openProfileEdit() {
   const p = me().profile;
   openSheet(`<h2>Editar perfil</h2><form id="profForm" novalidate>
     ${fld("pName", "Nome", "required", p.name)}${fld("pAge", "Idade", 'type="number" min="1" max="120"', p.age)}
-    ${fld("pCName", "Contato de emergência", "", p.contactName)}${fld("pCPhone", "Telefone do contato", 'type="tel" inputmode="tel"', p.contactPhone)}
+    ${fld("pCName", "Contato de emergência", "", p.contactName)}${fld("pCPhone", "Telefone do contato", 'type="tel" inputmode="tel" placeholder="(11) 90000-1234" maxlength="16"', fmtPhone(p.contactPhone))}
     <div class="row2"><div class="field"><label for="pBlood">Tipo sanguíneo</label><select id="pBlood">${["", "A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"].map((b) => `<option ${b === p.blood ? "selected" : ""} value="${b}">${b || "Não sei"}</option>`).join("")}</select></div>
     ${fld("pAll", "Alergias", "", p.allergies)}</div>
     <button class="btn-primary plain" type="submit">Salvar</button><button class="btn-ghost" type="button" data-act="close">Cancelar</button></form>`, (ov) => {
     ov.querySelector("#profForm").addEventListener("submit", (e) => {
       e.preventDefault();
-      Object.assign(p, { name: $("#pName").value.trim() || p.name, age: Number($("#pAge").value) || p.age, contactName: $("#pCName").value.trim(), contactPhone: $("#pCPhone").value.trim(), blood: $("#pBlood").value, allergies: $("#pAll").value.trim() });
+      Object.assign(p, { name: $("#pName").value.trim() || p.name, age: Number($("#pAge").value) || p.age, contactName: $("#pCName").value.trim(), contactPhone: fmtPhone($("#pCPhone").value), blood: $("#pBlood").value, allergies: $("#pAll").value.trim() });
       save(); closeSheet(); render(); toast("Perfil atualizado");
     });
   });
 }
 function openSOS() {
   const p = me().profile; let n = 5;
-  const tel = (p.contactPhone || "").replace(/[^\d+]/g, "");
-  const numbers = () => `
-    ${tel ? `<div class="num-row"><div class="grow"><small style="color:var(--muted)">${esc(p.contactName || "Contato")}</small><br><b>${esc(p.contactPhone)}</b></div><button class="copy" data-act="copy" data-v="${esc(p.contactPhone)}">Copiar</button><a href="tel:${esc(tel)}">Ligar</a></div>` : ""}
-    <div class="num-row red"><div class="grow"><small style="color:var(--muted)">SAMU</small><br><b>192</b></div><button class="copy" data-act="copy" data-v="192">Copiar</button><a href="tel:192">Ligar</a></div>
-    <div class="num-row red"><div class="grow"><small style="color:var(--muted)">Bombeiros</small><br><b>193</b></div><button class="copy" data-act="copy" data-v="193">Copiar</button><a href="tel:193">Ligar</a></div>
-    <p class="set-note">Se o botão Ligar não abrir o telefone, disque o número mostrado.</p>`;
-  openSheet(`<div class="sos-sheet" id="sosBody"><h2>Pedindo ajuda</h2><p class="sub">Ligando para ${esc(p.contactName || "o SAMU")} em</p>
+  const contact = p.contactPhone ? { name: p.contactName || "Contato de emergência", num: fmtPhone(p.contactPhone) } : null;
+  const row = (label, num, red) => `<div class="num-row ${red ? "red" : ""}"><div class="grow"><small>${esc(label)}</small><b>${esc(num)}</b></div>
+    <div class="num-actions"><button class="copy" data-act="copy" data-v="${esc(num)}">Copiar</button><button data-act="call" data-name="${esc(label)}" data-num="${esc(num)}">${I.phone} Ligar</button></div></div>`;
+  const numbers = () => `${contact ? row(contact.name, contact.num) : ""}${row("SAMU", "192", true)}${row("Bombeiros", "193", true)}`;
+  openSheet(`<div class="sos-sheet" id="sosBody"><h2>Pedindo ajuda</h2><p class="sub">Ligando para ${esc(contact ? contact.name : "o SAMU")} em</p>
     <div class="sos-count" id="sosN">${n}</div><button class="btn-ghost" data-act="close">Cancelar</button></div>`);
   S.sosTimer = setInterval(() => {
     n--; const el = $("#sosN");
     if (!el) { clearInterval(S.sosTimer); S.sosTimer = null; return; }
     if (n > 0) { el.textContent = n; if (navigator.vibrate) navigator.vibrate(120); return; }
     clearInterval(S.sosTimer); S.sosTimer = null;
-    $("#sosBody").innerHTML = `<h2 style="color:var(--sos)">Emergência</h2><p class="sub">Toque para ligar agora.</p>${numbers()}<button class="btn-ghost" data-act="close">Fechar</button>`;
-    try { location.href = "tel:" + (tel || "192"); } catch { /* sem discador */ }
+    $("#sosBody").innerHTML = `<h2 style="color:var(--sos)">Emergência</h2><p class="sub">Escolha para quem ligar.</p>${numbers()}<button class="btn-ghost" data-act="close">Fechar</button>`;
+    startCall(contact ? contact.name : "SAMU", contact ? contact.num : "192");
   }, 1000);
 }
+
+/* ---------- Ligação simulada (som e animação realistas) ---------- */
+const CALL = { el: null, timers: [], ctx: null, gain: null, speaker: false, start: 0 };
+function audio() {
+  try {
+    if (!CALL.ctx) { const AC = window.AudioContext || window.webkitAudioContext; if (!AC) return null; CALL.ctx = new AC(); }
+    if (CALL.ctx.state === "suspended") CALL.ctx.resume();
+    return CALL.ctx;
+  } catch { return null; }
+}
+function tone(freqs, start, dur, vol = 0.12) {
+  const ctx = audio(); if (!ctx) return;
+  const t0 = ctx.currentTime + start, g = ctx.createGain();
+  const v = vol * (CALL.speaker ? 1.8 : 1);
+  g.gain.setValueAtTime(0, t0); g.gain.linearRampToValueAtTime(v, t0 + 0.02);
+  g.gain.setValueAtTime(v, t0 + dur - 0.03); g.gain.linearRampToValueAtTime(0, t0 + dur);
+  g.connect(ctx.destination);
+  for (const f of [].concat(freqs)) { const o = ctx.createOscillator(); o.type = "sine"; o.frequency.value = f; o.connect(g); o.start(t0); o.stop(t0 + dur + 0.02); }
+}
+const DTMF = { 1: [697, 1209], 2: [697, 1336], 3: [697, 1477], 4: [770, 1209], 5: [770, 1336], 6: [770, 1477], 7: [852, 1209], 8: [852, 1336], 9: [852, 1477], "*": [941, 1209], 0: [941, 1336], "#": [941, 1477] };
+const KEYS = [["1", ""], ["2", "ABC"], ["3", "DEF"], ["4", "GHI"], ["5", "JKL"], ["6", "MNO"], ["7", "PQRS"], ["8", "TUV"], ["9", "WXYZ"], ["*", ""], ["0", "+"], ["#", ""]];
+const later = (fn, ms) => CALL.timers.push(setTimeout(fn, ms));
+function startCall(name, num) {
+  endCall(true);
+  const emerg = /^(192|193|190)$/.test(String(num).replace(/\D/g, ""));
+  const initials = emerg ? I.cross : esc(name.replace(/\(.*?\)/g, "").trim().split(/\s+/).map((w) => w[0]).slice(0, 2).join("").toUpperCase() || "?");
+  const sub = num === "192" ? "Serviço de Atendimento Móvel de Urgência" : num === "193" ? "Corpo de Bombeiros" : "celular";
+  const el = document.createElement("div");
+  el.className = "call-screen" + (emerg ? " emerg" : ""); el.setAttribute("role", "dialog"); el.setAttribute("aria-label", `Ligação para ${name}`);
+  el.innerHTML = `
+    <p class="call-status" id="callStatus" aria-live="polite">Discando…</p>
+    <h2 class="call-name">${esc(name)}</h2>
+    <p class="call-num">${esc(num)}</p>
+    <p class="call-sub">${esc(sub)}</p>
+    <div class="call-mid">
+      <div class="call-avatar" id="callAvatar"><span class="ring"></span><span class="ring"></span><span class="ring"></span><span class="av">${initials}</span></div>
+      <div class="keypad" id="callKeypad" hidden><p class="typed" id="callTyped"></p>
+        <div class="keys">${KEYS.map(([k, l]) => `<button class="key" data-key="${k}" aria-label="${k}"><b>${k}</b><small>${l}</small></button>`).join("")}</div></div>
+    </div>
+    <div class="call-actions">
+      <button data-call="mute" aria-pressed="false"><span class="cb">${I.mic}</span>Mudo</button>
+      <button data-call="keypad" aria-pressed="false"><span class="cb">${I.grid}</span>Teclado</button>
+      <button data-call="speaker" aria-pressed="false"><span class="cb">${I.speaker}</span>Viva-voz</button>
+    </div>
+    <div class="call-bottom"><button class="end-call" data-call="end" aria-label="Encerrar ligação">${I.phone}</button>
+      <button class="kp-hide" data-call="keypad-hide" hidden>Ocultar</button></div>
+    <p class="call-note">Simulação para demonstração · nenhuma ligação real é feita</p>`;
+  layer().appendChild(el); CALL.el = el; S.inCall = true; statusBar();
+  const st = (t) => { const x = $("#callStatus"); if (x) x.textContent = t; };
+  // Toque de chamada brasileiro: 425 Hz, 1 s ligado e 4 s desligado (aqui encurtado)
+  later(() => { st("Chamando…"); tone(425, 0, 1); }, 1100);
+  later(() => tone(425, 0, 1), 4100);
+  later(() => {
+    st("00:00"); el.classList.add("connected"); CALL.start = Date.now();
+    tone([1400], 0, 0.06, 0.05); if (navigator.vibrate) navigator.vibrate(60);
+    if (emerg) el.querySelector(".call-sub").textContent = num === "192" ? "SAMU 192 · central de regulação" : "Bombeiros 193 · central de atendimento";
+    CALL.timers.push(setInterval(() => { const sec = Math.floor((Date.now() - CALL.start) / 1000); st(`${pad2(Math.floor(sec / 60))}:${pad2(sec % 60)}`); }, 500));
+  }, 6400);
+  setTimeout(() => el.querySelector(".end-call").focus({ preventScroll: true }), 50);
+}
+function setKeypad(on) {
+  const el = CALL.el; if (!el) return;
+  el.classList.toggle("kp", on); $("#callKeypad").hidden = !on; $("#callAvatar").hidden = on;
+  el.querySelector(".kp-hide").hidden = !on;
+}
+function endCall(silent) {
+  const el = CALL.el; if (!el) return;
+  CALL.timers.forEach((t) => { clearTimeout(t); clearInterval(t); }); CALL.timers = [];
+  CALL.el = null; CALL.speaker = false;
+  if (silent) { el.remove(); S.inCall = false; statusBar(); return; }
+  const x = el.querySelector("#callStatus"); if (x) x.textContent = "Chamada encerrada";
+  el.classList.remove("connected"); el.querySelectorAll(".ring").forEach((r) => r.remove());
+  [0, 0.35, 0.7].forEach((t) => tone(425, t, 0.22, 0.08));
+  setTimeout(() => { el.classList.add("leaving"); setTimeout(() => { el.remove(); S.inCall = false; statusBar(); }, 400); }, 1100);
+}
+document.addEventListener("click", (e) => {
+  const k = e.target.closest(".key");
+  if (k && CALL.el) { const v = k.dataset.key; tone(DTMF[v], 0, 0.15, 0.08); const t = $("#callTyped"); if (t) t.textContent = (t.textContent + v).slice(-14); return; }
+  const b = e.target.closest("[data-call]"); if (!b || !CALL.el) return;
+  const what = b.dataset.call;
+  if (what === "end") return endCall();
+  if (what === "keypad-hide") { const kb = CALL.el.querySelector('[data-call="keypad"]'); kb.setAttribute("aria-pressed", "false"); setKeypad(false); return; }
+  const on = b.getAttribute("aria-pressed") !== "true"; b.setAttribute("aria-pressed", on);
+  if (what === "speaker") CALL.speaker = on;
+  if (what === "keypad") setKeypad(on);
+});
+
 function openGoogle() {
   openSheet(`<div style="display:flex;align-items:center;gap:10px">${I.google}<h2>Escolha uma conta</h2></div>
     <p class="sub">para continuar no OldHealthy</p>
@@ -1577,6 +1734,7 @@ document.addEventListener("click", async (e) => {
     }
     case "day": S.agendaDay = a.dataset.d; render(); break;
     case "chip": sendChat(a.textContent); break;
+    case "call": audio(); startCall(a.dataset.name, a.dataset.num); break;
     case "copy": {
       const v = a.dataset.v;
       navigator.clipboard.writeText(v).then(() => toast(`Número ${v} copiado`), () => {
@@ -1624,7 +1782,7 @@ document.addEventListener("submit", async (e) => {
   }
 });
 document.addEventListener("keydown", (e) => {
-  if (e.key === "Escape") closeSheet();
+  if (e.key === "Escape") { if (CALL.el) endCall(); else closeSheet(); }
   if ((e.key === "Enter" || e.key === " ") && e.target.matches('[role="button"][data-act]')) { e.preventDefault(); e.target.click(); }
 });
 
@@ -1641,7 +1799,8 @@ function fitPhone() {
 function statusBar() {
   const sb = $("#statusbar"); if (!sb) return;
   $("#sbTime").textContent = nowHM();
-  sb.classList.toggle("light", LIGHT_BAR.includes(S.view));
+  sb.classList.toggle("light", LIGHT_BAR.includes(S.view) || !!S.inCall);
+  sb.classList.toggle("in-call", !!S.inCall);
   sb.classList.toggle("chat", S.view === "chat");
   const sc = scroller(); sb.classList.toggle("solid", !!sc && sc.scrollTop > 8);
 }
