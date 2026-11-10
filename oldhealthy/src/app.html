@@ -1324,6 +1324,35 @@ function userContext(u) {
 }
 const RULES = (u) => `Você é a assistente de saúde do aplicativo OldHealthy e conversa com uma pessoa idosa. Fale sempre em português do Brasil, com carinho e respeito, frases curtas e palavras simples. Responda em no máximo 120 palavras. Use listas curtas com "- " quando ajudar, e **negrito** só no essencial. Você não substitui o médico: para dose, troca, início ou suspensão de remédios, oriente a confirmar com o médico ou farmacêutico. Considere as alergias e os remédios da pessoa ao responder e avise se algo citado tiver relação com uma alergia cadastrada. Se a pessoa descrever sinal de emergência (dor ou aperto no peito, falta de ar forte, fraqueza ou formigamento de um lado do corpo, boca torta ou fala enrolada, desmaio, sangramento forte, queda com batida na cabeça, confusão de repente), diga logo no começo para ligar 192 (SAMU) ou apertar o botão SOS do aplicativo.\n\nDados da pessoa: ${userContext(u)}\n\nAs mensagens seguintes são a conversa com ela.`;
 
+/* Base com 1.010 respostas prontas (101 temas x 10 tipos de pergunta), usada sem internet. */
+const KB = %%KB%%;
+const FACETS = [
+  ["x", "Mito ou verdade", /\bmito|e verdade|verdade que|mentira|e certo que|faz mal\b|vicia|engorda|da gripe|e normal|e proibido/],
+  ["m", "Quando procurar ajuda", /medico|quando procurar|hospital|perigo|grave|emergenc|me preocupar|pronto.?socorro|urgente/],
+  ["s", "Sintomas", /sintoma|sinais|sinal de|como saber|como sei|o que sente|sinto|sentir/],
+  ["c", "Causas", /causa|por que|porque|provoca|de onde vem|o que leva/],
+  ["p", "Como prevenir", /previn|evitar|evito|proteger|nao ter|diminuir o risco/],
+  ["a", "Alimentação", /comer|aliment|dieta|comida|pode beber|beber|fruta|cardapio/],
+  ["e", "Exercícios", /exercic|caminh|atividade|academia|nadar|danca|pode fazer/],
+  ["r", "Tratamento", /tratamento|tratar|remedio|cura|curar|melhor(a|ar)|alivi|resolver/],
+  ["i", "Cuidados no dia a dia", /cuidado|dica|dia a dia|o que fazer|como cuidar|conviver|rotina/],
+  ["o", "O que é", /o que e|o que significa|explica|o que quer dizer/],
+];
+const KB_RX = KB.map((t) => ({ t, rx: t.k.map((k) => { const n = norm(k).replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); return { n, rx: new RegExp(n.length <= 3 ? `(^|[^a-z])${n}([^a-z]|$)` : `(^|[^a-z])${n}`) }; }) }));
+function kbAnswer(q) {
+  const n = norm(q);
+  let best = null, score = 0;
+  for (const { t, rx } of KB_RX) { let sc = 0; for (const k of rx) if (k.rx.test(n)) sc += k.n.length; if (sc > score) { score = sc; best = t; } }
+  if (!best) return null;
+  const list = (arr) => arr.map((x) => `- ${x}`).join("\n");
+  const f = FACETS.find(([, , rx]) => rx.test(n));
+  const name = best.t.charAt(0).toUpperCase() + best.t.slice(1);
+  if (!f) return `**${name}**\n${best.o.join(". ")}.\n\n**Como cuidar:**\n${list(best.p.slice(0, 3))}\n\n**Procure ajuda se:** ${best.m[0]}.`;
+  const [key, label] = f;
+  const extra = key === "m" ? "" : key === "r" ? "\n\nConfirme sempre com o seu médico antes de mudar qualquer tratamento." : `\n\n**Procure ajuda se:** ${best.m[0]}.`;
+  return `**${name}: ${label.toLowerCase()}**\n${list(best[key])}${extra}`;
+}
+
 /* Assistente de demonstração: funciona sem internet e sem conta, com respostas prontas e personalizadas. */
 function offlineAnswer(q, u) {
   const n = norm(q), p = u.profile, first = p.name.split(" ")[0];
@@ -1334,7 +1363,7 @@ function offlineAnswer(q, u) {
     [/peito|falta de ar|sem ar|desmai|avc|derrame|formig|boca torta|fala enrol|sangr|bati a cabeca|convuls/, () => `**${first}, isso pode ser uma emergência.**\n- Ligue agora para o **192 (SAMU)**.\n- Ou aperte o botão **SOS** na tela inicial.\n- Não fique sozinha: chame alguém por perto e não dirija.`],
     [/^(oi|ola|bom dia|boa tarde|boa noite|e ai|tudo bem)\b/, () => `Olá, ${first}! Que bom falar com você. Como posso ajudar hoje? Pode perguntar sobre seus **remédios**, **pressão**, **sono**, **alimentação** ou **exercícios**.`],
     [/obrigad|valeu/, () => `Por nada, ${first}! Estou aqui sempre que precisar. Cuide-se bem.`],
-    [/minha press|ultima press|como esta minha press|minhas medidas|anotac/, () => { const n = lastOf(u, "pressao"), g = lastOf(u, "glicemia"); if (!n && !g) return "Você ainda não anotou medidas. Na tela **Minhas anotações** você registra pressão, glicemia e peso."; const l = n && level(n); return `Suas últimas medidas:\n${n ? `- **Pressão:** ${noteValue(n)} mmHg (${dayName(n.date).toLowerCase()}), ${l[1].toLowerCase()}.\n` : ""}${g ? `- **Glicemia:** ${g.value} mg/dL ${g.moment.toLowerCase()}, ${level(g)[1].toLowerCase()}.\n` : ""}\n${l && l[0] === "high" ? "A pressão está acima do ideal. Descanse, meça de novo em 15 minutos e, se continuar alta, fale com o médico." : "Continue anotando e leve as medidas na próxima consulta."}`; }],
+    [/ultima press|ultima medida|como esta minha press|minhas medidas|minhas anotac|o que anotei/, () => { const n = lastOf(u, "pressao"), g = lastOf(u, "glicemia"); if (!n && !g) return "Você ainda não anotou medidas. Na tela **Minhas anotações** você registra pressão, glicemia e peso."; const l = n && level(n); return `Suas últimas medidas:\n${n ? `- **Pressão:** ${noteValue(n)} mmHg (${dayName(n.date).toLowerCase()}), ${l[1].toLowerCase()}.\n` : ""}${g ? `- **Glicemia:** ${g.value} mg/dL ${g.moment.toLowerCase()}, ${level(g)[1].toLowerCase()}.\n` : ""}\n${l && l[0] === "high" ? "A pressão está acima do ideal. Descanse, meça de novo em 15 minutos e, se continuar alta, fale com o médico." : "Continue anotando e leve as medidas na próxima consulta."}`; }],
     [/press/, () => "Caminhar costuma fazer bem para quem tem pressão alta.\n- Comece devagar, 10 a 20 minutos.\n- Use roupa leve e beba água.\n- Pare se sentir tontura, dor no peito ou falta de ar.\n- Se a pressão estiver **muito alta** agora, não faça exercício e fale com o médico.\n\nDica: o lembrete **Medir a pressão** ajuda a acompanhar os valores."],
     [/sono|dormir|insonia|acordo de noite/, () => "Algumas dicas para dormir melhor:\n- Deite e levante sempre no mesmo horário.\n- Evite café, chá preto e refrigerante depois das 16h.\n- Diminua a luz e a TV meia hora antes de dormir.\n- Um chá de camomila morno pode ajudar.\n- Se cochilar de dia, que seja no máximo 30 minutos."],
     [/diabet|acucar|glicem|glicose/, () => "Para ajudar a controlar a diabetes:\n- Prefira arroz integral, feijão, verduras e legumes.\n- Evite doces, refrigerante e suco adoçado.\n- Coma pequenas porções, várias vezes ao dia.\n- Caminhar depois das refeições ajuda a baixar o açúcar.\n- Siga a dieta e os remédios que o médico passou."],
@@ -1356,7 +1385,9 @@ function offlineAnswer(q, u) {
     const list = meds.map((m) => `- **${m.name}** ${m.dose ? "(" + m.dose + ")" : ""} às ${m.time}${m.note ? ": " + m.note.toLowerCase() : ""}`).join("\n");
     answer = `Pelo que está no seu app:\n${list}\n\n${meds.length > 1 || /junto|mistur|mesmo tempo|com /.test(n) ? "Muitos remédios podem ser tomados no mesmo dia, mas **misturar ou mudar horários deve ser confirmado com seu médico ou farmacêutico**." : "Tome sempre na dose e no horário que o médico passou. Na dúvida, pergunte ao farmacêutico."}`;
   } else {
-    for (const [re, fn] of T) if (re.test(n)) { answer = fn(); break; }
+    for (const [re, fn] of T.slice(0, 4)) if (re.test(n)) { answer = fn(); break; }
+    if (!answer) answer = kbAnswer(q);
+    if (!answer) for (const [re, fn] of T.slice(4)) if (re.test(n)) { answer = fn(); break; }
   }
   if (!answer && /remedio|medica|dose|tomar|comprimido/.test(n)) answer = "Sobre remédios, o mais seguro é **confirmar com seu médico ou farmacêutico** antes de mudar a dose, o horário ou tomar algo novo. Leve a lista da tela **Medicamentos** na próxima consulta.";
   if (!answer) answer = `Boa pergunta, ${first}! Posso ajudar com **pressão**, **diabetes**, **sono**, **alimentação**, **exercícios**, **dores**, **tontura**, **quedas** e com os seus **remédios**. Para qualquer sintoma novo ou forte, fale com seu médico. Em emergência, ligue **192**.`;
