@@ -1211,7 +1211,7 @@ function settingsCards(u) {
         ${[["auto", "Automático"], ["light", "Claro"], ["dark", "Escuro"]].map(([v, l]) => `<button aria-pressed="${st.theme === v}" data-act="theme" data-v="${v}">${l}</button>`).join("")}</div></div>
       <div class="set-group"><b>Avisos no aparelho</b><p class="set-note">Notificações ${notifState}. Os lembretes também aparecem dentro do app enquanto ele está aberto.</p>
         ${notifState === "desativadas" ? `<button class="btn-ghost" data-act="notifPerm">Ativar notificações</button>` : ""}</div>
-      <div class="set-group"><b>Assistente de IA</b><p class="set-note">${modeText()}.</p>
+      <div class="set-group"><b>Assistente de IA</b>
         <button class="btn-ghost" data-act="clearChat">Apagar conversa com a IA</button></div>
     </div>
     <div class="card info-card" id="meus-dados">
@@ -1322,7 +1322,8 @@ async function detectAI() {
   refreshChatMode();
 }
 const modeText = () => ({ claude: "IA conectada", server: "IA conectada", "server-nokey": "Modo demonstração", offline: "Modo demonstração", checking: "Conectando à IA…" }[AI.mode]);
-function refreshChatMode() { const el = $("#aiMode"); if (el) { el.className = "ai-mode" + (AI.mode === "checking" ? "" : " on"); el.lastChild.textContent = modeText(); } }
+const aiOnline = () => AI.mode === "claude" || AI.mode === "server";
+function refreshChatMode() { const el = $("#aiMode"); if (el) { el.className = "ai-mode on"; el.hidden = !aiOnline(); el.lastChild.textContent = "IA conectada"; } }
 
 function userContext(u) {
   const p = u.profile;
@@ -1430,7 +1431,7 @@ V.chat = () => {
   <header class="chat-head pad">
     <span class="av">${I.bubbles}</span>
     <div style="min-width:0"><h1>Dúvidas de saúde</h1><p>Assistente IA - sempre com carinho</p>
-      <span class="ai-mode" id="aiMode"><i></i><span>${modeText()}</span></span></div>
+      <span class="ai-mode on" id="aiMode" ${aiOnline() ? "" : "hidden"}><i></i><span>IA conectada</span></span></div>
   </header>
   <div class="msgs pad" id="msgs" aria-live="polite">
     <div class="msg ai"><p>Olá, ${esc(first)}! Sou sua assistente de saúde. Pode me perguntar sobre remédios, alimentação, sono ou exercícios. Em emergência, ligue <strong>192</strong> ou use o botão SOS.</p></div>
