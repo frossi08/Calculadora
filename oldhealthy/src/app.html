@@ -1342,11 +1342,22 @@ const FACETS = [
 const KB_RX = KB.map((t) => ({ t, rx: t.k.map((k) => { const n = norm(k).replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); return { n, rx: new RegExp(n.length <= 3 ? `(^|[^a-z])${n}([^a-z]|$)` : `(^|[^a-z])${n}`) }; }) }));
 function kbAnswer(q) {
   const n = norm(q);
-  let best = null, score = 0;
-  for (const { t, rx } of KB_RX) { let sc = 0; for (const k of rx) if (k.rx.test(n)) sc += k.n.length; if (sc > score) { score = sc; best = t; } }
-  if (!best) return null;
+  const hits = [];
+  for (const { t, rx } of KB_RX) { let sc = 0; for (const k of rx) if (k.rx.test(n)) sc += k.n.length; if (sc) hits.push([sc, t]); }
+  if (!hits.length) return null;
+  hits.sort((x, y) => y[0] - x[0]);
+  const best = hits[0][1];
   const list = (arr) => arr.map((x) => `- ${x}`).join("\n");
   const f = FACETS.find(([, , rx]) => rx.test(n));
+  // Duas condições na mesma pergunta: resposta combinada (45 temas -> 990 pares x 10 tipos)
+  const second = hits.slice(1).map((h) => h[1]).find((t) => t !== best && t.c2 && t.t !== best.t);
+  if (best.c2 && second) {
+    const key = f ? f[0] : "p", label = f ? f[1] : "Como cuidar";
+    const cap = (x) => x.t.charAt(0).toUpperCase() + x.t.slice(1);
+    const seen = new Set(), items = [];
+    for (const it of [...best[key], ...second[key]]) { const k = norm(it).slice(0, 40); if (!seen.has(k)) { seen.add(k); items.push(it); } }
+    return `**${cap(best)} + ${second.t}: ${label.toLowerCase()}**\nQuem tem as duas condições deve juntar os cuidados:\n${list(items.slice(0, 7))}\n\n**Procure ajuda se:** ${best.m[0]}; ou ${second.m[0].charAt(0).toLowerCase() + second.m[0].slice(1)}.\n\nComo são duas condições, combine o plano com o seu médico.`;
+  }
   const name = best.t.charAt(0).toUpperCase() + best.t.slice(1);
   if (!f) return `**${name}**\n${best.o.join(". ")}.\n\n**Como cuidar:**\n${list(best.p.slice(0, 3))}\n\n**Procure ajuda se:** ${best.m[0]}.`;
   const [key, label] = f;
