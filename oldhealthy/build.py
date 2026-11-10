@@ -8,8 +8,8 @@ import sys
 
 here = pathlib.Path(__file__).parent
 body = (here / "src" / "app.html").read_text(encoding="utf-8")
-img = base64.b64encode((here / "assets" / "vovo.jpg").read_bytes()).decode()
-body = body.replace("%%VOVO%%", "data:image/jpeg;base64," + img)
+img = base64.b64encode((here / "assets" / "vovo.webp").read_bytes()).decode()
+body = body.replace("%%VOVO%%", "data:image/webp;base64," + img)
 body = body.replace("%%KB%%", (here / "src" / "kb.json").read_text(encoding="utf-8").replace("</", "<\\/"))
 
 manifest = '<link rel="manifest" href="manifest.webmanifest">\n'
